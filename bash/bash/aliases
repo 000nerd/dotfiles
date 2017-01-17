@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+    colorflag="--color"
+else # OS X `ls`
+    colorflag="-G"
+fi
+
+# Filesystem aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+alias l="ls -lah ${colorflag}"
+alias la="ls -AF ${colorflag}"
+alias ll="ls -lFh ${colorflag}"
+alias lld="ls -l | grep ^d"
+alias rmf="rm -rf"
+
+# Helpers
+alias grep='grep --color=auto'
+alias df='df -h' # disk free, in Gigabytes, not bytes
+alias du='du -h -c' # calculate disk usage for a folder
+
+# Applications
+alias ios='open -a /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app'
+
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en1"
+alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
+
+# Flush Directory Service cache
+alias flush="dscacheutil -flushcache"
+
+# View HTTP traffic
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+
+# File size
+alias fs="stat -f \"%z bytes\""
+
+# Empty the Trash on all mounted volumes and the main HDD
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+    alias "$method"="lwp-request -m '$method'"
+done
+
+# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
+alias stfu="osascript -e 'set volume output muted true'"
+alias pumpitup="osascript -e 'set volume 10'"
+
+alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
+
+#ANDROID(iOBSA)
+alias burp="java -jar $HOME/Tools/burpsuite_free_v1.6.jar"
+alias printcert="keytool -printcert -file"
+alias signapk="jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore alias_name"
+alias android_screendump="adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g'"
+alias android_get_id='adb shell content query --uri content://settings/secure --projection name:value | grep android_id'
+alias android_locale_change="adb shell am start -n 'com.android.settings/.Settings\$LocalePickerActivity'"
+alias android_dev_options="adb shell am start -n com.android.settings/.DevelopmentSettings"
+
+alias jd-gui="open -a jd-gui"
+
+SYSROOT_ARM=${ANDROID_NDK_HOME}/platforms/android-14/arch-arm
+SYSROOT_X86=${ANDROID_NDK_HOME}/platforms/android-14/arch-x86
+ARM_GCC="${ANDROID_NDK_HOME}/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86/bin/arm-linux-androideabi-gcc"
+X86_GCC="${ANDROID_NDK_HOME}/toolchains/x86-4.8/prebuilt/darwin-x86/bin/i686-linux-android-gcc"
+alias ANDROID_CC="$ARM_GCC --sysroot=$SYSROOT_ARM "
+alias ANDROID_CC_X86="$X86_GCC --sysroot=$SYSROOT_X86 "
+
+# tmux aliases
+alias ta='tmux attach'
+alias tls='tmux ls'
+alias tat='tmux attach -t'
+alias tns='tmux new-session -s'
+

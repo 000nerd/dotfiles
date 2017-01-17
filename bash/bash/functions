@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+####################
+# functions
+####################
+
+# print available colors and their numbers
+function colours() {
+    for i in {0..255}; do
+        printf "\x1b[38;5;${i}m colour${i}"
+        if (( $i % 5 == 0 )); then
+            printf "\n"
+        else
+            printf "\t"
+        fi
+    done
+}
+
+# Create a new directory and enter it
+function md() {
+    mkdir -p "$@" && cd "$@"
+}
+
+function hist() {
+    history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
+}
+
+# find shorthand
+function f() {
+    find . -name "$1"
+}
+
+# take this repo and copy it to somewhere else minus the .git stuff.
+function gitexport(){
+    mkdir -p "$1"
+    git archive master | tar -x -C "$1"
+}
+
+
+# Escape UTF-8 characters into their 3-byte format
+function escape() {
+    printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
+    echo # newline
+}
+
+# Decode \x{ABCD}-style Unicode escape sequences
+function unidecode() {
+    perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
+    echo # newline
+}
+
+# Extract archives - use: extract <file>
+# Credits to http://dotfiles.org/~pseup/.bashrc
+function extract() {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2) tar xjf $1 ;;
+            *.tar.gz) tar xzf $1 ;;
+            *.bz2) bunzip2 $1 ;;
+            *.rar) rar x $1 ;;
+            *.gz) gunzip $1 ;;
+            *.tar) tar xf $1 ;;
+            *.tbz2) tar xjf $1 ;;
+            *.tgz) tar xzf $1 ;;
+            *.zip) unzip $1 ;;
+            *.Z) uncompress $1 ;;
+            *.7z) 7z x $1 ;;
+            *) echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Android Functions
+function update_android_id(){
+  # Update the android id.
+  # TODO(ashishb): Add a different query for devices where sqlite3 is not present
+  # but content binary is present.
+  adb shell sqlite3 \
+    /data/data/com.android.providers.settings/databases/settings.db \
+    "update 'secure' set value=\"${1}\" where name='android_id'"
+  # Now soft_reboot.
+  adb shell setprop ctl.restart surfaceflinger
+  adb shell setprop ctl.restart zygote
+}
+
+# TODO(iObsa): Add jadx tool to the list.
+# https://github.com/skylot/jadx
+# Source: https://gist.github.com/tyvsmith/6056422
+function dex-method-count() {
+  cat $1 | head -c 92 | tail -c 4 | hexdump -e '1/4 "%d\n"'
+}
+ 
+function dex-method-count-by-package() {
+  dir=$(mktemp -d -t dex)
+  baksmali $1 -o $dir
+  for pkg in `find $dir/* -type d`; do
+    smali $pkg -o $pkg/classes.dex
+    count=$(dex-method-count $pkg/classes.dex)
+    name=$(echo ${pkg:(${#dir} + 1)} | tr '/' '.')
+    echo -e "$count\t$name"
+  done
+  rm -rf $dir
+}
+ 
+function dex-field-count(){
+  cat $1 | head -c 84 | tail -c 4 | hexdump -e '1/4 "%d\n"'
+}
+ 
+function dex-field-count-by-package() {
+  dir=$(mktemp -d -t dex)
+  baksmali $1 -o $dir
+  for pkg in `find $dir/* -type d`; do
+    smali $pkg -o $pkg/classes.dex
+    count=$(dex-field-count $pkg/classes.dex)
+    name=$(echo ${pkg:(${#dir} + 1)} | tr '/' '.')
+    echo -e "$count\t$name"
+  done
+  rm -rf $dir
+}
