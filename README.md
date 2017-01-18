@@ -15,3 +15,6 @@
 ./javascript.sh: line 29: nvm: command not found
 Not fiding command while running as shell script
 http://unix.stackexchange.com/questions/184508/nvm-command-not-available-in-bash-script
+
+More DotFiles to look through
+https://github.com/keith/dotfiles
