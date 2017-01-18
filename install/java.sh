@@ -19,7 +19,6 @@ brew update
 cask_formulas=(
 	# Install java and android IDEs
 	java
-	intellij-idea-ce
 	android-studio
 	intel-haxm # For hardware acceleration
 	jd-gui # For java decompilation.
@@ -41,7 +40,7 @@ for cask_formula in "${cask_formulas[@]}"; do
     if brew list "$cask_formula" > /dev/null 2>&1; then
         echo "$cask_formula already installed... skipping."
     else
-        brew install $cask_formula
+        brew cask install $cask_formula
     fi
 done
 
@@ -53,7 +52,11 @@ for formula in "${formulas[@]}"; do
     fi
 done
 
+brew tap caskroom/versions
+brew cask install intellij-idea-ce
+
 # Install all of the Android SDK components
+#TODO: Fix it so that it does not install all the SDK components from API level 1 and UP.
 android update sdk --no-ui
 
 # Remove outdated versions from the cellar.

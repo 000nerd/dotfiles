@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
+# Disable homebrew analytics
+export HOMEBREW_NO_ANALYTICS=1
+
+# pyenv enviroment variables
+export PYENV_ROOT=/usr/local/var/pyenv
+
 # Update your enviroment variables
 export ANT_HOME=/usr/local/opt/ant
 export MAVEN_HOME=/usr/local/opt/maven
 export GRADLE_HOME=/usr/local/opt/gradle
 export ANDROID_HOME=/usr/local/opt/android-sdk
 export ANDROID_NDK_HOME=/usr/local/opt/android-ndk
-export PATH=$PATH:$ANDROID_SDK_HOME/tools/templates/gradle/wrapper
+export PATH=$PATH:$ANDROID_HOME/tools/templates/gradle/wrapper
 
 # For Hierarchy viewer
 # Source https://developer.android.com/studio/profile/hierarchy-viewer-setup.html

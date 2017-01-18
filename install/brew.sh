@@ -89,15 +89,15 @@ for cask_formula in "${cask_formulas[@]}"; do
     if brew list "$cask_formula" > /dev/null 2>&1; then
         echo "$cask_formula already installed... skipping."
     else
-        brew install $cask_formula
+        brew cask install $cask_formula
     fi
 done
 
-for quicklook_formula in "${cask_formulas[@]}"; do
+for quicklook_formula in "${quicklook_formulas[@]}"; do
     if brew list "$quicklook_formula" > /dev/null 2>&1; then
         echo "$quicklook_formula already installed... skipping."
     else
-        brew install $quicklook_formula
+        brew cask install $quicklook_formula
     fi
 done
 

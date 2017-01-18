@@ -24,9 +24,9 @@ brew install nvm
 mkdir ~/.nvm
 
 # Install latest node and set it as default
-nvm install node
-nvm use node
-nvm alias default node
+nvm install node  # Didn't work on first go
+nvm use node      # Didn't work on first go
+nvm alias default node # Didn't work on first go
 
 # Globally install with npm
 
@@ -35,11 +35,12 @@ packages=(
     vtop
     typescript
 )
-
-npm install -g "${packages[@]}"
+for package in "${packages[@]}"; do
+	npm install -g "${packages[@]}"  #Didn't work on first go
+done
 
 # Update npm
-npm install -g npm@latest
+npm install -g npm@latest # Didn't work on first Go.
 
 # Remove outdated versions from the cellar.
 brew cleanup

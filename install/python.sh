@@ -15,9 +15,12 @@ brew update
 brew install pyenv
 brew install pyenv-virtualenv
 
+brew tap caskroom/versions
+brew cask install pycharm-ce
+
 # Install latest node and set it as default
-pyenv install 3.5.1
-pyenv global 3.5.1
+pyenv install 3.6
+pyenv global 3.6
 
 # Remove outdated versions from the cellar.
 brew cleanup
