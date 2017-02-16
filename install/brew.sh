@@ -31,6 +31,8 @@ formulas=(
     reattach-to-user-namespace
     tmux
     tree
+    youtube-dl
+    ffmpeg
 )
 
 cask_formulas=(
