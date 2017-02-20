@@ -33,7 +33,6 @@ formulas=(
     tree
     youtube-dl
     ffmpeg
-    tree
     maven
 )
 
