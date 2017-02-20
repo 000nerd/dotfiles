@@ -48,17 +48,15 @@ cask_formulas=(
     flux
     google-chrome
     handbrake
-    helium
     iterm2
     libreoffice
     music-manager
     radiant-player
-    sophos-anti-virus-home-edition
     spotify
     sublime-text
     the-unarchiver
     transmission
-    vivaldi
+    visual-studio-code
     vlc
     wireshark
 )
@@ -112,4 +110,3 @@ done
 
 # Remove outdated versions from the cellar.
 brew cleanup
-
