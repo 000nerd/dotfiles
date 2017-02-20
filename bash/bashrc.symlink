@@ -3,7 +3,7 @@
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 # Editor
-export EDITOR='atom -w'
+export EDITOR='code -w'
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
@@ -54,4 +54,3 @@ export NVM_DIR="$HOME/.nvm"
 # pyenv for Python Development
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-
