@@ -42,7 +42,7 @@ cask_formulas=(
     appcleaner
     cheatsheet
     chrome-remote-desktop-host
-    disk-inventory-x
+    disk-inventory-x # or Grand Perspective
     dropbox
     dupeguru
     flux
@@ -58,6 +58,7 @@ cask_formulas=(
     transmission
     visual-studio-code
     vlc
+    veertu-desktop
     wireshark
 )
 
