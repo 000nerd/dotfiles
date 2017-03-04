@@ -57,119 +57,13 @@ prompt_git() {
 			# Ensure the index is up to date.
 			git update-index --really-refresh -q &>/dev/null;
 
-			# Check for uncommitted changes in the index.
-			if ! $(git diff --quiet --ignore-submodules --cached); then
-				s+='+';
-			fi;
-
-			# Check for unstaged changes.
-			if ! $(git diff-files --quiet --ignore-submodules --); then
-				s+='!';
-			fi;
-
-			# Check for untracked files.
-			if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-				s+='?';
-			fi;
-
 			# Check for stashed files.
 			if $(git rev-parse --verify refs/stash &>/dev/null); then
 				s+='$';
 			fi;
 
 		fi;
-
-		# Get the short symbolic ref.
-		# If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
-		# Otherwise, just give up.
-		branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
-			git rev-parse --short HEAD 2> /dev/null || \
-			echo '(unknown)')";
-
-		[ -n "${s}" ] && s=" [${s}]";
-
-		echo -e "${1}${branchName}${2}${s}";
 	else
 		return;
 	fi;
-}
-
-__git_info() {
-    [ -x "$(which git)" ] || return    # git not found
-    [ -d .git ] || return              # no .git directory
-
-    # get current branch name or short SHA1 hash for detached head
-    local branch="$(git symbolic-ref --short HEAD 2>/dev/null || git describe --tags --always 2>/dev/null)"
-    [ -n "$branch" ] || return  # git branch not found
-
-    local marks
-
-    # how many commits local branch is ahead/behind of remote?
-    local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
-    local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
-    local behindN="$(echo $stat | grep -o 'behind \d\+' | grep -o '\d\+')"
-    [ -n "$aheadN" ] && marks+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
-    [ -n "$behindN" ] && marks+=" $GIT_NEED_PULL_SYMBOL$behindN"
-
-    # print the git branch segment without a trailing newline
-    # branch is modified?
-    if [ -n "$(git status --porcelain)" ]; then
-        printf "${BG_COLOR8}$RESET$BG_COLOR8 $branch$marks $FG_COLOR9"
-    else
-        printf "${BG_BLUE}$RESET$BG_BLUE $branch$marks $RESET$FG_BLUE"
-    fi
-}
-
-function git_state_color {
-    if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-        local STATE=237
-        local RED_BG=124
-        local ORANGE_BG=208
-    else
-        local STATE=0
-        local RED_BG=1
-        local ORANGE_BG=3
-    fi
-    # check for unstaged changes
-    if ! $(git diff --quiet --ignore-submodules --cached); then
-        STATE="${RED_BG}"  # Unstaged changes (not yet added)
-    fi
-    # check for untracked files
-    if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-        STATE="${RED_BG}"  # New files (not yet added)
-    fi
-    # check for uncommitted changes in the index
-    if ! $(git diff-files --quiet --ignore-submodules --); then
-        STATE="${ORANGE_BG}"  # Changes detected (not yet committed)
-    fi
-    printf '%s' "${STATE}"
-}
-
-function git_branch {
-    local BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || \
-                    git rev-parse --short HEAD 2>/dev/null || \
-                    printf "(unknown)")"
-    local COLORCODE=$(git_state_color)
-    local BG_COLOR=$(tput setab ${COLORCODE})
-    local FG_COLOR=$(tput setaf ${COLORCODE})
-    local TXT_COLOR="${GRAY}"
-
-    # If the BG_COLOR isn't "clean", change text color to black (more contrast)
-    if [[ $COLORCODE != "237" && $COLORCODE != "0" ]]; then
-        TXT_COLOR="${BLACK}"
-    fi
-    # Explain magic of \001 and \002 http://mywiki.wooledge.org/BashFAQ/053
-    printf '\001%s\002\001%s\002 \001%s\002 %s \001%s\002\001%s\002' \
-        "${BG_COLOR}" "${BLACK2}" "${TXT_COLOR}" "${BRANCH}" "${RESET}" "${FG_COLOR}"
-}
-
-function prompt_git {
-    # Check CWD is a git repository
-    if [ $(git rev-parse --is-inside-work-tree &>/dev/null; printf $?) == 0 ]; then
-        git_branch
-    else
-        # Print a blank segment
-        printf '\001%s\002\001%s\002 \001%s\002\001%s\002' \
-            "${BLACK1_BG}" "${BLACK2}" "${RESET}" "${BLACK1}"
-    fi
 }

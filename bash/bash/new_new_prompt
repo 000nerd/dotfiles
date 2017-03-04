@@ -113,6 +113,16 @@ function __prompt {
         if [[ $COLORCODE != "237" && $COLORCODE != "0" ]]; then
             TXT_COLOR="${BLACK}"
         fi
+
+        local marks
+
+        # how many commits local branch is ahead/behind of remote?
+        local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
+        local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
+        local behindN="$(echo $stat | grep -o 'behind \d\+' | grep -o '\d\+')"
+        [ -n "$aheadN" ] && marks+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
+        [ -n "$behindN" ] && marks+=" $GIT_NEED_PULL_SYMBOL$behindN"
+
         # Explain magic of \001 and \002 http://mywiki.wooledge.org/BashFAQ/053
         printf '\001%s\002\001%s\002 \001%s\002 %s \001%s\002\001%s\002' \
             "${BG_COLOR}" "${BLACK2}" "${TXT_COLOR}" "${BRANCH}" "${RESET}" "${FG_COLOR}"
