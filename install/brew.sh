@@ -28,6 +28,7 @@ formulas=(
     git
     highlight
     markdown
+    mongodb # Do not forget to create /data/db and add permissions
     reattach-to-user-namespace
     tmux
     tree

@@ -2,7 +2,7 @@
 
 ###############################################################################
 #                               JavaScript                                    #
-############################################################################### 
+###############################################################################
 
 # Ask for the administrator password upfront.
 sudo -v
@@ -34,6 +34,7 @@ packages=(
     nodemon
     vtop
     typescript
+    mongo-hacker
 )
 for package in "${packages[@]}"; do
 	npm install -g "${packages[@]}"  #Didn't work on first go
