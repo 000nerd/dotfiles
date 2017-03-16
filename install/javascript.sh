@@ -34,6 +34,7 @@ packages=(
     nodemon
     vtop
     typescript
+    pomolectron # Pomodoro app for MenuBar
     mongo-hacker
 )
 for package in "${packages[@]}"; do
