@@ -3,6 +3,12 @@ set -g default-command "login-shell"
 # tmux display things in 256 colors
 set -g default-terminal "tmux-256color-italic"
 
+#at the end of the file
+#if-shell 'test "$(uname)" = "Darwin"' 'source ~/.tmux-osx.conf'
+# put insdie of tmux-osx.conf file
+set-option -g default-command "reattach-to-user-namespace -l bash"
+
+
 #  enable terminal compability
 set-option -ga terminal-overrides ",tmux-256color-italic:Tc"
 
