@@ -105,6 +105,12 @@ else
 	hostStyle="${yellow}";
 fi;
 
+##########################
+#
+# Get the path at most 3 levels deep
+#
+###########################
+
 path=$PWD
 
 if [ "$path" != "/" ] ;then
