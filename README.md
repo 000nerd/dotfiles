@@ -17,4 +17,9 @@ Not fiding command while running as shell script
 http://unix.stackexchange.com/questions/184508/nvm-command-not-available-in-bash-script
 
 More DotFiles to look through
+
 https://github.com/keith/dotfiles
+Add intellij to dotfiles
+https://github.com/Valloric/dotfiles/tree/master/intellij
+dotfiles manager to replace current system
+https://github.com/mihaliak/dotfiles
