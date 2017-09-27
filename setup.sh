@@ -31,7 +31,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Install Text Editors
 
-    source install/atom.sh
+
 fi
 
 echo "Adding the newly installed shell to the list of allowed shells"
