@@ -44,6 +44,8 @@ Icon
 *~
 *.swp
 
+# Intellij
+.idea/
 
 # project-specific vim configurations
 .vimrc.local

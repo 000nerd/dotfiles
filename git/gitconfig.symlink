@@ -4,8 +4,6 @@
     email = oabawaji@gmail.com
 [github]
     user = southernblacknerd
-[init]
-    templatedir = ~/.dotfiles/git/templates
 [alias]
     # list all aliases
     la = "!git config -l | grep alias | cut -c 7-"
@@ -118,18 +116,6 @@
     untracked = red
 [color "sh"]
     branch = yellow
-[push]
-    # push will only do the current branch, not all branches
-    #default = current
-[branch]
-    # set up 'git pull' to rebase instead of merge
-    #autosetuprebase = always
-[diff]
-    #renames = copies
-    #mnemonicprefix = true
-    #compactionHeuristic = true
-[difftool]
-    #prompt = false
 [apply]
     # do not warn about missing whitespace at EOF
     #whitespace = nowarn
@@ -147,13 +133,5 @@
     #lineNumber = true
 [credential]
 	#helper = osxkeychain
-[difftool "Kaleidoscope"]
-	#cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" #\"$REMOTE\"
-[mergetool "Kaleidoscope"]
-	#cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" #--snapshot \"$REMOTE\" --snapshot
-	#trustexitcode = true
 [rebase]
 	#instructionFormat = "[%an - %ar] %s"
-[pager]
-    #diff = "diff-so-fancy | less --tabs=4 -RFX"
-    #show = "diff-so-fancy | less --tabs=4 -RFX"
