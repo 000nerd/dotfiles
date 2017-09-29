@@ -34,47 +34,10 @@ brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
 # Install Bash 4.
-brew install bash
-brew tap homebrew/versions
 brew install bash-completion2
-# We installed the new shell, now we have to activate it
-echo "Adding the newly installed shell to the list of allowed shells"
-# Prompts for password
-sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
-# Change to the new shell, prompts for password
-chsh -s /usr/local/bin/bash
 
 # Install `wget` with IRI support.
 brew install wget --with-iri
-
-# Install RingoJS and Narwhal.
-# Note that the order in which these are installed is important;
-# see http://git.io/brew-narwhal-ringo.
-brew install ringojs
-brew install narwhal
-
-# Install Python
-brew install python
-brew install python3
-
-# Install ruby-build and rbenv
-brew install ruby-build
-brew install rbenv
-LINE='eval "$(rbenv init -)"'
-grep -q "$LINE" ~/.extra || echo "$LINE" >> ~/.extra
-
-# Install more recent versions of some OS X tools.
-brew install vim --override-system-vi
-brew install homebrew/dupes/grep
-brew install homebrew/dupes/openssh
-brew install homebrew/dupes/screen
-brew install homebrew/php/php55 --with-gmp
-
-# Install font tools.
-brew tap bramstein/webfonttools
-brew install sfnt2woff
-brew install sfnt2woff-zopfli
-brew install woff2
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 brew install aircrack-ng
@@ -103,7 +66,6 @@ brew install homebrew/x11/xpdf
 brew install xz
 
 # Install other useful binaries.
-brew install ack
 brew install dark-mode
 #brew install exiv2
 brew install git
@@ -112,35 +74,25 @@ brew install git-flow
 brew install git-extras
 brew install hub
 brew install imagemagick --with-webp
-brew install lua
 brew install lynx
 brew install p7zip
 brew install pigz
 brew install pv
 brew install rename
 brew install rhino
-brew install speedtest_cli
 brew install ssh-copy-id
-brew install tree
 brew install webkit2png
 brew install zopfli
 brew install pkg-config libffi
 brew install pandoc
-brew install the_silver_searcher
 brew install z
 brew install zsh
 
 # Install other useful binaries.
-brew install git
-brew install speedtest_cli
-brew install ssh-copy-id
 brew install testssl
-brew install tree
-brew install ruby
 brew install openssh
 brew install rsync
 brew install gcc --enable-all-languages
-brew install htop
 brew install nmap
 brew install gzip
 

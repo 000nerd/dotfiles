@@ -89,7 +89,13 @@ sub_java () {
 }
 
 sub_javascript () {
+    source "$DOTFILES_DIR/install/javascript.sh"
+    echo -e "${GREEN}$ARROW Success! Javascript command finished.${NC}"
+}
 
+sub_python () {
+    source "$DOTFILES_DIR/install/python.sh"
+    echo -e "${GREEN}$ARROW Success! Python command finished.${NC}"
 }
 
 case $COMMAND_NAME in
