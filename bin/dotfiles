@@ -21,14 +21,16 @@ sub_help () {
     echo "   help             This help message"
     echo "   update           Update packages and pkg managers (OS, brew, node, npm, yarn, commposer)"
     echo "   clean            Clean up caches (brew, npm, yarn, composer)"
+    echo "   backup           Run backup script"
     echo "   symlinks         Run symlinks script"
     echo "   brew             Run brew script"
-    echo "   homestead        Run homestead script"
-    echo "   valet            Run valet script"
-    echo "   ohmyzsh          Run oh my zsh script"
+#    echo "   ohmyzsh          Run oh my zsh script"
     echo "   hosts            Run hosts script"
-    echo "   defaults         Run MacOS defaults script"
+    echo "   macos            Run MacOS defaults script"
     echo "   dock             Run MacOS dock script"
+    echo "   java             Run java script"
+    echo "   javascript       Run javascript script"
+    echo "   python           Run python script"
 }
 
 sub_update () {
@@ -43,49 +45,51 @@ sub_clean () {
     brew cleanup
     brew cask cleanup
     npm cache clean --force
-    yarn cache clean
-    composer clear-cache
     echo -e "${GREEN}$ARROW Success! Clean command finished.${NC}"
 }
 
+sub_backup () {
+    source "$DOTFILES_DIR/install/backup.sh"
+    echo -e "${GREEN}$ARROW Success! Backup command finished.${NC}"
+}
+
 sub_symlinks () {
-    . "$DOTFILES_DIR/install/symlinks.sh"
+    source "$DOTFILES_DIR/install/symlinks.sh"
     echo -e "${GREEN}$ARROW Success! Symlinks command finished.${NC}"
 }
 
 sub_brew () {
-    . "$DOTFILES_DIR/install/brew.sh"
+    source "$DOTFILES_DIR/install/brew.sh"
     echo -e "${GREEN}$ARROW Success! Brew command finished.${NC}"
 }
 
-sub_homestead () {
-    . "$DOTFILES_DIR/install/homestead.sh"
-    echo -e "${GREEN}$ARROW Success! Homestead command finished.${NC}"
-}
-
-sub_valet () {
-    . "$DOTFILES_DIR/install/valet.sh"
-    echo -e "${GREEN}$ARROW Success! Valet command finished.${NC}"
-}
-
-sub_ohmyzsh () {
-    . "$DOTFILES_DIR/install/oh-my-zsh.sh"
-    echo -e "${GREEN}$ARROW Success! Oh my zsh command finished.${NC}"
-}
+# sub_ohmyzsh () {
+#     source "$DOTFILES_DIR/install/oh-my-zsh.sh"
+#     echo -e "${GREEN}$ARROW Success! Oh my zsh command finished.${NC}"
+# }
 
 sub_hosts () {
-    . "$DOTFILES_DIR/install/hosts.sh"
+    source "$DOTFILES_DIR/install/hosts.sh"
     echo -e "${GREEN}$ARROW Success! Hosts command finished.${NC}"
 }
 
 sub_defaults () {
-    . "$DOTFILES_DIR/macos/defaults.sh"
+    source "$DOTFILES_DIR/install/macos.sh"
     echo -e "${GREEN}$ARROW Success! MacOS defaults command finished.${NC}"
 }
 
 sub_dock () {
-    . "$DOTFILES_DIR/macos/dock.sh"
+    source "$DOTFILES_DIR/install/dock.sh"
     echo -e "${GREEN}$ARROW Success! MacOS dock command finished.${NC}"
+}
+
+sub_java () {
+    source "$DOTFILES_DIR/install/java.sh"
+    echo -e "${GREEN}$ARROW Success! Java command finished.${NC}"
+}
+
+sub_javascript () {
+
 }
 
 case $COMMAND_NAME in
