@@ -28,14 +28,12 @@ shopt -s cmdhist;
 # Update window size after every command
 shopt -s checkwinsize
 
-# Autocorrect typos in path names when using `cd`
-shopt -s cdspell 2> /dev/null;
-
 # Enable some Bash 4 features when possible:
-# * `autocd`, Automatic cd into named-direcotryi e.g. `**/qux` will enter `./foo/bar/baz/qux`
-# * `globstar` Recursive globbing, e.g. `echo **/*.txt`
+# * `autocd`   Automatic cd into named-direcotryi e.g. `**/qux` will enter `./foo/bar/baz/qux`
+# * `cdspell`  Correct typos in path names when using `cd`
 # * `dirspell` Correct spelling mistakes during tab-completion
-for option in autocd dirspell globstar; do
+# * `globstar` Recursive globbing, e.g. `echo **/*.txt`
+for option in autocd cdspell dirspell globstar; do
     shopt -s "$option" 2> /dev/null
 done
 # Add tab completion for many Bash commands
