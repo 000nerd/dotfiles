@@ -29,7 +29,7 @@ export ANDROID_HVPROTO=ddm
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
-export HISTCONTROL=ignoreboth
+export HISTCONTROL="erasedups:ignoreboth"
 
 # Make some commands not show up in history
 export HISTIGNORE="ls:cd -:pwd:exit:date:* --help:&:[ ]*:bg:fg:history:clear"

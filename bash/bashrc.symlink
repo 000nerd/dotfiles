@@ -31,16 +31,13 @@ shopt -s checkwinsize
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell 2> /dev/null;
 
-# Correct spelling errors during tab-completion
-shopt -s dirspell 2> /dev/null;
-
 # Enable some Bash 4 features when possible:
-# * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
-# * Recursive globbing, e.g. `echo **/*.txt`
-for option in autocd globstar; do
-  shopt -s "$option" 2> /dev/null;
-done;
-
+# * `autocd`, Automatic cd into named-direcotryi e.g. `**/qux` will enter `./foo/bar/baz/qux`
+# * `globstar` Recursive globbing, e.g. `echo **/*.txt`
+# * `dirspell` Correct spelling mistakes during tab-completion
+for option in autocd dirspell globstar; do
+    shopt -s "$option" 2> /dev/null
+done
 # Add tab completion for many Bash commands
 if which brew &> /dev/null && [ -f "$(brew --prefix)/etc/bash_completion" ]; then
   source "$(brew --prefix)/etc/bash_completion";
@@ -53,12 +50,14 @@ if type _git &> /dev/null && [ -f /usr/local/etc/bash_completion.d/git-completio
   complete -o default -o nospace -F _git g;
 fi;
 
-# Add tab completion for `defaults read|write NSGlobalDomain`
-# You could just use `-g` instead, but I like being explicit
-complete -W "NSGlobalDomain" defaults;
+if [[ $OSTYPE == darwin* ]]; then
+    # Add tab completion for `defaults read|write NSGlobalDomain`
+    # You could just use `-g` instead, but I like being explicit
+    complete -W "NSGlobalDomain" defaults
 
-# Add `killall` tab completion for common apps
-complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+    # Add `killall` tab completion for common apps
+    complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall
+fi
 
 # source nvm
 export NVM_DIR="$HOME/.nvm"
@@ -67,3 +66,22 @@ export NVM_DIR="$HOME/.nvm"
 # pyenv for Python Development
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
+# SSH configs NEED to be added
+# # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+# [ -e "$HOME/.ssh/config" ] && complete -o "default" \
+#     -o "nospace" \
+#     -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" \
+#     scp sftp ssh
+
+# # Run SSH-agent (if it's not already running)
+# if ! pgrep -u $USER ssh-agent > /dev/null; then
+#     ssh-agent > ~/.ssh-agent-pid
+# fi
+# # Add SSH to the shell
+# [ -e ~/.ssh-agent-pid ] && eval $(<~/.ssh-agent-pid) > /dev/null
+# # Add SSH identities to the agent (if they haven't been added)
+# if ! ssh-add -l > /dev/null; then
+#     echo "Add SSH identity to ssh-agent:"
+#     ssh-add
+# fi
