@@ -146,7 +146,6 @@ brew tap thoughtbot/formulae
 brew tap caskroom/cask
 
 # Installs
-brew install 'ack'
 brew install 'automake'
 brew install 'calc'
 brew install 'cmake'
@@ -163,39 +162,20 @@ brew install 'iandrewt/tap/gpmdp-remote'
 brew install 'ical-buddy'
 brew install 'koekeishiya/formulae/kwm'
 brew install 'libksba'
-brew install 'lua'
 brew install 'mas'
 brew install 'mongodb'
 brew install 'mysql'
-brew install 'neofetch'
 brew install 'neovim/neovim/neovim'
-brew install 'perl'
-brew install 'python'
-brew install 'python3'
-brew install 'reattach-to-user-namespace'
-brew install 'rcm'
-brew install 'ruby'
 brew install 'source-highlight'
-brew install 'the_silver_searcher'
-brew install 'thoughtbot/formulae/rcm'
-brew install 'tmux'
 brew install 'tomanthony/brews/itermocil'
 brew install 'trash'
 brew install 'tree'
 brew install 'utf8proc'
 brew install 'watchman'
-brew install 'youtube-dl'
 
 # Casks
-brew cask install 'android-studio'
-brew cask install 'dropbox'
-brew cask install 'firefox'
-brew cask install 'flux'
 brew cask install 'franz'
-brew cask install 'google-chrome'
 brew cask install 'google-play-music-desktop-player'
-brew cask install 'iterm2'
-brew cask install 'ubersicht'
 brew cask install 'rightfont'
 brew cask install 'sketch'
 brew cask install 'subtitles'
@@ -257,26 +237,9 @@ brew install sqlmap
 brew install aircrack-ng
 brew install unrar
 brew install wifi-password
-
-# Wait a bit before moving on...
-sleep 1
-
-# ...and then.
-echo "Success! Basic brew packages are installed."
-
-# Cask
-brew tap caskroom/cask
-brew install brew-cask
-brew tap caskroom/versions
-
 # Install cask packages
 
-brew cask install --appdir="/Applications" alfred
-brew cask install --appdir="/Applications" google-chrome
 brew cask install --appdir="/Applications" slack
-brew cask install --appdir="/Applications" spotify
-brew cask install --appdir="/Applications" sublime-text
-brew cask install --appdir="/Applications" phpstorm
 brew cask install --appdir="/Applications" sequel-pro
 brew cask install --appdir="/Applications" filezilla
 brew cask install --appdir="/Applications" postman
@@ -284,9 +247,46 @@ brew cask install --appdir="/Applications" teamviewer
 brew cask install --appdir="/Applications" spectacle
 brew cask install --appdir="/Applications" appcleaner
 brew cask install --appdir="/Applications" skype
-brew cask install --appdir="/Applications" the-unarchiver
-brew cask install --appdir="/Applications" iterm2
 brew cask install --appdir="/Applications" fork
-brew cask install iina
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
+
+brew install openssl
+brew install mobile-shell
+
+# Install homebrew cask packages
+brew cask install bitcoin-core
+brew cask install docker  # docker-for-mac
+brew cask install google-earth
+brew cask install firefox
+brew cask install flux
+brew cask install google-chrome
+brew cask install gpgtools
+brew cask install iterm2
+brew cask install qlcolorcode
+brew cask install qlstephen
+brew cask install qlmarkdown
+brew cask install quicklook-json
+brew cask install resilio-sync
+brew cask install sequel-pro
+brew cask install transmission
+brew cask install torbrowser
+brew cask install vlc
+
+# Prompt user to install optional homebrew kegs
+kegs=(
+    aws-cli
+    aws-elasticbeanstalk
+    watchman              # Used by node to watch for file system changes
+)
+
+# Prompt user to install optional homebrew casks
+casks=(
+    1password
+    audioscrobbler
+    docker-compose  # Includes docker and docker-machine
+    filezilla
+    openbazaar
+    # vagrant
+    # virtualbox
+)
