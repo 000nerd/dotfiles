@@ -127,7 +127,6 @@ command -v md5sum > /dev/null || alias md5sum="md5"
 # OS X has no `sha1sum`, so use `shasum` as a fallback
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
-
 #ANDROID(iOBSA)
 alias burp="java -jar $HOME/Tools/burpsuite_free_v1.6.jar"
 alias printcert="keytool -printcert -file"
@@ -139,12 +138,13 @@ alias android_dev_options="adb shell am start -n com.android.settings/.Developme
 
 alias jd-gui="open -a jd-gui"
 
-SYSROOT_ARM=${ANDROID_NDK_HOME}/platforms/android-14/arch-arm
-SYSROOT_X86=${ANDROID_NDK_HOME}/platforms/android-14/arch-x86
-ARM_GCC="${ANDROID_NDK_HOME}/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86/bin/arm-linux-androideabi-gcc"
-X86_GCC="${ANDROID_NDK_HOME}/toolchains/x86-4.8/prebuilt/darwin-x86/bin/i686-linux-android-gcc"
-alias ANDROID_CC="$ARM_GCC --sysroot=$SYSROOT_ARM "
-alias ANDROID_CC_X86="$X86_GCC --sysroot=$SYSROOT_X86 "
+# Need to be fixed
+# SYSROOT_ARM=${ANDROID_NDK_HOME}/platforms/android-14/arch-arm
+# SYSROOT_X86=${ANDROID_NDK_HOME}/platforms/android-14/arch-x86
+# ARM_GCC="${ANDROID_NDK_HOME}/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86/bin/arm-linux-androideabi-gcc"
+# X86_GCC="${ANDROID_NDK_HOME}/toolchains/x86-4.8/prebuilt/darwin-x86/bin/i686-linux-android-gcc"
+# alias ANDROID_CC="$ARM_GCC --sysroot=$SYSROOT_ARM "
+# alias ANDROID_CC_X86="$X86_GCC --sysroot=$SYSROOT_X86 "
 
 # tmux aliases
 alias ta='tmux attach'
