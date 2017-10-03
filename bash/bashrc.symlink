@@ -12,11 +12,21 @@ for file in ~/.dotfiles/bash/bash/{new_new_prompt,aliases,colors,config,exports,
 done;
 unset file;
 
+# Prevent file overwrite on stdout redirection
+# Use `>|` to force redirection to an existing file
+set -o noclobber
+
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
 
 # Append to the Bash history file, rather than overwriting it
 shopt -s histappend;
+
+# Save multi-line commands as one command
+shopt -s cmdhist;
+
+# Update window size after every command
+shopt -s checkwinsize
 
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell 2> /dev/null;
