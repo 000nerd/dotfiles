@@ -12,6 +12,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
 
 alias l="ls -lah ${colorflag}"
 alias la="ls -AF ${colorflag}"
@@ -26,6 +28,13 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias df='df -h' # disk free, in Gigabytes, not bytes
 alias du='du -h -c' # calculate disk usage for a folder
+
+# More usable PS processes
+if [[ $OSTYPE == darwin* ]]; then
+    alias ps='ps -ju `whoami`'
+else
+    alias ps='ps uf -U `whoami`'
+fi;
 
 # Applications
 alias ios='open -a /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app'
@@ -48,8 +57,39 @@ alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
 # File size
 alias fs="stat -f \"%z bytes\""
 
+# PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
+alias plistbuddy="/usr/libexec/PlistBuddy"
+
+# Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
+# (useful when executing time-consuming commands)
+alias badge="tput bel"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec $SHELL -l"
+
+# Kill docker-machine VM with fire
+alias puff-down='docker-machine stop docker-vm && docker-machine rm docker-vm && docker-machine create --driver virtualbox --virtualbox-memory "2048"  docker-vm && docker-machine start docker-vm && echo eval \$\(docker-machine env docker-vm\)'
+
 # Empty the Trash on all mounted volumes and the main HDD
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; rm -rfv ~/.Trash"
+# Also, clear Apple’s System Logs to improve shell startup speed
+# Also, run periodic maintenence tasks
+alias emptytrash="echo Emptying trashes...; \
+  sudo rm -rfv /Volumes/*/.Trashes; \
+  sudo rm -rfv ~/.Trash; \
+  echo Running all periodic maintenence tasks...; \
+  sudo periodic daily weekly monthly; \
+  echo Removing old logs...; \
+  sudo rm -rfv /private/var/log/asl/*.asl; \
+  sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'delete from LSQuarantineEvent' >/dev/null 2>&1; \
+  sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'vacuum' >/dev/null 2>&1"
+
+# Show/hide hidden files in Finder
+alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
@@ -61,6 +101,32 @@ alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume 10'"
 
 alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
+# Kill all the tabs in Chrome to free up memory
+# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+# Calculate current working directory size
+alias cwdsize="du -sh ."
+
+alias battery="acpi -V"
+
+# Stopwatch
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+
+# Enhanced WHOIS lookups
+alias whois="whois -h whois-servers.net"
+# Clean up LaunchServices to remove duplicates in the “Open With” menu
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+
+# Canonical hex dump; some systems have this symlinked
+command -v hd > /dev/null || alias hd="hexdump -C"
+
+# OS X has no `md5sum`, so use `md5` as a fallback
+command -v md5sum > /dev/null || alias md5sum="md5"
+
+# OS X has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
 
 #ANDROID(iOBSA)
 alias burp="java -jar $HOME/Tools/burpsuite_free_v1.6.jar"
