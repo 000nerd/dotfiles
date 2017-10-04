@@ -34,10 +34,15 @@ sub_help () {
 }
 
 sub_update () {
+    # Update App Store apps
     sudo softwareupdate -i -a
-    sudo n lts # install last lts node instance
+    # Update Homebrew (Cask) & packages
     brew update
     brew upgrade
+    # Update node & npm & packages
+    sudo n lts # install last lts node instance
+    npm install npm -g
+    npm update -g
     echo -e "${GREEN}$ARROW Success! Update command finished.${NC}"
 }
 
