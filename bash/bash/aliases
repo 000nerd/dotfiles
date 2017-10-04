@@ -31,7 +31,7 @@ alias du='du -h -c' # calculate disk usage for a folder
 
 # More usable PS processes
 if [[ $OSTYPE == darwin* ]]; then
-    alias ps='ps -ju `whoami`'
+    alias ps='ps -j'
 else
     alias ps='ps uf -U `whoami`'
 fi;
