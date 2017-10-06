@@ -61,10 +61,6 @@ fi
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh"
 
-# pyenv for Python Development
-# if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-# if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-
 # SSH configs NEED to be added
 # # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 # [ -e "$HOME/.ssh/config" ] && complete -o "default" \

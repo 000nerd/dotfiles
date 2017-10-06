@@ -21,9 +21,6 @@ set mark-symlinked-directories on
 # # though. Which is good.) "Off" is the default value, but some servers override this
 set expand-tilde off
 
-# # Flip through autocompletion matches with Shift-Tab
-# "\e[Z": menu-complete
-
 # # Do not autocomplete hidden files ("dot files") unless the pattern explicitly begins with a dot
 set match-hidden-files off
 
@@ -46,14 +43,7 @@ set visible-stats on
 # # Readline used by Bash 4.)
 set skip-completed-text on
 
-# # Use the text that has already been typed as the prefix for searching through
-# # commands (basically more intelligent Up/Down behavior)
-# "\e[B": history-search-forward
-# "\e[A": history-search-backward
 
-# # ctrl left, ctrl right for moving on the readline by word
-# "\e[1;5C": forward-word
-# "\e[1;5D": backward-word
 
 # # Try to stay at the same position when moving through the history
 # set history-preserve-point on
@@ -69,13 +59,6 @@ set input-meta on
 set output-meta on
 set convert-meta off
 
-# # Delete for wonky terminals
-# "\e[3~": delete-char
-
-# # Home/End
-# "\e[1~": beginning-of-line
-# "\e[4~": end-of-line
-
 # # Use Alt/Meta + Delete to delete the preceding word
 # "\e[3;3~": kill-word
 
@@ -90,8 +73,11 @@ set convert-meta off
 #     "\e[5D": backward-word               # Control + Left
 #     "\e[3~": delete-char                 # Delete
 #     "\e[2~": quoted-insert               # CTRL + v
-#     "\e[5~": history-search-backward     # Page Up
-#     "\e[6~": history-search-forward      # Page Down
+# # Use the text that has already been typed as the prefix for searching through
+# # commands (basically more intelligent Up/Down behavior)
+#     "\e[B": history-search-forward       #
+#     "\e[A": history-search-backward      #
+
 #     #"\t": menu-complete                 # Tab cycles through completions
 
 #     # If the above prevents Left and Right from working, try this:
