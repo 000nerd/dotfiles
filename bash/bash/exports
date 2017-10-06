@@ -7,9 +7,6 @@ export LC_ALL="en_US.UTF-8"
 # Disable homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 
-# pyenv enviroment variables
-export PYENV_ROOT=/usr/local/var/pyenv
-
 # Update your enviroment variables
 export ANT_HOME=/usr/local/opt/ant
 export MAVEN_HOME=/usr/local/opt/maven
