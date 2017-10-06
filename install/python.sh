@@ -36,7 +36,3 @@ done
 
 # Remove outdated versions from the cellar.
 brew cleanup
-
-# ToDo Update
-# brew update pyenv
-# brew upgrade pyenv-virtualenv
