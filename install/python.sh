@@ -18,20 +18,21 @@ fi
 echo -e "\n\nInstalling python enviroment"
 echo "=============================="
 brew update
-# Install pyenv for python versions
-brew install pyenv
-brew install pyenv-virtualenv
+brew install python3
 
 brew tap caskroom/versions
 brew cask install pycharm-ce
+brew cask install anaconda
 
-############################################
-# FAILED AFTER THIS POINT                  #
-############################################
-
-# Install latest node and set it as default
-pyenv install 3.6.0
-pyenv global 3.6.0
+packages=(
+    livestreamer
+    peewee
+    requests
+    streamlink
+)
+for package in "${packages[@]}"; do
+	pip install "${packages[@]}"  #Didn't work on first go
+done
 
 # Remove outdated versions from the cellar.
 brew cleanup
