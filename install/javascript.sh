@@ -36,6 +36,7 @@ packages=(
     typescript
     pomolectron # Pomodoro app for MenuBar
     mongo-hacker
+    forever
 )
 for package in "${packages[@]}"; do
 	npm install -g "${packages[@]}"  #Didn't work on first go
