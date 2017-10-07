@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-####################
-
 # Readline library configuration options
 # http://ss64.com/bash/syntax-inputrc.html
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # #
 # #Autocompletion
@@ -43,10 +41,8 @@ set visible-stats on
 # # Readline used by Bash 4.)
 set skip-completed-text on
 
-
-
 # # Try to stay at the same position when moving through the history
-# set history-preserve-point on
+set history-preserve-point on
 
 
 # #

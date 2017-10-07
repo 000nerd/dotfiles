@@ -17,6 +17,9 @@ unset file;
 # Use `>|` to force redirection to an existing file
 set -o noclobber
 
+# Shopt list
+# https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
 
@@ -59,7 +62,9 @@ if [[ $OSTYPE == darwin* ]]; then
     complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall
 fi
 
+# Source NVM
 export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
