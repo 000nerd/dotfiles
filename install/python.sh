@@ -28,6 +28,7 @@ packages=(
     livestreamer
     peewee
     requests
+    bpython
     streamlink
 )
 for package in "${packages[@]}"; do
