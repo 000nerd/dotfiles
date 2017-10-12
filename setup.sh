@@ -41,3 +41,5 @@ sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
 chsh -s /usr/local/bin/bash
 
 echo "Done. Reload your terminal."
+# For adding SSH to keychain. May need later
+# ssh-add -A 2>/dev/null;
