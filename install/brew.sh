@@ -22,7 +22,7 @@ formulas=(
     # flags should pass through the the `brew list check`
     'macvim --with-override-system-vim'
     bash
-    bash-completion
+    bash-completion2
     ack
     diff-so-fancy
     git
@@ -44,10 +44,13 @@ cask_formulas=(
     cheatsheet
     chrome-remote-desktop-host
     disk-inventory-x # or Grand Perspective
+    docker # or docker-toolbox
     dropbox
     dupeguru
+    fork
     flux
     google-chrome
+    gpgtools
     handbrake
     iterm2
     libreoffice
@@ -59,7 +62,7 @@ cask_formulas=(
     transmission
     visual-studio-code
     vlc
-    veertu-desktop
+    veertu-desktop # or virtualbox
     wireshark
 )
 
