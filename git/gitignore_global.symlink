@@ -58,3 +58,6 @@ tscommand*.txt
 
 # npm things
 npm-debug.log
+
+# iPython Notebook
+.ipynb_checkpoints
