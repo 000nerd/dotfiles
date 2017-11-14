@@ -29,6 +29,7 @@ packages=(
     peewee
     requests
     bpython
+    ptpython
     streamlink
 )
 for package in "${packages[@]}"; do
