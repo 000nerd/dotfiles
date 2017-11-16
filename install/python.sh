@@ -31,6 +31,8 @@ packages=(
     bpython
     ptpython
     streamlink
+    pylint
+    flake8
 )
 for package in "${packages[@]}"; do
 	pip install "${packages[@]}"  #Didn't work on first go
