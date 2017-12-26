@@ -7,7 +7,10 @@ Contains:
   4. []()
   5. []()
   6. Custom [/etc/hosts](https://github.com/mihaliak/dotfiles/blob/master/etc/hosts) file with blocked Ads, Trackers & 🔥 stuff on internet
-  <!-- 8. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete -->
+  <!-- 8. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
+  9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
+  10. Applications (alfred, google-chrome, slack, spotify, sublime-text, vlc, phpstorm, sequel-pro, filezilla, postman, iterm2, teamviewer, lastpass, spectacle, appcleaner, skype)
+  -->
 
 ## Install
 
@@ -66,6 +69,8 @@ Clone and install dotfiles:
        remove           Remove host from SSH config
        list-host        List of all hosts in SSH config
 
+credit: https://github.com/mihaliak/dotfiles
+
  -->
 
 
@@ -76,7 +81,3 @@ Clone and install dotfiles:
 
 
 More DotFiles to look through
-
-https://github.com/keith/dotfiles
-dotfiles manager to replace current system
-https://github.com/mihaliak/dotfiles
