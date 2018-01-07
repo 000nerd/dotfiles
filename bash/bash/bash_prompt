@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# @0xADADA’s bash prompt, inspired by gf3’s "Sexy" bash Prompt and vim-airline
-
-# Unicode symbols
-
-
-# what OS?
-
 
 function __prompt {
     if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
@@ -20,6 +13,9 @@ function __prompt {
     PS_SYMBOL_DARWIN=''
     PS_SYMBOL_LINUX='$'
     PS_SYMBOL_OTHER='%'
+    GIT_BRANCH_CHANGED_SYMBOL='+'
+    GIT_NEED_PUSH_SYMBOL='⇡'
+    GIT_NEED_PULL_SYMBOL='⇣'
 
     case "$(uname)" in
     Darwin)
@@ -110,7 +106,6 @@ function __prompt {
 		if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
             # Ensure the index is up to date.
             git update-index --really-refresh -q &>/dev/null;
-
             # check for unstaged changes
             if ! $(git diff --quiet --ignore-submodules --cached); then
                 STATE="${RED_BG}"  # Unstaged changes (not yet added)
@@ -145,18 +140,18 @@ function __prompt {
             TXT_COLOR="${BLACK}"
         fi
 
-        local marks
+        local MARKS
 
         # how many commits local branch is ahead/behind of remote?
         local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
         local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
         local behindN="$(echo $stat | grep -o 'behind \d\+' | grep -o '\d\+')"
-        [ -n "$aheadN" ] && marks+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
-        [ -n "$behindN" ] && marks+=" $GIT_NEED_PULL_SYMBOL$behindN"
+        [ -n "$aheadN" ] && MARKS+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
+        [ -n "$behindN" ] && MARKS+=" $GIT_NEED_PULL_SYMBOL$behindN"
 
         # Explain magic of \001 and \002 http://mywiki.wooledge.org/BashFAQ/053
-        printf '\001%s\002\001%s\002 \001%s\002 %s \001%s\002\001%s\002' \
-            "${BG_COLOR}" "${BLACK2}" "${TXT_COLOR}" "${BRANCH}" "${RESET}" "${FG_COLOR}"
+        printf '\001%s\002\001%s\002 \001%s\002 %s%s \001%s\002\001%s\002' \
+            "${BG_COLOR}" "${BLACK2}" "${TXT_COLOR}" "${BRANCH}" "${MARKS}" "${RESET}" "${FG_COLOR}"
     }
 
     function prompt_git {
@@ -183,9 +178,16 @@ function __prompt {
     }
 
     function init_prompt {
+        # Highlight the user name when logged in as root.
+        if [[ "${USER}" == "root" ]]; then
+	        USER_STYLE="${RED}";
+        else
+	        USER_STYLE="${BLACK}";
+        fi;
+
         EXIT_CODE="$?"
         PS1=""
-        PS1+="\001${GRAY_BG}\002\001${BLACK}\002\u@\001${BOLD}\002\001${BLACK}\002\h " # user@host
+        PS1+="\001${GRAY_BG}\002\001${USER_STYLE}\002\u@\001${BOLD}\002\001${BLACK}\002\h " # user@host
         PS1+="\001${BLACK2_BG}\002\001${GRAY}\002 \W \001${RESET}\002"                # ~
         PS1+="\$(prompt_git)"                                                          # <git branch>
         PS1+="\$(status_prefix)"                                                       # $
