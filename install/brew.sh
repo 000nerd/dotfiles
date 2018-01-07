@@ -64,6 +64,9 @@ cask_formulas=(
     vlc
     veertu-desktop # or virtualbox
     wireshark
+    # Fonts
+    font-robotomono-nerd-font
+    font-firacode-nerd-font
 )
 
 
@@ -96,6 +99,7 @@ grep "/usr/local/bin/bash" /private/etc/shells &>/dev/null || sudo bash -c "echo
 chsh -s /usr/local/bin/bash
 
 brew tap caskroom/cask
+brew tap caskroom/fonts
 
 for cask_formula in "${cask_formulas[@]}"; do
     if brew list "$cask_formula" > /dev/null 2>&1; then
