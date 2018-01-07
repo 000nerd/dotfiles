@@ -16,6 +16,7 @@
 
 # # automatically renumber tmux windows
 # set -g renumber-windows on
+# set-option -g renumber-windows on
 
 # # unbind default prefix and set it to Ctrl+a
 # unbind C-b
@@ -48,6 +49,8 @@
 
 # # make window/pane index start with 1
 # set -g base-index 1
+# set -g pane-base-index 1
+# setw -g base-index 1
 # setw -g pane-base-index 1
 
 # set-option -g set-titles on
@@ -65,26 +68,28 @@
 # bind N new-window
 
 # # split window and fix path for tmux 1.9
-# bind | split-window -h -c "#{pane_current_path}"
-# bind - split-window -v -c "#{pane_current_path}"
+# bind | split-window -h
+# bind-key v split-window -h
+# bind-key s split-window -v
+# bind - split-window -v
 
 # # synchronize all panes in a window
 # bind y setw synchronize-panes
 
-# # pane movement shortcuts
-# bind h select-pane -L
-# bind j select-pane -D
-# bind k select-pane -U
-# bind l select-pane -R
+# #  Vim style pane selection
+# bind-key h select-pane -L
+# bind-key j select-pane -D
+# bind-key k select-pane -U
+# bind-key l select-pane -R
 
 # bind -r C-h select-window -t :-
 # bind -r C-l select-window -t :+
 
 # # Resize pane shortcuts
-# bind -r H resize-pane -L 10
-# bind -r J resize-pane -D 10
-# bind -r K resize-pane -U 10
-# bind -r L resize-pane -R 10
+# bind-key J resize-pane -D 5
+# bind-key K resize-pane -U 5
+# bind-key H resize-pane -L 5
+# bind-key L resize-pane -R 5
 
 # # enable mouse support for switching panes/windows
 # setw -g mouse on
@@ -105,8 +110,9 @@
 # unbind Down
 # bind Down last-window \; swap-pane -s fullscreen.1 \; kill-window -t fullscreen
 
-# # set vi mode for copy mode
+# # Use vim keybindings in copy mode
 # setw -g mode-keys vi
+# set -g status-keys vi
 # # more settings to make copy-mode more vim-like
 # unbind [
 # bind Escape copy-mode
