@@ -12,10 +12,12 @@ export ANT_HOME=/usr/local/opt/ant
 export MAVEN_HOME=/usr/local/opt/maven
 export GRADLE_HOME=/usr/local/opt/gradle
 # Gradle needs this.
+# export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+# export ANDROID_NDK_ROOT=/usr/local/share/android-ndk
 export ANDROID_SDK_HOME=`echo $(brew --cellar)/android-sdk`
 export ANDROID_NDK_HOME=`echo $(brew --cellar)/android-ndk`
 export ANDROID_HOME=${ANDROID_SDK_HOME}
-export PATH=$PATH:$ANDROID_HOME/tools/templates/gradle/wrapper
+export INTEL_HAXM_HOME=/usr/local/Caskroom/intel-haxm
 
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 

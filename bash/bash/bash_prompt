@@ -17,20 +17,6 @@ function __prompt {
     GIT_NEED_PUSH_SYMBOL='⇡'
     GIT_NEED_PULL_SYMBOL='⇣'
 
-    case "$(uname)" in
-    Darwin)
-        PS_SYMBOL=$PS_SYMBOL_DARWIN
-        ;;
-    Linux)
-        PS_SYMBOL=$PS_SYMBOL_LINUX
-        ;;
-    *)
-        PS_SYMBOL=$PS_SYMBOL_OTHER
-    esac
-
-    PREFIX_0=$PS_SYMBOL
-    PREFIX_1='!'
-
     BOLD=""
     RESET=""
     BLACK=""
@@ -141,7 +127,6 @@ function __prompt {
         fi
 
         local MARKS
-
         # how many commits local branch is ahead/behind of remote?
         local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
         local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
@@ -169,25 +154,28 @@ function __prompt {
         # Check the exit code of the previous command and display different
         # colors in the prompt accordingly.
         if [ $EXIT_CODE -eq 0 ]; then
+            case "$(uname)" in
+            Darwin)
+                PS_SYMBOL=$PS_SYMBOL_DARWIN
+                ;;
+            Linux)
+                PS_SYMBOL=$PS_SYMBOL_LINUX
+                ;;
+            *)
+                PS_SYMBOL=$PS_SYMBOL_OTHER
+            esac
             printf '\001%s\002%s\001%s\002 ' \
-                "${WHITE}" "${PREFIX_0}" "${RESET}"
+                "${WHITE}" "${PS_SYMBOL}" "${RESET}"
         else
             printf '\001%s\002[%s]%s\001%s\002 ' \
-                "${RED}" "${EXIT_CODE}" "${PREFIX_1}" "${RESET}"
+                "${RED}" "${EXIT_CODE}" "!" "${RESET}"
         fi
     }
 
     function init_prompt {
-        # Highlight the user name when logged in as root.
-        if [[ "${USER}" == "root" ]]; then
-	        USER_STYLE="${RED}";
-        else
-	        USER_STYLE="${BLACK}";
-        fi;
-
         EXIT_CODE="$?"
         PS1=""
-        PS1+="\001${GRAY_BG}\002\001${USER_STYLE}\002\u@\001${BOLD}\002\001${BLACK}\002\h " # user@host
+        PS1+="\001${GRAY_BG}\002\001${BLACK}\002\u@\001${BOLD}\002\001${BLACK}\002\h " # user@host
         PS1+="\001${BLACK2_BG}\002\001${GRAY}\002 \W \001${RESET}\002"                # ~
         PS1+="\$(prompt_git)"                                                          # <git branch>
         PS1+="\$(status_prefix)"                                                       # $

@@ -5,7 +5,7 @@
 ####################
 
 # print available colors and their numbers
-function colours() {
+function colors() {
     for i in {0..255}; do
         printf "\x1b[38;5;${i}m colour${i}"
         if (( $i % 5 == 0 )); then
@@ -91,7 +91,7 @@ function update_android_id(){
 function dex-method-count() {
   cat $1 | head -c 92 | tail -c 4 | hexdump -e '1/4 "%d\n"'
 }
- 
+
 function dex-method-count-by-package() {
   dir=$(mktemp -d -t dex)
   baksmali $1 -o $dir
@@ -103,11 +103,11 @@ function dex-method-count-by-package() {
   done
   rm -rf $dir
 }
- 
+
 function dex-field-count(){
   cat $1 | head -c 84 | tail -c 4 | hexdump -e '1/4 "%d\n"'
 }
- 
+
 function dex-field-count-by-package() {
   dir=$(mktemp -d -t dex)
   baksmali $1 -o $dir

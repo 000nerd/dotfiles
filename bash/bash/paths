@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 
 # Update your paths
-export PATH=$ANT_HOME/bin:$PATH
-export PATH=$MAVEN_HOME/bin:$PATH
 export PATH=$GRADLE_HOME/bin:$PATH
-export PATH=$ANDROID_HOME/tools:$PATH
-export PATH=$ANDROID_HOME/platform-tools:$PATH
-export PATH=$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort | tail -1):$PATH
-export PATH=~/miniconda3/bin:"$PATH"
+export PATH=$MAVEN_HOME/bin:$PATH
+#
+# TODO: NEED TO BE FIXED.
+# Have to add version
+# https://stackoverflow.com/questions/19986214/setting-android-home-enviromental-variable-on-mac-os-x
+#
+# export PATH=$ANDROID_HOME/tools:$PATH
+# export PATH=$ANDROID_HOME/platform-tools:$PATH
+# export PATH=$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort | tail -1):$PATH
+# export PATH=$PATH:$ANDROID_HOME/tools/templates/gradle/wrapper
+
+#
+# Will switch from miniconda to anaconda with next fresh install
+# Switch export then
+#
+export PATH=~/miniconda3/bin:$PATH
+#export PATH=~/anaconda3/bin:$PATH
+export PATH=~/.dotfiles/bin:$PATH
 
 # Add XCode bin to the `$PATH`
-export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
+export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
