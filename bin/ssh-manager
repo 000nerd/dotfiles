@@ -30,7 +30,7 @@ fi
 if [[ $COMMAND_NAME = "list-keys" ]]; then
 	echo -e "${YELLOW}$ARROW List of available keys:${NC}"
 
-	for file in ~/.ssh/*.pub
+	for file in ~/.ssh/*.{pub,pem}
 	do
 	    echo "- "${file##*/}
 	done
