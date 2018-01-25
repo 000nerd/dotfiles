@@ -25,6 +25,7 @@ brew cask install pycharm-ce
 brew cask install anaconda
 
 packages=(
+    awscli
     livestreamer
     peewee
     requests
@@ -35,7 +36,7 @@ packages=(
     flake8
 )
 for package in "${packages[@]}"; do
-	pip install "${packages[@]}"  #Didn't work on first go
+	pip install "${packages[@]}" --upgrade  #Didn't work on first go
 done
 
 # Remove outdated versions from the cellar.
