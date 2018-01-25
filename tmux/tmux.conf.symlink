@@ -7,135 +7,172 @@
 #     $$ |     $$ | \_/ $$ |  \$$$$$$  |  $$ /  $$ |
 #     \__|     \__|     \__|   \______/   \__|  \__|
 
-# set -g default-command "login-shell"
+# ==================================================================================================
+# General Settings
+# ==================================================================================================
 
-# # tmux display things in 256 colors
-# set -g default-terminal "tmux-256color-italic"
+# Colors Everywhere
+set -g default-terminal "tmux-256color-italic"
+#  enable terminal compability
+set-option -ga terminal-overrides ",tmux-256color-italic:Tc"
 
-# #at the end of the file
-# #if-shell 'test "$(uname)" = "Darwin"' 'source ~/.tmux-osx.conf'
-# # put insdie of tmux-osx.conf file
-# set-option -g default-command "reattach-to-user-namespace -l bash"
+set -g default-command "login-shell"
 
+# unbind default prefix and set it to Ctrl+a
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
 
-# #  enable terminal compability
-# set-option -ga terminal-overrides ",tmux-256color-italic:Tc"
-
-# set -g history-limit 20000
-
-# # automatically renumber tmux windows
-# set -g renumber-windows on
-# set-option -g renumber-windows on
-
-# # unbind default prefix and set it to Ctrl+a
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
-
-# # for nested tmux sessions
-# bind-key a send-prefix
+# for nested tmux sessions
+bind-key a send-prefix
 
 # # Activity Monitoring
-# setw -g monitor-activity off
-# set -g visual-activity off
+set -g visual-activity off
+setw -g monitor-activity off
 
-# # Rather than constraining window size to the maximum size of any client
-# # connected to the *session*, constrain window size to the maximum size of any
-# # client connected to *that window*. Much more reasonable.
-# setw -g aggressive-resize on
+# enable mouse support for switching panes/windows
+set -g -q mouse on
+setw -g mouse on
 
-# # make delay shorter
-# set -sg escape-time 0
+# setw -g mode-keys vi
+# set -g status-keys vi
 
-# # tile all windows
-# unbind =
-# bind = select-layout tiled
+set -g history-limit 10000
 
-# # cycle through panes
-# # unbind C-a
-# # unbind o # this is the default key for cycling panes
-# # bind ^A select-pane -t:.+
+# make window/pane index start with 1
+set -g base-index 1
+set -g pane-base-index 1
+setw -g base-index 1
+setw -g pane-base-index 1
 
-# # make window/pane index start with 1
-# set -g base-index 1
-# set -g pane-base-index 1
-# setw -g base-index 1
-# setw -g pane-base-index 1
+# Setup 'v' to begin selection as in Vim
+bind-key -t vi-copy v begin-selection
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 
-# set-option -g set-titles on
-# set-option -g set-titles-string "#T - #W"
-# # set-window-option -g automatic-rename on
+# Update default binding of `Enter` to also use copy-pipe
+unbind -t vi-copy Enter
+bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
 
-# ######################
-# #### Key Bindings ####
-# ######################
+# unbind p
+# bind p paste-buffer
 
 # # reload config file
 # bind r source-file ~/.tmux.conf \; display "Config Reloaded!"
 
-# # quickly open a new window
-# bind N new-window
+# ==================================================================================================
+# Window Settings
+# ==================================================================================================
 
-# # split window and fix path for tmux 1.9
-# bind | split-window -h
-# bind-key v split-window -h
-# bind-key s split-window -v
-# bind - split-window -v
+# automatically renumber tmux windows
+set -g renumber-windows on
+set-option -g renumber-windows on
+
+# automatically rename tmux windows
+# # set-window-option -g automatic-rename on
+
+# Window switching
+bind -n S-Up    new-window
+bind -n S-Down  confirm-before -p "kill-window #W? (y/n)" kill-window
+bind -n S-Left  previous-window
+bind -n S-Right next-window
+
+# # Shift Arrow to Show/Hide Status Bar
+# bind-key -n S-Up set-option -g status
+# bind-key -n S-Down set-option -g status
+
+#  However, the -r flag allows commands to be repeatable
+bind -r p select-window -t :-
+bind -r n select-window -t :+
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+
+# split window and fix path for tmux 1.9
+bind | split-window -h
+bind-key v split-window -h
+bind-key s split-window -v
+bind - split-window -v
+
+# By default, all windows in a session are constrained to the size of the
+# smallest client connected to that session,
+# even if both clients are looking at different windows.
+# It seems that in this particular case, Screen has the better default
+# where a window is only constrained in size if a smaller client
+# is actively looking at it.
+setw -g aggressive-resize on
+
+# ==================================================================================================
+# Pane Settings
+# ==================================================================================================
+
+# Pane switching
+bind -n C-left  select-pane -L
+bind -n C-right select-pane -R
+bind -n C-down  select-pane -D
+bind -n C-up    select-pane -U
+
+bind x kill-pane
+
+# Special pane operations
+bind -n C-M-up    respawn-pane -k
+bind -n C-M-down  kill-pane
+bind -n C-M-left  swap-pane -U
+bind -n C-M-right swap-pane -D
+
+#  Vim style pane selection
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+
+# Resize pane shortcuts
+bind-key J resize-pane -D 5
+bind-key K resize-pane -U 5
+bind-key H resize-pane -L 5
+bind-key L resize-pane -R 5
+
+# Use Alt-vim keys without prefix key to switch panes
+bind -n M-h select-pane -L
+bind -n M-j select-pane -D
+bind -n M-k select-pane -U
+bind -n M-l select-pane -R
+
+# Use Alt-arrow keys without prefix key to switch panes
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# Page Up/ Page down using J/K
+bind -t vi-copy "J" page-down
+bind -t vi-copy "K" page-up
 
 # # synchronize all panes in a window
 # bind y setw synchronize-panes
 
-# #  Vim style pane selection
-# bind-key h select-pane -L
-# bind-key j select-pane -D
-# bind-key k select-pane -U
-# bind-key l select-pane -R
+# ==================================================================================================
+# Status line/ Theme
+# ==================================================================================================
 
-# bind -r C-h select-window -t :-
-# bind -r C-l select-window -t :+
+# set-option -g status-left "#(~/.tmux/status.sh left)"
+# set-option -g status-right "#(~/.tmux/status.sh right)"
 
-# # Resize pane shortcuts
-# bind-key J resize-pane -D 5
-# bind-key K resize-pane -U 5
-# bind-key H resize-pane -L 5
-# bind-key L resize-pane -R 5
+source ~/.dotfiles/tmux/theme-gruvbox-dark.sh
 
-# # enable mouse support for switching panes/windows
-# setw -g mouse on
-# # set-option -g -q mouse on
+# ==================================================================================================
+# Plugins
+# ==================================================================================================
+# set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-sensible'
+# set -g @plugin 'tmux-plugins/tmux-pain-control'
+# set -g @plugin 'christoomey/vim-tmux-navigator'
+# run '~/.tmux/plugins/tpm/tpm'
 
-# bind-key -T root PPage if-shell -F "#{alternate_on}" "send-keys PPage" "copy-mode -e; send-keys PPage"
-# bind-key -t vi-copy PPage page-up
-# bind-key -t vi-copy NPage page-down
+# ==================================================================================================
+# Others to be Merged
+# ==================================================================================================
 
-# bind -T root WheelUpPane if-shell -F -t = "#{alternate_on}" "select-pane -t =; send-keys -M" "select-pane -t =; copy-mode -e; send-keys -M"
-# bind -T root WheelDownPane if-shell -F -t = "#{alternate_on}" "select-pane -t =; send-keys -M" "select-pane -t =; send-keys -M"
-# bind-key -t vi-copy WheelUpPane halfpage-up
-# bind-key -t vi-copy WheelDownPane halfpage-down
+# set -g pane-active-border-fg colour10
 
-# # maximizing and restoring windows
-# unbind Up
-# bind Up new-window -d -n fullscreen \; swap-pane -s fullscreen.1 \; select-window -t fullscreen
-# unbind Down
-# bind Down last-window \; swap-pane -s fullscreen.1 \; kill-window -t fullscreen
-
-# # Use vim keybindings in copy mode
-# setw -g mode-keys vi
-# set -g status-keys vi
-# # more settings to make copy-mode more vim-like
-# unbind [
-# bind Escape copy-mode
-# unbind p
-# bind p paste-buffer
-# bind -t vi-copy 'v' begin-selection
-# bind -t vi-copy 'y' copy-selection
-
-# # Buffers to/from Mac clipboard, yay tmux book from pragprog
-# bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
-# bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
-
-##############################
-### Color & Style Settings ###
-##############################
-
-source ~/.dotfiles/tmux/theme.sh
+# setw -g window-status-format "#[bg=default,fg=colour8,noreverse]▉▊▋▌ #W "
+# setw -g window-status-current-format "#[bg=default,fg=colour7,noreverse]▉▊▋▌ #W "
