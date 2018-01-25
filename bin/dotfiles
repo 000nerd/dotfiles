@@ -19,8 +19,8 @@ sub_help () {
     echo
     echo "Commands:"
     echo "   help             This help message"
-    echo "   update           Update packages and pkg managers (OS, brew, node, npm, yarn, commposer)"
-    echo "   clean            Clean up caches (brew, npm, yarn, composer)"
+    echo "   update           Update packages and pkg managers"
+    echo "   clean            Clean up caches"
     echo "   backup           Run backup script"
     echo "   symlinks         Run symlinks script"
     echo "   brew             Run brew script"
@@ -40,9 +40,14 @@ sub_update () {
     brew update
     brew upgrade
     # Update node & npm & packages
-    sudo n lts # install last lts node instance
+    nvm install --lts # install last lts node instance
     npm install npm -g
     npm update -g
+    # Update Conda
+    # conda env update
+    # conda update --all
+    # conda upgrade conda
+    # conda upgrade anaconda
     echo -e "${GREEN}$ARROW Success! Update command finished.${NC}"
 }
 
@@ -67,11 +72,6 @@ sub_brew () {
     source "$DOTFILES_DIR/install/brew.sh"
     echo -e "${GREEN}$ARROW Success! Brew command finished.${NC}"
 }
-
-# sub_ohmyzsh () {
-#     source "$DOTFILES_DIR/install/oh-my-zsh.sh"
-#     echo -e "${GREEN}$ARROW Success! Oh my zsh command finished.${NC}"
-# }
 
 sub_hosts () {
     source "$DOTFILES_DIR/install/hosts.sh"
