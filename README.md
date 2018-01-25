@@ -34,25 +34,23 @@ Clone and install dotfiles:
 4. `sudo reboot`
 5. Enjoy
 
-
-
 <!-- ## The `dotfiles` command
 
     $ dotfiles
     ￫ Usage: dotfiles <command>
 
     Commands:
-       help             This help message
-       update           Update packages and pkg managers (OS, brew, npm, yarn, commposer)
-       clean            Clean up caches (brew, npm, yarn, composer)
-       symlinks         Run symlinks script
-       brew             Run brew script
-       homestead        Run homestead script
-       valet            Run valet script
-       ohmyzsh          Run oh my zsh script
-       hosts            Run hosts script
-       defaults         Run MacOS defaults script
-       dock             Run MacOS dock script
+        help             This help message
+        update           Update packages and pkg managers (OS, brew, npm, yarn, commposer)
+        clean            Clean up caches (brew, npm, yarn, composer)
+        symlinks         Run symlinks script
+        brew             Run brew script
+        homestead        Run homestead script
+        valet            Run valet script
+        ohmyzsh          Run oh my zsh script
+        hosts            Run hosts script
+        defaults         Run MacOS defaults script
+        dock             Run MacOS dock script
 
 ## The `ssh-manager` command
 
@@ -60,17 +58,16 @@ Clone and install dotfiles:
     ￫ Usage: ssh-manager <command>
 
     Commands:
-       help             This help message
-       list             List of all SSH keys and hosts in SSH config
-       list-keys        List of all SSH keys
-       copy             Copy public SSH key
-       new              Generate new SSH key
-       host             Add host to SSH config, use --key to generate new key
-       remove           Remove host from SSH config
-       list-host        List of all hosts in SSH config
+        help             This help message
+        list             List of all SSH keys and hosts in SSH config
+        list-keys        List of all SSH keys
+        list-host        List of all hosts in SSH config
+        copy             Copy public SSH key
+        new              Generate new SSH key
+        host             Add host to SSH config, use --key to generate new key
+        remove           Remove host from SSH config
 
 credit: https://github.com/mihaliak/dotfiles
-
  -->
 
 
@@ -78,6 +75,3 @@ credit: https://github.com/mihaliak/dotfiles
  1) Mapping Trackpad for Right Click
  2) Changing UI to Dark theme
  5) Update just the most recent for android sdk. do not need all the API levels
-
-
-More DotFiles to look through
