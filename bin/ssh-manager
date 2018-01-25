@@ -15,11 +15,11 @@ if [[ ! $COMMAND_NAME ]] || [[ $COMMAND_NAME = "help" ]] || [[ $COMMAND_NAME = "
     echo "   help             This help message"
     echo "   list             List of all SSH keys and hosts in SSH config"
     echo "   list-keys        List of all SSH keys"
+    echo "   list-host        List of all hosts in SSH config"
     echo "   copy             Copy public SSH key"
     echo "   new              Generate new SSH key"
     echo "   host             Add host to SSH config, use --key to generate new key"
     echo "   remove           Remove host from SSH config"
-    echo "   list-host        List of all hosts in SSH config"
 fi
 
 if [[ "$COMMAND_NAME" = "list" ]]; then
@@ -120,12 +120,12 @@ if [[ $COMMAND_NAME = "host" ]]; then
 	fi
 
 	echo "host $shortname" >> ~/.ssh/config
-	echo " hostname $host" >> ~/.ssh/config
-	echo " port $port" >> ~/.ssh/config
-	echo " user $user" >> ~/.ssh/config
+	echo "    hostname $host" >> ~/.ssh/config
+	echo "    port $port" >> ~/.ssh/config
+	echo "    user $user" >> ~/.ssh/config
 
 	if [[ ! $key = "none" ]]; then
-		echo " IdentityFile ~/.ssh/id_ed25519_$key" >> ~/.ssh/config
+		echo "    IdentityFile ~/.ssh/$key" >> ~/.ssh/config
 	fi
 
 	echo "" >> ~/.ssh/config
