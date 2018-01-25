@@ -11,6 +11,8 @@
 # General Settings
 # ==================================================================================================
 
+set -g default-command "login-shell"
+
 # Colors Everywhere
 set -g default-terminal "tmux-256color-italic"
 #  enable terminal compability
@@ -65,7 +67,6 @@ bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
 
 # automatically renumber tmux windows
 set -g renumber-windows on
-set-option -g renumber-windows on
 
 # automatically rename tmux windows
 # # set-window-option -g automatic-rename on
@@ -89,8 +90,8 @@ bind -r C-l select-window -t :+
 
 # split window and fix path for tmux 1.9
 bind | split-window -h
-bind-key v split-window -h
-bind-key s split-window -v
+bind v split-window -h
+bind s split-window -v
 bind - split-window -v
 
 # By default, all windows in a session are constrained to the size of the
