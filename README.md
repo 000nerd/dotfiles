@@ -7,10 +7,9 @@ Contains:
   4. []()
   5. []()
   6. Custom [/etc/hosts](https://github.com/mihaliak/dotfiles/blob/master/etc/hosts) file with blocked Ads, Trackers & 🔥 stuff on internet
-  <!-- 8. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
-  9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
-  10. Applications (alfred, google-chrome, slack, spotify, sublime-text, vlc, phpstorm, sequel-pro, filezilla, postman, iterm2, teamviewer, lastpass, spectacle, appcleaner, skype)
-  -->
+  8. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
+  <!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
+  10. Applications (alfred, google-chrome, slack, spotify, sublime-text, vlc, phpstorm, sequel-pro, filezilla, postman, iterm2, teamviewer, lastpass, spectacle, appcleaner, skype) -->
 
 ## Install
 
@@ -34,7 +33,7 @@ Clone and install dotfiles:
 4. `sudo reboot`
 5. Enjoy
 
-<!-- ## The `dotfiles` command
+## The `dotfiles` command
 
     $ dotfiles
     ￫ Usage: dotfiles <command>
@@ -66,8 +65,12 @@ Clone and install dotfiles:
         new              Generate new SSH key
         host             Add host to SSH config, use --key to generate new key
         remove           Remove host from SSH config
-
-credit: https://github.com/mihaliak/dotfiles
+<!--
+credits:
+https://github.com/mihaliak/dotfiles
+https://github.com/mathiasbynens/dotfiles
+https://github.com/nicknisi/dotfiles
+https://github.com/0xadada/dotfiles
  -->
 
 
