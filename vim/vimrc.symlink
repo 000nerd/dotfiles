@@ -30,3 +30,23 @@ set incsearch                     " search incrementally
 set ignorecase                    " ignore case in searches...
 set smartcase                     " ...but not really. Case sensitive if capitals are included.
 set wrapscan                      " Set the search scan to wrap around the file
+
+set clipboard=unnamed
+
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+
+
