@@ -25,6 +25,8 @@ brew cask install pycharm-ce
 brew cask install anaconda
 
 packages=(
+    pytest
+    pytest-cache
     awscli
     livestreamer
     peewee
