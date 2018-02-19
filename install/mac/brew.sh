@@ -49,7 +49,9 @@ cask_formulas=(
     dupeguru
     fork
     flux
+    google-backup-and-sync
     google-chrome
+    google-drive-file-stream
     gpgtools
     handbrake
     iterm2
