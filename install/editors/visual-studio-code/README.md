@@ -14,7 +14,7 @@ cd ./config/visual-studio-code
 ./install.sh
 ```
 
-The script asks you if you want to install the extensions. Type `y` for yes. Defaults to no. 
+The script asks you if you want to install the extensions. Type `y` for yes. Defaults to no.
 
 `Do you want to install VSC extensions? [y|N]`
 
@@ -55,7 +55,7 @@ You will need to restart your Visual Studio Code for all the above to take effec
 - “React Redux ES6 Snippets”: creates containers/stateless components/reducers/etc skeletons directly for you
 - “Autolinting for Javascript”: Automatically activates the correct linting for your project
 - "React Code Snippets"
-- "Javascript Console Utils": Quick keys for adding/removing console.logs 
+- "Javascript Console Utils": Quick keys for adding/removing console.logs
 
 
 ### CSS
@@ -78,3 +78,10 @@ You will need to restart your Visual Studio Code for all the above to take effec
 - "Prettify JSON Extension": Prettify ugly JSON inside VSCode
 - "SVG Viewer"
 - "theme-dark-monokai"
+
+Plugins to check out:
+https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
+https://marketplace.visualstudio.com/items?itemName=shardulm94.trailing-spaces
+https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
+https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+https://marketplace.visualstudio.com/items?itemName=wholroyd.jinja
