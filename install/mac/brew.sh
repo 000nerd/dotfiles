@@ -20,21 +20,21 @@ echo "=============================="
 
 formulas=(
     # flags should pass through the the `brew list check`
-    'macvim --with-override-system-vim'
     bash
     bash-completion2
-    ack
     diff-so-fancy
+    ffmpeg
     git
     highlight
+    'macvim --with-override-system-vim'
     markdown
+    maven
     mongodb # Do not forget to create /data/db and add permissions
     reattach-to-user-namespace
     tmux
     tree
     youtube-dl
-    ffmpeg
-    maven
+    wget
 )
 
 cask_formulas=(
