@@ -20,21 +20,34 @@ echo "=============================="
 
 formulas=(
     # flags should pass through the the `brew list check`
+    asciinema # record terminal
+    awscli
     bash
     bash-completion2
     diff-so-fancy
+    editorconfig
+    exa # Replace ls
     ffmpeg
+    freexl # extract excel data
     git
     highlight
+    ical-buddy
     'macvim --with-override-system-vim'
     markdown
     maven
     mongodb # Do not forget to create /data/db and add permissions
+    p7zip
+    pandoc
     reattach-to-user-namespace
+    rename
+    source-highlight
+    tig
     tmux
     tree
-    youtube-dl
+    ttygif # create gif of terminal
+    unrar
     wget
+    youtube-dl
 )
 
 cask_formulas=(
