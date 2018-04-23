@@ -1,6 +1,5 @@
 cmake
 coreutils
-curl, args: [with-openssl]
 liblwgeom
 libspatialite
 gpg-agent
@@ -10,23 +9,13 @@ htop
 libevent
 httpd, args: [with-mpm-event, with-privileged-ports]
 httpie
-imagemagick
-mysql
 nmap
-postgresql, restart_service: true
-pgcli
 redis
-shellcheck
-automake
-coreutils
 ctags
 doxygen
-grip
 iandrewt/tap/gpmdp-remote
 libksba
-mas
 tomanthony//itermocil
-watchman
 exiv2
 git-lfs
 git-flow
@@ -40,8 +29,6 @@ moreutils
 findutils --with-default-names
 binutils
 diffutils
-gzip
-wdiff --with-gettext
 
 # Apps look for cask or mas
 Etcher - Burn ISOs to USB drives

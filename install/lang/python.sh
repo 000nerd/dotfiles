@@ -31,6 +31,7 @@ packages=(
     livestreamer
     peewee
     requests
+    rtv
     bpython
     ptpython
     streamlink

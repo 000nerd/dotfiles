@@ -24,6 +24,7 @@ formulas=(
     awscli
     bash
     bash-completion2
+    curl
     diff-so-fancy
     editorconfig
     exa # Replace ls
@@ -34,18 +35,25 @@ formulas=(
     ical-buddy
     'macvim --with-override-system-vim'
     markdown
+    mas
     maven
     mongodb # Do not forget to create /data/db and add permissions
+    mycli
+    mysql
     p7zip
     pandoc
+    pgcli
+    posgresql
     reattach-to-user-namespace
     rename
+    shellcheck
     source-highlight
     tig
     tmux
     tree
     ttygif # create gif of terminal
     unrar
+    watchman
     wget
     youtube-dl
 )
