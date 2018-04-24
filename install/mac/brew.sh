@@ -31,7 +31,12 @@ formulas=(
     ffmpeg
     freexl # extract excel data
     git
+    git-extras
+    git-flow
+    git-lfs
     highlight
+    htop
+    httpie
     ical-buddy
     'macvim --with-override-system-vim'
     markdown
@@ -44,6 +49,7 @@ formulas=(
     pandoc
     pgcli
     posgresql
+    pv # pipe viewer
     reattach-to-user-namespace
     rename
     shellcheck
@@ -64,7 +70,9 @@ cask_formulas=(
     appcleaner
     cheatsheet
     chrome-remote-desktop-host
+    dash
     disk-inventory-x # or Grand Perspective
+    divvy
     docker # or docker-toolbox
     dropbox
     dupeguru
@@ -73,10 +81,11 @@ cask_formulas=(
     google-backup-and-sync
     google-chrome
     google-drive-file-stream
-    gpgtools
     handbrake
     iterm2
+    jadengeller-helium
     libreoffice
+    magnet
     music-manager
     radiant-player
     spotify
@@ -86,6 +95,7 @@ cask_formulas=(
     visual-studio-code
     vlc
     veertu-desktop # or virtualbox
+    whatsapp
     wireshark
     # Fonts
     font-robotomono-nerd-font
