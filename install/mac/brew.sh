@@ -24,8 +24,10 @@ formulas=(
     awscli
     bash
     bash-completion2
+    ctags
     curl
     diff-so-fancy
+    doxygen
     editorconfig
     exa # Replace ls
     ffmpeg
@@ -62,6 +64,11 @@ formulas=(
     watchman
     wget
     youtube-dl
+    coreutils # GNU tools
+    moreutils # GNU tools
+    findutils # GNU tools
+    binutils  # GNU tools
+    diffutils # GNU tools
 )
 
 cask_formulas=(
