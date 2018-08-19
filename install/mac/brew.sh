@@ -94,6 +94,7 @@ cask_formulas=(
     libreoffice
     magnet
     music-manager
+    postman
     radiant-player
     spotify
     sublime-text
