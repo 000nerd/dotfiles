@@ -37,6 +37,7 @@ packages=(
     streamlink
     pylint
     flake8
+    black
 )
 for package in "${packages[@]}"; do
 	pip install "${packages[@]}" --upgrade  #Didn't work on first go
