@@ -27,7 +27,6 @@ brew cask install anaconda
 packages=(
     pytest
     pytest-cache
-    awscli
     livestreamer
     peewee
     requests

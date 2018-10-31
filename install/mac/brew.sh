@@ -54,6 +54,7 @@ formulas=(
     pv # pipe viewer
     reattach-to-user-namespace
     rename
+    rtmpdump
     shellcheck
     source-highlight
     tig
@@ -94,6 +95,7 @@ cask_formulas=(
     libreoffice
     magnet
     music-manager
+    pgadmin4
     postman
     radiant-player
     spotify
