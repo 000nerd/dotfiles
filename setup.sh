@@ -9,7 +9,7 @@ echo "Installing dotfiles."
 #echo "Initializing submodule(s)"
 #git submodule update --init --recursive
 
-source install/link.sh
+source install/symlinks.sh
 
 # only perform macOS-specific install
 if [ "$(uname)" == "Darwin" ]; then
@@ -17,17 +17,17 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Install Applications and macOS tweaks for Development
 
-    source install/brew.sh
+    source install/mac/brew.sh
 
-    source install/macos.sh
+    source install/mac/macos.sh
 
     # Install programming enviroments
 
-    source install/javascript.sh
+    # source install/javascript.sh
 
-    source install/java.sh
+    # source install/java.sh
 
-    source install/python.sh
+    # source install/python.sh
 
     # Install Text Editors
 
