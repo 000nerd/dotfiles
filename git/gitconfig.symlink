@@ -96,11 +96,6 @@
     # # remove grep - Remove found files that are NOT under version control
     # rg = "!sh -c 'git ls-files --others --exclude-standard | grep $1 | xargs rm' -"
 
-    # # Kaleidoscope commands
-    # dkal = difftool -y -t Kaleidoscope
-    # mkal = mergetool -y -t Kaleidoscope
-    # remotes = remote -v
-
     # # check out a local copy of a PR. https://gist.github.com/gnarf/5406589
     # pr = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
     # pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
@@ -144,3 +139,10 @@
 	helper = osxkeychain
 [rebase]
 	instructionFormat = "[%an - %ar] %s"
+	autoStash = true
+[pager]
+    diff = "diff-so-fancy | less --tabs=4 -RFX"
+    show = "diff-so-fancy | less --tabs=4 -RFX"
+[branch]
+    # set up 'git pull' to rebase instead of merge
+    # autosetuprebase = always

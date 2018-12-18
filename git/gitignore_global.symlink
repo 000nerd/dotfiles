@@ -44,11 +44,13 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+tmp
 
 # python #
 ##########
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.mypy_cache
 *.py[cod]
 *$py.class
 # Distribution / packaging
@@ -58,6 +60,7 @@ __pycache__/
 pip-log.txt
 pip-delete-this-directory.txt
 # Unit test / coverage reports
+.pytest_cache
 htmlcov/
 .tox/
 .coverage
@@ -76,6 +79,7 @@ instance/
 # virtualenv
 .venv
 venv/
+venv3/
 ENV/
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -98,9 +102,11 @@ fabric.properties
 
 # project-specific vim configurations
 .vimrc.local
+Session.vim
 
-# typescript command garbage
+# javascript/typescript
 tscommand*.txt
+node_modules
 
 # nvm - the Node Version Manager
 .nvmrc
