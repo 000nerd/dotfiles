@@ -48,6 +48,7 @@ formulas=(
     mycli
     mysql
     p7zip
+    pacvim
     pandoc
     pgcli
     posgresql
