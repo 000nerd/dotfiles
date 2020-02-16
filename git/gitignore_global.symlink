@@ -45,43 +45,14 @@ Network Trash Folder
 Temporary Items
 .apdisk
 tmp
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-# python #
-##########
-# Byte-compiled / optimized / DLL files
-__pycache__/
-.mypy_cache
-*.py[cod]
-*$py.class
-# Distribution / packaging
-.Python
-.env/
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-# Unit test / coverage reports
-.pytest_cache
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*,cover
-.hypothesis/
-# Django stuff:
-*.log
-local_settings.py
-# Flask stuff:
-instance/
-.webassets-cache
-# virtualenv
-.venv
-venv/
-venv3/
-ENV/
-# Jupyter Notebook
+# Jupyter Notebook #
+####################
 .ipynb_checkpoints
 
 # jetbrains #
@@ -91,25 +62,63 @@ ENV/
 # Intellij
 .idea/
 /out/
+*.iml
+*.ipr
+# CMake
+cmake-build-*/
+# File-based project format
+*.iws
+# JIRA plugin
+atlassian-ide-plugin.xml
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-*~
-*.swp
-
-# project-specific vim configurations
-.vimrc.local
+#    Vim    #
+#############
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+# Session
 Session.vim
+Sessionx.vim
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
 
-# javascript/typescript
-tscommand*.txt
-node_modules
+# VS Code #
+###########
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
 
-# nvm - the Node Version Manager
-.nvmrc
+# Xcode #
+#########
+xcuserdata/
 
-# npm things
-npm-debug.log
+# Maven #
+#########
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
