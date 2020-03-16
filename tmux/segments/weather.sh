@@ -1,12 +1,12 @@
 #!/bin/bash
 
-source "$HOME/.tmux/online.sh"
-source "$HOME/.tmux/cache.sh"
+source "$HOME/.tmux/helpers/online.sh"
+source "$HOME/.tmux/helpers/cache.sh"
 
 getTemperature() {
   temperature=$(
     # get weather report
-    curl -s wttr.in/Puebla |
+    curl -s wttr.in/Groningen |
     # grep first mention of temperature
     grep -m 1 '°C' |
     # remove terminal escape sequences
@@ -18,14 +18,14 @@ getTemperature() {
   # check if temperature is a range
   if [[ $temperature == *–* ]]; then
 
-    # use regex to extract temperature values
-    local range='(-?[[:digit:]])+.*–.*(-?[[:digit:]]+)'
-    [[ $temperature =~ $range ]]
-    local lower=${BASH_REMATCH[1]}
-    local upper=${BASH_REMATCH[2]}
+      # use regex to extract temperature values
+      local range='(-?[[:digit:]])+.*–.*(-?[[:digit:]]+)'
+      [[ $temperature =~ $range ]]
+      local lower=${BASH_REMATCH[1]}
+      local upper=${BASH_REMATCH[2]}
 
-    # calculate average (truncates to integers)
-    temperature="$(( (lower + upper) / 2 )) °C"
+      # calculate average (truncates to integers)
+      temperature="$(( (lower + upper) / 2 )) °C"
   fi
 
   # truncate all leftover whitespace
