@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+#   $$$$$$\  $$\       $$$$$$\  $$$$$$\   $$$$$$\
+#  $$  __$$\ $$ |      \_$$  _|$$  __$$\ $$  __$$\
+#  $$ /  $$ |$$ |        $$ |  $$ /  $$ |$$ /  \__|
+#  $$$$$$$$ |$$ |        $$ |  $$$$$$$$ |\$$$$$$\
+#  $$  __$$ |$$ |        $$ |  $$  __$$ | \____$$\
+#  $$ |  $$ |$$ |        $$ |  $$ |  $$ |$$\   $$ |
+#  $$ |  $$ |$$$$$$$$\ $$$$$$\ $$ |  $$ |\$$$$$$  |
+#  \__|  \__|\________|\______|\__|  \__| \______/
+
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
     colorflag="--color"
@@ -129,24 +138,7 @@ command -v md5sum > /dev/null || alias md5sum="md5"
 # OS X has no `sha1sum`, so use `shasum` as a fallback
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
-#ANDROID(iOBSA)
-alias burp="java -jar $HOME/Tools/burpsuite_free_v1.6.jar"
-alias printcert="keytool -printcert -file"
-alias signapk="jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore alias_name"
-alias android_screendump="adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g'"
-alias android_get_id='adb shell content query --uri content://settings/secure --projection name:value | grep android_id'
-alias android_locale_change="adb shell am start -n 'com.android.settings/.Settings\$LocalePickerActivity'"
-alias android_dev_options="adb shell am start -n com.android.settings/.DevelopmentSettings"
-
 alias jd-gui="open -a jd-gui"
-
-# Need to be fixed
-# SYSROOT_ARM=${ANDROID_NDK_HOME}/platforms/android-14/arch-arm
-# SYSROOT_X86=${ANDROID_NDK_HOME}/platforms/android-14/arch-x86
-# ARM_GCC="${ANDROID_NDK_HOME}/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86/bin/arm-linux-androideabi-gcc"
-# X86_GCC="${ANDROID_NDK_HOME}/toolchains/x86-4.8/prebuilt/darwin-x86/bin/i686-linux-android-gcc"
-# alias ANDROID_CC="$ARM_GCC --sysroot=$SYSROOT_ARM "
-# alias ANDROID_CC_X86="$X86_GCC --sysroot=$SYSROOT_X86 "
 
 # tmux aliases
 alias ta='tmux attach'

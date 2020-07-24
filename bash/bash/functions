@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-####################
-# functions
-####################
+#  $$$$$$$$\ $$\   $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ $$$$$$\  $$$$$$\  $$\   $$\
+#  $$  _____|$$ |  $$ |$$$\  $$ |$$  __$$\\__$$  __|\_$$  _|$$  __$$\ $$$\  $$ |
+#  $$ |      $$ |  $$ |$$$$\ $$ |$$ /  \__|  $$ |     $$ |  $$ /  $$ |$$$$\ $$ |
+#  $$$$$\    $$ |  $$ |$$ $$\$$ |$$ |        $$ |     $$ |  $$ |  $$ |$$ $$\$$ |
+#  $$  __|   $$ |  $$ |$$ \$$$$ |$$ |        $$ |     $$ |  $$ |  $$ |$$ \$$$$ |
+#  $$ |      $$ |  $$ |$$ |\$$$ |$$ |  $$\   $$ |     $$ |  $$ |  $$ |$$ |\$$$ |
+#  $$ |      \$$$$$$  |$$ | \$$ |\$$$$$$  |  $$ |   $$$$$$\  $$$$$$  |$$ | \$$ |
+#  \__|       \______/ \__|  \__| \______/   \__|   \______| \______/ \__|  \__|
 
 # print available colors and their numbers
 function colors() {
@@ -70,52 +75,4 @@ function extract() {
     else
         echo "'$1' is not a valid file"
     fi
-}
-
-# Android Functions
-function update_android_id(){
-  # Update the android id.
-  # TODO(ashishb): Add a different query for devices where sqlite3 is not present
-  # but content binary is present.
-  adb shell sqlite3 \
-    /data/data/com.android.providers.settings/databases/settings.db \
-    "update 'secure' set value=\"${1}\" where name='android_id'"
-  # Now soft_reboot.
-  adb shell setprop ctl.restart surfaceflinger
-  adb shell setprop ctl.restart zygote
-}
-
-# TODO(iObsa): Add jadx tool to the list.
-# https://github.com/skylot/jadx
-# Source: https://gist.github.com/tyvsmith/6056422
-function dex-method-count() {
-  cat $1 | head -c 92 | tail -c 4 | hexdump -e '1/4 "%d\n"'
-}
-
-function dex-method-count-by-package() {
-  dir=$(mktemp -d -t dex)
-  baksmali $1 -o $dir
-  for pkg in `find $dir/* -type d`; do
-    smali $pkg -o $pkg/classes.dex
-    count=$(dex-method-count $pkg/classes.dex)
-    name=$(echo ${pkg:(${#dir} + 1)} | tr '/' '.')
-    echo -e "$count\t$name"
-  done
-  rm -rf $dir
-}
-
-function dex-field-count(){
-  cat $1 | head -c 84 | tail -c 4 | hexdump -e '1/4 "%d\n"'
-}
-
-function dex-field-count-by-package() {
-  dir=$(mktemp -d -t dex)
-  baksmali $1 -o $dir
-  for pkg in `find $dir/* -type d`; do
-    smali $pkg -o $pkg/classes.dex
-    count=$(dex-field-count $pkg/classes.dex)
-    name=$(echo ${pkg:(${#dir} + 1)} | tr '/' '.')
-    echo -e "$count\t$name"
-  done
-  rm -rf $dir
 }

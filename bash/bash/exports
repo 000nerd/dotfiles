@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+#  $$$$$$$$\ $$\   $$\ $$$$$$$\   $$$$$$\  $$$$$$$\ $$$$$$$$\  $$$$$$\
+#  $$  _____|$$ |  $$ |$$  __$$\ $$  __$$\ $$  __$$\\__$$  __|$$  __$$\
+#  $$ |      \$$\ $$  |$$ |  $$ |$$ /  $$ |$$ |  $$ |  $$ |   $$ /  \__|
+#  $$$$$\     \$$$$  / $$$$$$$  |$$ |  $$ |$$$$$$$  |  $$ |   \$$$$$$\
+#  $$  __|    $$  $$<  $$  ____/ $$ |  $$ |$$  __$$<   $$ |    \____$$\
+#  $$ |      $$  /\$$\ $$ |      $$ |  $$ |$$ |  $$ |  $$ |   $$\   $$ |
+#  $$$$$$$$\ $$ /  $$ |$$ |       $$$$$$  |$$ |  $$ |  $$ |   \$$$$$$  |
+#  \________|\__|  \__|\__|       \______/ \__|  \__|  \__|    \______/
+
 # Prefer US English and use UTF-8
 export LANG="en_US"
 export LC_ALL="en_US.UTF-8"
@@ -7,23 +16,20 @@ export LC_ALL="en_US.UTF-8"
 # Disable homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 
-# Update your enviroment variables
+# Java variables
 export ANT_HOME=/usr/local/opt/ant
 export MAVEN_HOME=/usr/local/opt/maven
 export GRADLE_HOME=/usr/local/opt/gradle
-# Gradle needs this.
-# export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
-# export ANDROID_NDK_ROOT=/usr/local/share/android-ndk
-export ANDROID_SDK_HOME=`echo $(brew --cellar)/android-sdk`
-export ANDROID_NDK_HOME=`echo $(brew --cellar)/android-ndk`
-export ANDROID_HOME=${ANDROID_SDK_HOME}
-export INTEL_HAXM_HOME=/usr/local/Caskroom/intel-haxm
-
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
-# For Hierarchy viewer
-# Source https://developer.android.com/studio/profile/hierarchy-viewer-setup.html
-export ANDROID_HVPROTO=ddm
+# Node variables
+# Source NVM
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Python variables
 
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=32768
