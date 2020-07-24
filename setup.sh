@@ -31,6 +31,9 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Install Text Editors
 
+    # SpaceVim
+
+    # curl -sLf https://spacevim.org/install.sh | bash
 
 fi
 
