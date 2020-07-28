@@ -18,7 +18,6 @@ set -g default-terminal "tmux-256color-italic"
 #  enable terminal compability
 set-option -ga terminal-overrides ",tmux-256color-italic:Tc"
 
-set -g default-command "login-shell"
 
 # unbind default prefix and set it to Ctrl+a
 unbind C-b
@@ -69,7 +68,11 @@ bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-
 set -g renumber-windows on
 
 # automatically rename tmux windows
-# # set-window-option -g automatic-rename on
+set-option -w -g automatic-rename on
+
+# Set clint terminal title
+set-option -g set-titles on
+set-option -g set-titles-string "#T - #W"
 
 # Window switching
 bind -n S-Up    new-window
@@ -153,7 +156,7 @@ setw -g aggressive-resize on
 # bind -t vi-copy "K" page-up
 
 # # synchronize all panes in a window
-# bind y setw synchronize-panes
+# bind y set -w synchronize-panes
 
 # ==================================================================================================
 # Status line/ Theme
@@ -179,5 +182,31 @@ source ~/.dotfiles/tmux/theme-gruvbox-dark.sh
 
 # set -g pane-active-border-fg colour10
 
+# tm_tunes="#[bg=$base0D,fg=$base01] ♫ #(osascript -l JavaScript ~/.dotfiles/applescripts/tunes.js)"
+# # tm_tunes="#[fg=$tm_color_music]#(osascript ~/.dotfiles/applescripts/tunes.scpt | cut -c 1-50)"
+# # tm_battery="#(~/.dotfiles/bin/battery_indicator.sh)"
+# tm_battery="#[fg=$base01,bg=$base09] ♥ #(battery)"
+# tm_date="#[default,bg=$base02,fg=$base05] %R"
+# tm_host="#[fg=$base01,bg=$base0E] #h "
+
 # setw -g window-status-format "#[bg=default,fg=colour8,noreverse]▉▊▋▌ #W "
 # setw -g window-status-current-format "#[bg=default,fg=colour7,noreverse]▉▊▋▌ #W "
+
+######################
+#### Key Bindings ####
+######################
+
+# more settings to make copy-mode more vim-like
+# unbind [
+# bind Escape copy-mode
+# unbind p
+# bind p paste-buffer
+# bind -Tcopy-mode-vi 'v' send -X begin-selection
+# bind -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel "tmux save-buffer - | reattach-to-user-namespace pbcopy"
+
+# # Buffers to/from Mac clipboard, yay tmux book from pragprog
+# bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"
+# bind C-v run "tmux set-buffer $(reattach-to-user-namespace pbpaste); tmux paste-buffer"
+
+# reload config file
+# bind r source-file ~/.tmux.conf \; display "Config Reloaded!"
