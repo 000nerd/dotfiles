@@ -13,6 +13,7 @@
 
 # Readline library configuration options
 # http://ss64.com/bash/syntax-inputrc.html
+# https://www.gnu.org/software/bash/manual/html_node/Readline-Init-File-Syntax.html#Readline-Init-File-Syntax
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -36,6 +37,9 @@ set match-hidden-files off
 # # Show all autocomplete results at once
 set page-completions off
 
+# # Display the common prefix of the set of possible completions using a different color
+set colored-completion-prefix on
+
 # # If there are more than 200 possible completions for a word, ask to show them all
 set completion-query-items 200
 
@@ -44,6 +48,9 @@ set show-all-if-ambiguous on
 
 # # Show extra file information when completing, like `ls -F` does
 set visible-stats on
+
+# # display possible completions using different colors to indicate their file types
+set colored-stats on
 
 # # Be more intelligent when autocompleting by also looking at the text after
 # # the cursor. For example, when the current line is "cd ~/src/mozil", and
