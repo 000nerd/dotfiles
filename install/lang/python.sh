@@ -18,25 +18,32 @@ fi
 echo -e "\n\nInstalling python enviroment"
 echo "=============================="
 brew update
-brew install python3
+brew install python
+brew install pipenv
 
-brew tap caskroom/versions
+# Install IDE
 brew cask install pycharm-ce
 brew cask install anaconda
 
+pipenv --python=$(conda run which python) --site-packages
+
 packages=(
-    pytest
-    pytest-cache
-    livestreamer
-    peewee
-    requests
-    rtv
-    bpython
-    ptpython
-    streamlink
-    pylint
-    flake8
     black
+    bpython
+    coverage[toml]
+    flake8
+    flake8-bandit
+    flake8-black
+    flake8-bugbear
+    flake8-docstrings
+    flake8-import-order
+    nox
+    ptpython
+    pytest
+    pytest-cov
+    pytest-mock
+    requests
+    streamlink
 )
 for package in "${packages[@]}"; do
 	pip install "${packages[@]}" --upgrade  #Didn't work on first go

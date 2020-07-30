@@ -36,6 +36,7 @@ formulas=(
     git-extras
     git-flow
     git-lfs
+    gpatch
     highlight
     htop
     httpie
@@ -60,10 +61,10 @@ formulas=(
     source-highlight
     tig
     tmux
+    trash
     tree
     ttygif # create gif of terminal
     unrar
-    watchman
     wget
     youtube-dl
     coreutils # GNU tools
@@ -102,6 +103,7 @@ cask_formulas=(
     spotify
     sublime-text
     the-unarchiver
+    telegram
     transmission
     visual-studio-code
     vlc

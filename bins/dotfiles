@@ -24,10 +24,7 @@ sub_help () {
     echo "   backup           Run backup script"
     echo "   symlinks         Run symlinks script"
     echo "   brew             Run brew script"
-#    echo "   ohmyzsh          Run oh my zsh script"
-    echo "   hosts            Run hosts script"
     echo "   macos            Run MacOS defaults script"
-    echo "   dock             Run MacOS dock script"
     echo "   java             Run java script"
     echo "   javascript       Run javascript script"
     echo "   python           Run python script"
@@ -43,6 +40,7 @@ sub_update () {
     nvm install --lts # install last lts node instance
     npm install npm -g
     npm update -g
+    npx ncu -g
     # Update Conda
     # conda env update
     # conda update --all

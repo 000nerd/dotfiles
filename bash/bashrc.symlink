@@ -10,7 +10,7 @@
 #  \_______/   \__|  \__|   \______/   \__|  \__|
 
 # Add `~/bin` to the `$PATH`
-export PATH="$HOME/bin:$PATH";
+export PATH="$HOME/bins:$PATH";
 # Editor
 export EDITOR='code -w'
 

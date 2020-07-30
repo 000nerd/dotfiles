@@ -25,6 +25,7 @@ cask_formulas=(
 	# Install java and android IDEs
 	java
 	android-studio
+    intellij-idea-ce
 	intel-haxm # For hardware acceleration
 	jd-gui # For java decompilation.
 )
@@ -57,15 +58,12 @@ for formula in "${formulas[@]}"; do
     fi
 done
 
-brew tap caskroom/versions
-brew cask install intellij-idea-ce
-
 # Install all of the Android SDK components
 #TODO: Fix it so that it does not install all the SDK components from API level 1 and UP.
-android update sdk --no-ui
-# Use This instead of above
-sdkmanager "platform-tools" "platforms;android-23"
-sdkmanager "build-tools;23.0.1"
+# android update sdk --no-ui
+# # Use This instead of above
+# sdkmanager "platform-tools" "platforms;android-23"
+# sdkmanager "build-tools;23.0.1"
 
 # Remove outdated versions from the cellar.
 brew cleanup

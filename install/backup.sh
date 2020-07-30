@@ -2,7 +2,7 @@
 
 ##############################################################################
 #                                 Backup                                     #
-############################################################################## 
+##############################################################################
 
 
 
@@ -28,3 +28,13 @@ for file in $linkables; do
         echo -e "$filename does not exist at this location or is a symlink"
     fi
 done
+
+
+# for filename in "$HOME/.config/nvim" "$HOME/.vim" "$HOME/.vimrc"; do
+#     if [ ! -L "$filename" ]; then
+#         echo "backing up $filename"
+#         cp -rf "$filename" "$BACKUP_DIR"
+#     else
+#         echo -e "$filename does not exist at this location or is a symlink"
+#     fi
+# done
