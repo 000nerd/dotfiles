@@ -82,7 +82,6 @@ cask_formulas=(
     chrome-remote-desktop-host
     dash
     disk-inventory-x # or Grand Perspective
-    divvy
     docker # or docker-toolbox
     dropbox
     dupeguru
@@ -93,13 +92,11 @@ cask_formulas=(
     google-drive-file-stream
     handbrake
     iterm2
-    jadengeller-helium
-    libreoffice
+    keepingyouawake
     magnet
     music-manager
     pgadmin4
     postman
-    radiant-player
     spotify
     sublime-text
     the-unarchiver
@@ -107,7 +104,6 @@ cask_formulas=(
     transmission
     visual-studio-code
     vlc
-    veertu-desktop # or virtualbox
     whatsapp
     wireshark
     # Fonts
