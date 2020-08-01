@@ -38,12 +38,17 @@ nvm alias default node # Didn't work on first go
 # Globally install with npm
 
 packages=(
-    nodemon
-    vtop
-    typescript
-    pomolectron # Pomodoro app for MenuBar
-    mongo-hacker
+    eslint
+    fkill-cli
     forever
+    nodemon
+    # Pomodoro app for MenuBar
+    pomolectron
+    prettier
+    spoof
+    typescript
+    vtop
+    @vue/cli
 )
 for package in "${packages[@]}"; do
 	npm install -g "${packages[@]}"  #Didn't work on first go
