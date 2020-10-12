@@ -54,7 +54,6 @@ formulas=(
     pgcli
     posgresql
     pv # pipe viewer
-    reattach-to-user-namespace
     rename
     rtmpdump
     shellcheck
