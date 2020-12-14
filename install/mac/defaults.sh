@@ -225,6 +225,8 @@ defaults write com.apple.digihub com.apple.digihub.dvcamera.IIDC.appeared -dict-
 defaults write com.apple.digihub com.apple.digihub.dvcamera.IIDC.irisopened -dict-add action -int 1
 defaults write com.apple.digihub com.apple.digihub.dvd.video.appeared -dict-add action -int 1
 
+# Stop Photos from opening automatically on your Mac
+defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 #
 # Displays
