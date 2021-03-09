@@ -1,7 +1,0 @@
-DevKit
-XPathView
-XSLT-Debugger
-com.intellij.uiDesigner
-org.intellij.intelliLang
-org.jetbrains.android
-org.jetbrains.idea.eclipse
