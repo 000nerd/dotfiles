@@ -15,6 +15,12 @@
     user = 21stBam
 [alias]
     # Aliases Go Here
+[apply]
+    # do not warn about missing whitespace at EOF
+    whitespace = nowarn
+[branch]
+    # set up 'git pull' to rebase instead of merge
+    # autosetuprebase = always
 [color]
     diff = auto
     status = auto
@@ -36,29 +42,18 @@
     untracked = red
 [color "sh"]
     branch = yellow
-[apply]
-    # do not warn about missing whitespace at EOF
-    whitespace = nowarn
 [core]
     excludesfile = ~/.gitignore_global
     pager = less -FXRS -x2
     editor = vim
     whitespace = cr-at-eol
-[rerere]
-    enabled = true
-[gitsh]
-    defaultCommand = s
+[credential]
+	helper = osxkeychain
 [grep]
     extendRegexp = true
     lineNumber = true
-[credential]
-	helper = osxkeychain
 [rebase]
 	instructionFormat = "[%an - %ar] %s"
 	autoStash = true
-[pager]
-    diff = "diff-so-fancy | less --tabs=4 -RFX"
-    show = "diff-so-fancy | less --tabs=4 -RFX"
-[branch]
-    # set up 'git pull' to rebase instead of merge
-    # autosetuprebase = always
+[rerere]
+    enabled = true

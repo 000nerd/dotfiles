@@ -115,7 +115,7 @@ tags
 [._]*.un~
 
 ##############################
-## Jupter NoteBooks
+## Jupyter NoteBooks
 ##############################
 .ipynb_checkpoints
 
