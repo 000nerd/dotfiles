@@ -20,7 +20,7 @@ unset file;
 #                                 PATHS                                       #
 ###############################################################################
 
-export PATH=~/.dotfiles/bin:$PATH
+export PATH=~/.dotfiles/bins:$PATH
 
 # JENV Path
 export PATH="$HOME/.jenv/bin:$PATH"
