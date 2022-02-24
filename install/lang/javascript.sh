@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-###############################################################################
-#                               JavaScript                                    #
-###############################################################################
+#     $$$$$\  $$$$$$\  $$\    $$\  $$$$$$\   $$$$$$\   $$$$$$\  $$$$$$$\  $$$$$$\ $$$$$$$\ $$$$$$$$\ 
+#     \__$$ |$$  __$$\ $$ |   $$ |$$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\ \_$$  _|$$  __$$\\__$$  __|
+#        $$ |$$ /  $$ |$$ |   $$ |$$ /  $$ |$$ /  \__|$$ /  \__|$$ |  $$ |  $$ |  $$ |  $$ |  $$ |   
+#        $$ |$$$$$$$$ |\$$\  $$  |$$$$$$$$ |\$$$$$$\  $$ |      $$$$$$$  |  $$ |  $$$$$$$  |  $$ |   
+#  $$\   $$ |$$  __$$ | \$$\$$  / $$  __$$ | \____$$\ $$ |      $$  __$$<   $$ |  $$  ____/   $$ |   
+#  $$ |  $$ |$$ |  $$ |  \$$$  /  $$ |  $$ |$$\   $$ |$$ |  $$\ $$ |  $$ |  $$ |  $$ |        $$ |   
+#  \$$$$$$  |$$ |  $$ |   \$  /   $$ |  $$ |\$$$$$$  |\$$$$$$  |$$ |  $$ |$$$$$$\ $$ |        $$ |   
+#   \______/ \__|  \__|    \_/    \__|  \__| \______/  \______/ \__|  \__|\______|\__|        \__|   
 
 # Ask for the administrator password upfront.
 sudo -v
@@ -23,21 +28,19 @@ brew install nvm
 
 mkdir ~/.nvm
 
-# Setup NVM
-export NVM_DIR=~/.nvm
-[ -e /usr/local/opt/nvm/nvm.sh ] && \
-    source /usr/local/opt/nvm/nvm.sh
-if [ `type -P brew` ]; then
-    . $(brew --prefix nvm)/nvm.sh
-fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 # Install latest node and set it as default
 nvm install node  # Didn't work on first go
 nvm use node      # Didn't work on first go
 nvm alias default node # Didn't work on first go
 
-# Globally install with npm
 
 packages=(
+    @angular/cli
+    castnow
     eslint
     fkill-cli
     forever
@@ -46,9 +49,10 @@ packages=(
     pomolectron
     prettier
     spoof
+    tldr
     typescript
     vtop
-    @vue/cli
+    yarn
 )
 for package in "${packages[@]}"; do
 	npm install -g "${packages[@]}"  #Didn't work on first go

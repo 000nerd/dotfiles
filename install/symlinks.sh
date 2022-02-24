@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-##############################################################################
-#                                  Link                                      #
-##############################################################################
+#   $$$$$$\ $$\     $$\ $$\      $$\ $$\       $$$$$$\ $$\   $$\ $$\   $$\  $$$$$$\  
+#  $$  __$$\\$$\   $$  |$$$\    $$$ |$$ |      \_$$  _|$$$\  $$ |$$ | $$  |$$  __$$\ 
+#  $$ /  \__|\$$\ $$  / $$$$\  $$$$ |$$ |        $$ |  $$$$\ $$ |$$ |$$  / $$ /  \__|
+#  \$$$$$$\   \$$$$  /  $$\$$\$$ $$ |$$ |        $$ |  $$ $$\$$ |$$$$$  /  \$$$$$$\  
+#   \____$$\   \$$  /   $$ \$$$  $$ |$$ |        $$ |  $$ \$$$$ |$$  $$<    \____$$\ 
+#  $$\   $$ |   $$ |    $$ |\$  /$$ |$$ |        $$ |  $$ |\$$$ |$$ |\$$\  $$\   $$ |
+#  \$$$$$$  |   $$ |    $$ | \_/ $$ |$$$$$$$$\ $$$$$$\ $$ | \$$ |$$ | \$$\ \$$$$$$  |
+#   \______/    \__|    \__|     \__|\________|\______|\__|  \__|\__|  \__| \______/ 
 
 DOTFILES=$HOME/.dotfiles
 
@@ -14,8 +19,8 @@ for file in $linkables ; do
     if [ -e $target ]; then
         echo "~${target#$HOME} already exists... Skipping."
     else
-        echo "Creating symlink for $file"
-        ln -s $file $target
+        echo "Creating symlink for $file @ $target"
+        ln -s "$file" "$target"
     fi
 done
 
@@ -34,28 +39,5 @@ done
 #     else
 #         echo "Creating symlink for $config"
 #         ln -s "$config" "$target"
-#     fi
-# done
-
-# # create vim symlinks
-# # As I have moved off of vim as my full time editor in favor of neovim,
-# # I feel it doesn't make sense to leave my vimrc intact in the dotfiles repo
-# # as it is not really being actively maintained. However, I would still
-# # like to configure vim, so lets symlink ~/.vimrc and ~/.vim over to their
-# # neovim equivalent.
-
-# echo -e "\\n\\nCreating vim symlinks"
-# echo "=============================="
-# VIMFILES=( "$HOME/.vim:$DOTFILES/config/nvim"
-#         "$HOME/.vimrc:$DOTFILES/config/nvim/init.vim" )
-
-# for file in "${VIMFILES[@]}"; do
-#     KEY=${file%%:*}
-#     VALUE=${file#*:}
-#     if [ -e "${KEY}" ]; then
-#         echo "${KEY} already exists... skipping."
-#     else
-#         echo "Creating symlink for $KEY"
-#         ln -s "${VALUE}" "${KEY}"
 #     fi
 # done

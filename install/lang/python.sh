@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-###############################################################################
-#                                 python                                      #
-###############################################################################
+#  $$$$$$$\ $$\     $$\ $$$$$$$$\ $$\   $$\  $$$$$$\  $$\   $$\ 
+#  $$  __$$\\$$\   $$  |\__$$  __|$$ |  $$ |$$  __$$\ $$$\  $$ |
+#  $$ |  $$ |\$$\ $$  /    $$ |   $$ |  $$ |$$ /  $$ |$$$$\ $$ |
+#  $$$$$$$  | \$$$$  /     $$ |   $$$$$$$$ |$$ |  $$ |$$ $$\$$ |
+#  $$  ____/   \$$  /      $$ |   $$  __$$ |$$ |  $$ |$$ \$$$$ |
+#  $$ |         $$ |       $$ |   $$ |  $$ |$$ |  $$ |$$ |\$$$ |
+#  $$ |         $$ |       $$ |   $$ |  $$ | $$$$$$  |$$ | \$$ |
+#  \__|         \__|       \__|   \__|  \__| \______/ \__|  \__|
 
 # Ask for the administrator password upfront.
 sudo -v
@@ -23,7 +28,7 @@ brew install pipenv
 
 # Install IDE
 brew cask install pycharm-ce
-brew cask install anaconda
+# brew cask install anaconda
 
 pipenv --python=$(conda run which python) --site-packages
 
@@ -45,9 +50,10 @@ packages=(
     requests
     streamlink
 )
-for package in "${packages[@]}"; do
-	pip install "${packages[@]}" --upgrade  #Didn't work on first go
-done
+
+# for package in "${packages[@]}"; do
+# 	pip install "${packages[@]}" --upgrade  #Didn't work on first go
+# done
 
 # Remove outdated versions from the cellar.
 brew cleanup

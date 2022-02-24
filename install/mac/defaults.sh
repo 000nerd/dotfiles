@@ -18,14 +18,6 @@ sudo -v
 # Keep-alive: update existing 'sudo' time stamp until '.osx' has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Set computer name
-name=$1
-sudo scutil --set ComputerName "$name"
-sudo scutil --set HostName "$name.local"
-sudo scutil --set LocalHostName "$name"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$name"
-
-
 #
 # General Settings
 #
@@ -134,61 +126,6 @@ defaults write com.apple.dashboard mcx-disabled -bool true
 # Don't automatically rearrange Spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 
-# Dock setup
-if command -v dockutil; then
-  dockutil --remove all
-
-  dockutil --add "/Applications/Firefox.app"
-  dockutil --add "/Applications/Tweetbot.app"
-  dockutil --add "/Applications/Messages.app"
-  dockutil --add "/Applications/Xcode.app"
-  dockutil --add "/Applications/Utilities/Terminal.app"
-
-  dockutil --add "/Applications" --view list --display folder --sort name
-  dockutil --add "$HOME/Dropbox" --view grid --display folder --sort name
-  dockutil --add "$HOME/Downloads" --view grid --display stack --sort dateadded
-else
-  echo "dockutil not installed, re-run after installing"
-fi
-
-# Run hot corners script
-if [[ -f ../bin/corners ]]; then
-    ../bin/corners enable
-else
-    echo "Failed to setup hot corners, script missing"
-fi
-
-#
-# Spotlight
-#
-
-# Disable Spotlight
-# sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist
-# sudo mdutil -a -i off
-
-# Hide Spotlight Icon
-# sudo mv /System/Library/CoreServices/Search.bundle /System/Library/CoreServices/Search.bundle.bak
-
-# Show Spotlight Icon
-#sudo mv /System/Library/CoreServices/Search.bundle.bak /System/Library/CoreServices/Search.bundle
-#killall SystemUIServer
-
-
-#
-# Terminal
-#
-
-# Disable leading [ on prompt lines (which is totally broken in anything curses)
-# https://twitter.com/UINT_MIN/status/652142001932996609
-defaults write com.apple.Terminal AutoMarkPromptLines -bool false
-defaults write com.apple.Terminal ShowLineMarks -bool false
-
-# Hide scrollbars in terminal
-defaults write com.apple.Terminal AppleShowScrollBars -string "Automatic"
-
-# Setup the correct theme
-defaults write com.apple.Terminal "Default Window Settings" -string "parsec"
-defaults write com.apple.Terminal "Startup Window Settings" -string "parsec"
 
 
 #
@@ -205,28 +142,10 @@ sudo defaults write /Library/Preferences/com.apple.alf stealthenabled -int 1
 # Enable Firewall logging.
 sudo defaults write /Library/Preferences/com.apple.alf loggingenabled -int 1
 
-# Disable IR remote control.
-sudo defaults write /Library/Preferences/com.apple.driver.AppleIRController DeviceEnabled -bool false
 
 # Disable auto-adjust brightness
 sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor.plist "Automatic Display Enabled" -bool false
 
-
-#
-# Media
-#
-
-# Disable all actions when inserting disks
-defaults write com.apple.digihub com.apple.digihub.blank.bd.appeared -dict-add action -int 1
-defaults write com.apple.digihub com.apple.digihub.blank.cd.appeared -dict-add action -int 1
-defaults write com.apple.digihub com.apple.digihub.blank.dvd.appeared -dict-add action -int 1
-defaults write com.apple.digihub com.apple.digihub.cd.music.appeared -dict-add action -int 1
-defaults write com.apple.digihub com.apple.digihub.dvcamera.IIDC.appeared -dict-add action -int 1
-defaults write com.apple.digihub com.apple.digihub.dvcamera.IIDC.irisopened -dict-add action -int 1
-defaults write com.apple.digihub com.apple.digihub.dvd.video.appeared -dict-add action -int 1
-
-# Stop Photos from opening automatically on your Mac
-defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 #
 # Displays
@@ -727,45 +646,6 @@ defaults write com.apple.dt.Xcode IDEIndexerActivityShowNumericProgress -bool tr
 # Make command click jump to definition instead of showing the menu
 defaults write com.apple.dt.Xcode IDECommandClickNavigates -bool YES
 
-
-#
-# Third Party
-#
-
-# Screeny don't record audio
-defaults write com.drewwilson.screeny RecordAudio -bool false
-
-# Tweetbot
-# Skip t.co URLs
-defaults write com.tapbots.TweetbotMac OpenURLsDirectly -bool true
-defaults write com.tapbots.TweetbotMac openURLInBackground -bool true
-defaults write com.tapbots.TweetbotMac showStatusItem -bool false
-defaults write com.tapbots.TweetbotMac soundType -int 1
-defaults write com.tapbots.TweetbotMac statusViewImageType -int 2
-defaults write com.tapbots.TweetbotMac globalHideShowHotKey -dict \
-  chars -string "c" \
-  keyCode -int 8 \
-  modifierFlags -int 1310985
-# Setup a column on the right hand side with mentions
-defaults delete com.tapbots.TweetbotMac MainWindowColumnInfo || true
-defaults write com.tapbots.TweetbotMac MainWindowColumnInfo -array-add '{ "accountTID" = 14429563; "controllerClass" = "PTHTweetbotMentionsViewController"; "displayingMediaTimeline" = 0; }'
-
-# Seil
-defaults write org.pqrs.Seil sysctl -dict \
-  enable_capslock -bool true \
-  keycode_capslock -int 53
-
-# Caffeine
-defaults write com.lightheadsw.caffeine SuppressLaunchMessage -bool true
-
-# ClipMenu
-defaults write com.naotaka.ClipMenu maxHistorySize -int 100
-defaults write com.naotaka.ClipMenu numberOfItemsPlaceInline -int 10
-defaults write com.naotaka.ClipMenu showAlertBeforeClearHistory -bool false
-defaults write com.naotaka.ClipMenu showStatusItem -bool false
-
-# Firefox
-defaults write org.mozilla.firefox AppleShowScrollBars -string "Automatic"
 
 echo "Done. Note that some of these changes require a logout/restart to take effect."
 # vim:tw=0

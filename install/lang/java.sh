@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-###############################################################################
-#                             ANDROID + Java                                  #
-###############################################################################
+#     $$$$$\  $$$$$$\  $$\    $$\  $$$$$$\  
+#     \__$$ |$$  __$$\ $$ |   $$ |$$  __$$\ 
+#        $$ |$$ /  $$ |$$ |   $$ |$$ /  $$ |
+#        $$ |$$$$$$$$ |\$$\  $$  |$$$$$$$$ |
+#  $$\   $$ |$$  __$$ | \$$\$$  / $$  __$$ |
+#  $$ |  $$ |$$ |  $$ |  \$$$  /  $$ |  $$ |
+#  \$$$$$$  |$$ |  $$ |   \$  /   $$ |  $$ |
+#   \______/ \__|  \__|    \_/    \__|  \__|
 
 # Ask for the administrator password upfront.
 sudo -v
@@ -23,32 +28,28 @@ brew update
 
 cask_formulas=(
 	# Install java and android IDEs
-	java
 	android-studio
     intellij-idea-ce
-	intel-haxm # For hardware acceleration
 	jd-gui # For java decompilation.
 )
 
 formulas=(
 	# install java and android dev tools
-	ant
-	maven
 	gradle
-	android-sdk
-	android-ndk
-	apktool  # For android reverse engineering.
-	dex2jar  # For android reverse engineering.
-	jadx     # For android reverse engineering.
+	jenv
+	maven
+	openjdk
+	openjdk@11
+	openjdk@8
 )
 
-for cask_formula in "${cask_formulas[@]}"; do
-    if brew list "$cask_formula" > /dev/null 2>&1; then
-        echo "$cask_formula already installed... skipping."
-    else
-        brew cask install $cask_formula
-    fi
-done
+# for cask_formula in "${cask_formulas[@]}"; do
+#     if brew list "$cask_formula" > /dev/null 2>&1; then
+#         echo "$cask_formula already installed... skipping."
+#     else
+#         brew cask install $cask_formula
+#     fi
+# done
 
 for formula in "${formulas[@]}"; do
     if brew list "$formula" > /dev/null 2>&1; then
@@ -57,13 +58,6 @@ for formula in "${formulas[@]}"; do
         brew install $formula
     fi
 done
-
-# Install all of the Android SDK components
-#TODO: Fix it so that it does not install all the SDK components from API level 1 and UP.
-# android update sdk --no-ui
-# # Use This instead of above
-# sdkmanager "platform-tools" "platforms;android-23"
-# sdkmanager "build-tools;23.0.1"
 
 # Remove outdated versions from the cellar.
 brew cleanup
