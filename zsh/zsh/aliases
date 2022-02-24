@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-#   $$$$$$\  $$\       $$$$$$\  $$$$$$\   $$$$$$\
-#  $$  __$$\ $$ |      \_$$  _|$$  __$$\ $$  __$$\
-#  $$ /  $$ |$$ |        $$ |  $$ /  $$ |$$ /  \__|
-#  $$$$$$$$ |$$ |        $$ |  $$$$$$$$ |\$$$$$$\
-#  $$  __$$ |$$ |        $$ |  $$  __$$ | \____$$\
-#  $$ |  $$ |$$ |        $$ |  $$ |  $$ |$$\   $$ |
-#  $$ |  $$ |$$$$$$$$\ $$$$$$\ $$ |  $$ |\$$$$$$  |
-#  \__|  \__|\________|\______|\__|  \__| \______/
+#   $$$$$$\  $$\       $$$$$$\  $$$$$$\   $$$$$$\  $$$$$$$$\  $$$$$$\  
+#  $$  __$$\ $$ |      \_$$  _|$$  __$$\ $$  __$$\ $$  _____|$$  __$$\ 
+#  $$ /  $$ |$$ |        $$ |  $$ /  $$ |$$ /  \__|$$ |      $$ /  \__|
+#  $$$$$$$$ |$$ |        $$ |  $$$$$$$$ |\$$$$$$\  $$$$$\    \$$$$$$\  
+#  $$  __$$ |$$ |        $$ |  $$  __$$ | \____$$\ $$  __|    \____$$\ 
+#  $$ |  $$ |$$ |        $$ |  $$ |  $$ |$$\   $$ |$$ |      $$\   $$ |
+#  $$ |  $$ |$$$$$$$$\ $$$$$$\ $$ |  $$ |\$$$$$$  |$$$$$$$$\ \$$$$$$  |
+#  \__|  \__|\________|\______|\__|  \__| \______/ \________| \______/ 
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -104,15 +104,6 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
     alias "$method"="lwp-request -m '$method'"
 done
-
-# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
-alias stfu="osascript -e 'set volume output muted true'"
-alias pumpitup="osascript -e 'set volume 10'"
-
-alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
-# Kill all the tabs in Chrome to free up memory
-# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
-alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
 
 # Calculate current working directory size
 alias cwdsize="du -sh ."
