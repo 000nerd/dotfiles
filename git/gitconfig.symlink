@@ -10,9 +10,9 @@
 # gitconfig
 [user]
     name = Obsa Aba-waji
-    email = oabawaji@gmail.com
+    email = oaba-waji@nettracer.aero
 [github]
-    user = 21stBam
+    user = oabawaji
 [alias]
     # Aliases Go Here
 [apply]
