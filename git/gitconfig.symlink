@@ -9,7 +9,7 @@
 
 # gitconfig
 [user]
-    name = Obsa Aba-waji
+	name = Obsa Aba-waji
     email = oaba-waji@nettracer.aero
 [github]
     user = oabawaji
