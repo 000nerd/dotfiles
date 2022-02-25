@@ -7,8 +7,7 @@ Contains:
   3. [Bash settings]()
   4. []()
   5. []()
-  6. Custom [/etc/hosts](https://github.com/mihaliak/dotfiles/blob/master/etc/hosts) file with blocked Ads, Trackers & 🔥 stuff on internet
-  8. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
+  6. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
   <!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
   10. Applications (alfred, google-chrome, slack, spotify, sublime-text, vlc, phpstorm, sequel-pro, filezilla, postman, iterm2, teamviewer, lastpass, spectacle, appcleaner, skype) -->
 
@@ -21,10 +20,10 @@ On fresh installation of MacOS:
 
 Clone and install dotfiles:
 
-    git clone https://github.com/SouthernBlackNerd/dotfiles.git ~/.dotfiles
+    git clone https://github.com/21stBam/dotfiles.git ~/.dotfiles
     cd ~/.dotfiles
     chmod +wx setup.sh
-    chmod -R +wx ~/dotfiles/bin
+    chmod -R +wx ~/dotfiles/bins
     ./setup.sh
 
 ## Additional steps
@@ -78,4 +77,3 @@ https://github.com/0xadada/dotfiles
 *TODO :Fixes needed to be made *
  1) Mapping Trackpad for Right Click
  2) Changing UI to Dark theme
- 5) Update just the most recent for android sdk. do not need all the API levels
