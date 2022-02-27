@@ -46,15 +46,26 @@
     gitproxy = i2p-socks-proxy for i2p
     excludesfile = ~/.gitignore_global
     pager = less -FXRS -x2
-    editor = vim
+    editor = code --wait
     whitespace = cr-at-eol
 [credential]
 	helper = osxkeychain
+[diff]
+  tool = vscode
+[difftool "vscode"]
+  cmd = code --wait --diff $LOCAL $REMOTE
 [grep]
     extendRegexp = true
     lineNumber = true
+[merge]
+  tool = vscode
+[mergetool "vscode"]
+  cmd = code --wait $MERGED
 [rebase]
 	instructionFormat = "[%an - %ar] %s"
 	autoStash = true
 [rerere]
     enabled = true
+
+
+
