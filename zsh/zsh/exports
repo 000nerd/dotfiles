@@ -17,8 +17,9 @@ export LC_ALL="en_US.UTF-8"
 export HOMEBREW_NO_ANALYTICS=1
 
 # Java variables
-export MAVEN_HOME=/usr/local/opt/maven
-export GRADLE_HOME=/usr/local/opt/gradle
+export MAVEN_HOME="$(brew --prefix)/opt/maven"
+export GRADLE_HOME="$(brew --prefix)/opt/gradle"
+export JBOSS_HOME="$HOME/Workspaces/Jobs/nettracer/NetTracer-JBoss/wildfly-11.0.0.Final"
 
 # Node variables
 # Source NVM

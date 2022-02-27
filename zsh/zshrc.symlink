@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
-#  $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$\   $$$$$$\  
-#  \____$$  |$$  __$$\ $$ |  $$ |$$  __$$\ $$  __$$\ 
+#  $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$\   $$$$$$\
+#  \____$$  |$$  __$$\ $$ |  $$ |$$  __$$\ $$  __$$\
 #      $$  / $$ /  \__|$$ |  $$ |$$ |  $$ |$$ /  \__|
-#     $$  /  \$$$$$$\  $$$$$$$$ |$$$$$$$  |$$ |      
-#    $$  /    \____$$\ $$  __$$ |$$  __$$< $$ |      
-#   $$  /    $$\   $$ |$$ |  $$ |$$ |  $$ |$$ |  $$\ 
+#     $$  /  \$$$$$$\  $$$$$$$$ |$$$$$$$  |$$ |
+#    $$  /    \____$$\ $$  __$$ |$$  __$$< $$ |
+#   $$  /    $$\   $$ |$$ |  $$ |$$ |  $$ |$$ |  $$\
 #  $$$$$$$$\ \$$$$$$  |$$ |  $$ |$$ |  $$ |\$$$$$$  |
-#  \________| \______/ \__|  \__|\__|  \__| \______/ 
+#  \________| \______/ \__|  \__|\__|  \__| \______/
 
 
 # Load the shell dotfiles, and then some:
@@ -42,20 +42,20 @@ alias rbrew='arch -x86_64 /usr/local/bin/brew'
 #JENV Eval
 eval "$(jenv init -)"
 
-# # >>> conda initialize >>>
-# # !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-#         . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# # <<< conda initialize <<<
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -89,7 +89,7 @@ HYPHEN_INSENSITIVE="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
@@ -117,16 +117,11 @@ HYPHEN_INSENSITIVE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git macos sudo copydir copyfile dirhistory extract yarn mvn nvm jira)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then

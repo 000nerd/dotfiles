@@ -1,21 +1,17 @@
 #!/usr/bin/env zsh
 
-#  $$$$$$$$\ $$\   $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ $$$$$$\  $$$$$$\  $$\   $$\  $$$$$$\  
-#  $$  _____|$$ |  $$ |$$$\  $$ |$$  __$$\\__$$  __|\_$$  _|$$  __$$\ $$$\  $$ |$$  __$$\ 
+#  $$$$$$$$\ $$\   $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ $$$$$$\  $$$$$$\  $$\   $$\  $$$$$$\
+#  $$  _____|$$ |  $$ |$$$\  $$ |$$  __$$\\__$$  __|\_$$  _|$$  __$$\ $$$\  $$ |$$  __$$\
 #  $$ |      $$ |  $$ |$$$$\ $$ |$$ /  \__|  $$ |     $$ |  $$ /  $$ |$$$$\ $$ |$$ /  \__|
-#  $$$$$\    $$ |  $$ |$$ $$\$$ |$$ |        $$ |     $$ |  $$ |  $$ |$$ $$\$$ |\$$$$$$\  
-#  $$  __|   $$ |  $$ |$$ \$$$$ |$$ |        $$ |     $$ |  $$ |  $$ |$$ \$$$$ | \____$$\ 
+#  $$$$$\    $$ |  $$ |$$ $$\$$ |$$ |        $$ |     $$ |  $$ |  $$ |$$ $$\$$ |\$$$$$$\
+#  $$  __|   $$ |  $$ |$$ \$$$$ |$$ |        $$ |     $$ |  $$ |  $$ |$$ \$$$$ | \____$$\
 #  $$ |      $$ |  $$ |$$ |\$$$ |$$ |  $$\   $$ |     $$ |  $$ |  $$ |$$ |\$$$ |$$\   $$ |
 #  $$ |      \$$$$$$  |$$ | \$$ |\$$$$$$  |  $$ |   $$$$$$\  $$$$$$  |$$ | \$$ |\$$$$$$  |
-#  \__|       \______/ \__|  \__| \______/   \__|   \______| \______/ \__|  \__| \______/ 
+#  \__|       \______/ \__|  \__| \______/   \__|   \______| \______/ \__|  \__| \______/
 
 # Create a new directory and enter it
 function md() {
     mkdir -p "$@" && cd "$@"
-}
-
-function hist() {
-    history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
 # find shorthand
@@ -31,40 +27,11 @@ function gitexport(){
 
 # Streamlink functions
 function slw() {
-    streamlink -O "$1" best | tee "$2_$( date +%Y%m%d_%H%M%S ).ts" | vlc - 
+    streamlink -O "$1" best | tee "$2_$( date +%Y%m%d_%H%M%S ).ts" | vlc -
 }
 
 # Escape UTF-8 characters into their 3-byte format
 function escape() {
     printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
     echo # newline
-}
-
-# Decode \x{ABCD}-style Unicode escape sequences
-function unidecode() {
-    perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
-    echo # newline
-}
-
-# Extract archives - use: extract <file>
-# Credits to http://dotfiles.org/~pseup/.bashrc
-function extract() {
-    if [ -f $1 ] ; then
-        case $1 in
-            *.tar.bz2) tar xjf $1 ;;
-            *.tar.gz) tar xzf $1 ;;
-            *.bz2) bunzip2 $1 ;;
-            *.rar) rar x $1 ;;
-            *.gz) gunzip $1 ;;
-            *.tar) tar xf $1 ;;
-            *.tbz2) tar xjf $1 ;;
-            *.tgz) tar xzf $1 ;;
-            *.zip) unzip $1 ;;
-            *.Z) uncompress $1 ;;
-            *.7z) 7z x $1 ;;
-            *) echo "'$1' cannot be extracted via extract()" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
 }

@@ -1,18 +1,18 @@
 #!/usr/bin/env zsh
 
-#   $$$$$$\  $$\       $$$$$$\  $$$$$$\   $$$$$$\  $$$$$$$$\  $$$$$$\  
-#  $$  __$$\ $$ |      \_$$  _|$$  __$$\ $$  __$$\ $$  _____|$$  __$$\ 
+#   $$$$$$\  $$\       $$$$$$\  $$$$$$\   $$$$$$\  $$$$$$$$\  $$$$$$\
+#  $$  __$$\ $$ |      \_$$  _|$$  __$$\ $$  __$$\ $$  _____|$$  __$$\
 #  $$ /  $$ |$$ |        $$ |  $$ /  $$ |$$ /  \__|$$ |      $$ /  \__|
-#  $$$$$$$$ |$$ |        $$ |  $$$$$$$$ |\$$$$$$\  $$$$$\    \$$$$$$\  
-#  $$  __$$ |$$ |        $$ |  $$  __$$ | \____$$\ $$  __|    \____$$\ 
+#  $$$$$$$$ |$$ |        $$ |  $$$$$$$$ |\$$$$$$\  $$$$$\    \$$$$$$\
+#  $$  __$$ |$$ |        $$ |  $$  __$$ | \____$$\ $$  __|    \____$$\
 #  $$ |  $$ |$$ |        $$ |  $$ |  $$ |$$\   $$ |$$ |      $$\   $$ |
 #  $$ |  $$ |$$$$$$$$\ $$$$$$\ $$ |  $$ |\$$$$$$  |$$$$$$$$\ \$$$$$$  |
-#  \__|  \__|\________|\______|\__|  \__| \______/ \________| \______/ 
+#  \__|  \__|\________|\______|\__|  \__| \______/ \________| \______/
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
     colorflag="--color"
-else # OS X `ls`
+else # MacOS `ls`
     colorflag="-G"
 fi
 
@@ -76,9 +76,6 @@ alias badge="tput bel"
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
-# Kill docker-machine VM with fire
-alias puff-down='docker-machine stop docker-vm && docker-machine rm docker-vm && docker-machine create --driver virtualbox --virtualbox-memory "2048"  docker-vm && docker-machine start docker-vm && echo eval \$\(docker-machine env docker-vm\)'
-
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
 # Also, run periodic maintenence tasks
@@ -110,12 +107,6 @@ alias cwdsize="du -sh ."
 
 alias battery="acpi -V"
 
-# Stopwatch
-alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
-
-# Enhanced WHOIS lookups
-alias whois="whois -h whois-servers.net"
-
 # Clean up LaunchServices to remove duplicates in the “Open With” menu
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 alias lslist="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -dump"
@@ -123,10 +114,10 @@ alias lslist="/System/Library/Frameworks/CoreServices.framework/Frameworks/Launc
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
 
-# OS X has no `md5sum`, so use `md5` as a fallback
+# MacOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
 
-# OS X has no `sha1sum`, so use `shasum` as a fallback
+# MacOS has no `sha1sum`, so use `shasum` as a fallback
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
 alias jd-gui="open -a jd-gui"
@@ -136,3 +127,13 @@ alias ta='tmux attach'
 alias tls='tmux ls'
 alias tat='tmux attach -t'
 alias tns='tmux new-session -s'
+
+alias lol=git log --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(green)%cd(%cr) %C(bold blue)<%an>%Creset' --date=short --all
+
+# Maven aliases
+alias mci='mvn -T1C clean install'
+alias mcint='mvn -T1C clean install -DskipTests=true -Djacoco.skip=true -Dpmd.skip=true -Dcpd.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+alias mcomp='mvn -T1C compile -Dcheckstyle.skip=true'
+alias mcpd='mvn -T1C pmd:cpd-check'
+alias mpmd='mvn -T1C pmd:check'
+alias mspotbugs='mvn -T1C org.commonjava.maven.plugins:directory-maven-plugin:0.3.1:highest-basedir@directories spotbugs:check'
