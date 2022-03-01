@@ -9,11 +9,6 @@
 #  $$ |      \$$$$$$  |$$ | \$$ |\$$$$$$  |  $$ |   $$$$$$\  $$$$$$  |$$ | \$$ |\$$$$$$  |
 #  \__|       \______/ \__|  \__| \______/   \__|   \______| \______/ \__|  \__| \______/
 
-# Create a new directory and enter it
-function md() {
-    mkdir -p "$@" && cd "$@"
-}
-
 # find shorthand
 function f() {
     find . -name "$1"
