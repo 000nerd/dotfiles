@@ -20,20 +20,20 @@ unset file;
 #                                 PATHS                                       #
 ###############################################################################
 
-export PATH=~/.dotfiles/bins:$PATH
+export PATH="$HOME/.dotfiles/bins:$PATH"
 
 # JENV Path
 export PATH="$HOME/.jenv/bin:$PATH"
 # Update your paths
-export PATH=$GRADLE_HOME/bin:$PATH
-export PATH=$MAVEN_HOME/bin:$PATH
+export PATH="$GRADLE_HOME/bin:$PATH"
+export PATH="$MAVEN_HOME/bin:$PATH"
 
 # Will switch from miniforge to anaconda when m1 support is added
 # Switch export then
 # #export PATH=~/anaconda3/bin:$PATH
 
 # Add XCode bin to the `$PATH`
-export PATH=$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin
+export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
 
 alias rbrew='arch -x86_64 /usr/local/bin/brew'
 
@@ -133,12 +133,3 @@ source $ZSH/oh-my-zsh.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
