@@ -24,9 +24,6 @@ fi
 echo -e "\n\nInstalling python enviroment"
 echo "=============================="
 
-# Make sure we’re using the latest Homebrew.
-brew update
-
 # Install Python
 brew install python
 # Install Conda. Will switch to anaconda or miniconda when apple silicon ready

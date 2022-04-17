@@ -24,9 +24,6 @@ fi
 echo -e "\n\nInstalling JavaScript enviroment"
 echo "=============================="
 
-# Make sure we’re using the latest Homebrew.
-brew update
-
 # Install nvm for node versions
 brew install nvm
 

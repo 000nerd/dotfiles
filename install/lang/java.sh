@@ -21,11 +21,8 @@ if test ! "$(which brew)"; then
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-echo -e "\n\nInstalling Java and Android enviroment"
+echo -e "\n\nInstalling Java enviroment"
 echo "=============================="
-
-# Make sure we’re using the latest Homebrew.
-brew update
 
 formulas=(
 	# install java and android dev tools
