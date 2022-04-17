@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+set -euxo pipefail
 
-#  $$$$$$$\ $$\     $$\ $$$$$$$$\ $$\   $$\  $$$$$$\  $$\   $$\ 
+#  $$$$$$$\ $$\     $$\ $$$$$$$$\ $$\   $$\  $$$$$$\  $$\   $$\
 #  $$  __$$\\$$\   $$  |\__$$  __|$$ |  $$ |$$  __$$\ $$$\  $$ |
 #  $$ |  $$ |\$$\ $$  /    $$ |   $$ |  $$ |$$ /  $$ |$$$$\ $$ |
 #  $$$$$$$  | \$$$$  /     $$ |   $$$$$$$$ |$$ |  $$ |$$ $$\$$ |
@@ -15,26 +16,24 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if test ! $(which brew); then
+if test ! "$(which brew)"; then
     echo "Installing homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 echo -e "\n\nInstalling python enviroment"
 echo "=============================="
+
+# Make sure we’re using the latest Homebrew.
 brew update
+
+# Install Python
 brew install python
-brew install pipenv
-
-# Install IDE
-brew cask install pycharm-ce
-# brew cask install anaconda
-
-pipenv --python=$(conda run which python) --site-packages
+# Install Conda. Will switch to anaconda or miniconda when apple silicon ready
+brew install --cask miniforge
 
 packages=(
     black
-    bpython
     coverage[toml]
     flake8
     flake8-bandit
@@ -43,7 +42,7 @@ packages=(
     flake8-docstrings
     flake8-import-order
     nox
-    ptpython
+    poetry
     pytest
     pytest-cov
     pytest-mock
@@ -51,9 +50,9 @@ packages=(
     streamlink
 )
 
-# for package in "${packages[@]}"; do
-# 	pip install "${packages[@]}" --upgrade  #Didn't work on first go
-# done
+for package in "${packages[@]}"; do
+	pip install --upgrade "$package"
+done
 
 # Remove outdated versions from the cellar.
 brew cleanup

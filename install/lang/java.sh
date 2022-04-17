@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+set -euxo pipefail
 
-#     $$$$$\  $$$$$$\  $$\    $$\  $$$$$$\  
-#     \__$$ |$$  __$$\ $$ |   $$ |$$  __$$\ 
+#     $$$$$\  $$$$$$\  $$\    $$\  $$$$$$\
+#     \__$$ |$$  __$$\ $$ |   $$ |$$  __$$\
 #        $$ |$$ /  $$ |$$ |   $$ |$$ /  $$ |
 #        $$ |$$$$$$$$ |\$$\  $$  |$$$$$$$$ |
 #  $$\   $$ |$$  __$$ | \$$\$$  / $$  __$$ |
@@ -15,7 +16,7 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if test ! $(which brew); then
+if test ! "$(which brew)"; then
     echo "Installing homebrew"
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
@@ -26,38 +27,32 @@ echo "=============================="
 # Make sure we’re using the latest Homebrew.
 brew update
 
-cask_formulas=(
-	# Install java and android IDEs
-	android-studio
-    intellij-idea-ce
-	jd-gui # For java decompilation.
-)
-
 formulas=(
 	# install java and android dev tools
 	gradle
 	jenv
 	maven
-	openjdk
 	openjdk@11
-	openjdk@8
+    openjdk@17
 )
-
-# for cask_formula in "${cask_formulas[@]}"; do
-#     if brew list "$cask_formula" > /dev/null 2>&1; then
-#         echo "$cask_formula already installed... skipping."
-#     else
-#         brew cask install $cask_formula
-#     fi
-# done
 
 for formula in "${formulas[@]}"; do
     if brew list "$formula" > /dev/null 2>&1; then
         echo "$formula already installed... skipping."
     else
-        brew install $formula
+        brew install "$formula"
     fi
 done
+
+eval "$(jenv init -)"
+
+jenv enable-plugin export
+
+sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+sudo ln -sfn "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+
+jenv add "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home
+jenv add "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 
 # Remove outdated versions from the cellar.
 brew cleanup
