@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-#  $$\      $$\  $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\  
-#  $$$\    $$$ |$$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\ 
+#  $$\      $$\  $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\
+#  $$$\    $$$ |$$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\
 #  $$$$\  $$$$ |$$ /  $$ |$$ /  \__|$$ /  $$ |$$ /  \__|
-#  $$\$$\$$ $$ |$$$$$$$$ |$$ |      $$ |  $$ |\$$$$$$\  
-#  $$ \$$$  $$ |$$  __$$ |$$ |      $$ |  $$ | \____$$\ 
+#  $$\$$\$$ $$ |$$$$$$$$ |$$ |      $$ |  $$ |\$$$$$$\
+#  $$ \$$$  $$ |$$  __$$ |$$ |      $$ |  $$ | \____$$\
 #  $$ |\$  /$$ |$$ |  $$ |$$ |  $$\ $$ |  $$ |$$\   $$ |
 #  $$ | \_/ $$ |$$ |  $$ |\$$$$$$  | $$$$$$  |\$$$$$$  |
-#  \__|     \__|\__|  \__| \______/  \______/  \______/ 
+#  \__|     \__|\__|  \__| \______/  \______/  \______/
 
 echo -e "\n\nChanging macOS settings"
 echo "=============================="
@@ -34,20 +34,12 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
-
-
-# Reveal IP address, hostname, OS version, etc. when clicking the clock
-# in the login window
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
-# Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on
-
-# Set the display to sleep after 30 minutes
-sudo systemsetup -setdisplaysleep 30
-
-# Never go into computer sleep mode
-sudo systemsetup -setcomputersleep Off > /dev/null
+# Replace Time Machine with Volume on the menu bar
+defaults write com.apple.systemuiserver menuExtras -array \
+    "/System/Library/CoreServices/Menu Extras/AirPort.menu" \
+    "/System/Library/CoreServices/Menu Extras/Volume.menu" \
+    "/System/Library/CoreServices/Menu Extras/Battery.menu" \
+    "/System/Library/CoreServices/Menu Extras/Clock.menu"
 
 # Disable smart quotes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
@@ -58,95 +50,11 @@ defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 # Enable Dark Mode
 defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
 
-# ###############################################################################
-# # OS X Lockdown security tweaks
-# # read more: https://github.com/SummitRoute/osxlockdown
-# ###############################################################################
-# # Disable infrared receiver
-# sudo defaults write /Library/Preferences/com.apple.driver.AppleIRController DeviceEnabled -int 0
-
-# # Disable AirDrop
-# defaults write com.apple.NetworkBrowser DisableAirDrop -bool YES
-
 # # Set time and date automatically
-# sudo systemsetup setusingnetworktime on
+sudo systemsetup setusingnetworktime on
 
-# # Disable remote apple events
-# sudo systemsetup -setremoteappleevents off
-
-# # Disable remote login
-# sudo systemsetup -f -setremotelogin off
-
-# # Disable screen sharing
-# launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist
-
-# # Disable printer sharing
-# cupsctl --no-share-printers
-
-# # Disable wake on network access
-# sudo systemsetup -setwakeonnetworkaccess off
-
-# # Disable file sharing
-# launchctl unload -w /System/Library/LaunchDaemons/com.apple.AppleFileServer.plist && launchctl unload -w /System/Library/LaunchDaemons/com.apple.smbd.plist
-
-# # Disable remote management (must be root)
-# sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -stop
-
-# # Destroy file vault key when going into standby
-# sudo pmset -a destroyfvkeyonstandby 1
-
-# # Require an administrator password to access system-wide preferences
-# security authorizationdb read system.preferences > /tmp/system.preferences.plist &&/usr/libexec/PlistBuddy -c \"Set :shared false\" /tmp/system.preferences.plist && security authorizationdb write system.preferences < /tmp/system.preferences.plist
-
-# # Remove duplicates in the “Open With” menu (also see `lscleanup` alias)
-# /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
-
-# # Display ASCII control characters using caret notation in standard text views
-# # Try e.g. `cd /tmp; unidecode "\x{0000}" > cc.txt; open -e cc.txt`
-# # defaults write NSGlobalDomain NSTextShowsControlCharacters -bool true
-
-# # Disable Resume system-wide
-# defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
-
-# # Disable automatic termination of inactive apps
-# defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
-
-# # Disable the crash reporter
-# defaults write com.apple.CrashReporter DialogType -string "none"
-
-# # Set Help Viewer windows to non-floating mode
-# defaults write com.apple.helpviewer DevMode -bool true
-
-# # Fix for the ancient UTF-8 bug in QuickLook (http://mths.be/bbo)
-# # Commented out, as this is known to cause problems in various Adobe apps :(
-# # See https://github.com/mathiasbynens/dotfiles/issues/237
-# #echo "0x08000100:0" > ~/.CFUserTextEncoding
-
-# # Reveal IP address, hostname, OS version, etc. when clicking the clock
-# # in the login window
-# sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
-# # Restart automatically if the computer freezes
-# sudo systemsetup -setrestartfreeze on
-
-# # Never go into computer sleep mode
-# sudo systemsetup -setcomputersleep Off > /dev/null
-
-# # Enable automatic software update checks
-# sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool TRUE
-# # Enable automatic software update installation
-# sudo defaults write /Library/Preferences/com.apple.commerce AutoUpdate -bool TRUE
-# # Check for software updates daily, not just once per week
-# defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
-
-# # Disable Notification Center and remove the menu bar icon
-# # launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
-
-# # Disable smart quotes as they’re annoying when typing code
-# defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
-
-# # Disable smart dashes as they’re annoying when typing code
-# defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+# Automatically quit printer app once the print jobs complete
+defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
 # # Set a custom wallpaper image. `DefaultDesktop.jpg` is already a symlink, and
 # # all wallpapers are in `/Library/Desktop Pictures/`. The default is `Wave.jpg`.
@@ -154,28 +62,82 @@ defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
 # #sudo rm -rf /System/Library/CoreServices/DefaultDesktop.jpg
 # #sudo ln -s /path/to/your/image /System/Library/CoreServices/DefaultDesktop.jpg
 
+###############################################################################
+# Security                                                                    #
+# read more: https://github.com/kristovatlas/osx-config-check                 #
+#            https://github.com/drduh/macOS-Security-and-Privacy-Guide        #
+###############################################################################
 
+# Disable the crash reporter
+defaults write com.apple.CrashReporter DialogType -string "none"
+
+# # Disable remote login
+sudo systemsetup -f -setremotelogin off
+
+# # Destroy file vault key when going into standby
+# sudo pmset -a destroyfvkeyonstandby 1
+
+# Modify if we want to use evict file vault keys when going into standby
+# May be redudant with APFS
+# sudo pmset -a powernap 0
+# sudo pmset -a standby 0
+# sudo pmset -a standbydelay 0
+# sudo pmset -a autopoweroff 0
+
+# Disable the guest account
+sudo sysadminctl -guestAccount off &> /dev/null
+
+# Restart automatically if the computer freezes
+sudo systemsetup -setrestartfreeze on
+
+# # Enable automatic software update checks
+sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool TRUE
+# # Check for software updates daily, not just once per week
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
+# Download newly available updates in background
+defaults write com.apple.SoftwareUpdate AutomaticDownload -int 1
+# Install System data files & security updates
+defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
+
+# Require password immediately after sleep or screen saver begins
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+# Disable ad tracking library: System Preferences → Security & Privacy → Privacy → Advertising
+defaults write com.apple.AdLib forceLimitAdTracking -bool true
+# NOTE: https://github.com/blochberger/IDFA#facts
+# Override ad tracking device ID with a zeroed ID
+defaults write com.apple.AdLib AD_DEVICE_IDFA -string '00000000-0000-0000-0000-000000000000'
+
+# Firewall is enabled. (State = 1)
+# 0 = off
+# 1 = on for specific services
+# 2 = on for essential services
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+
+# Turning on log mode
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+
+# Stealth mode enabled
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
 
 ###############################################################################
 # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
 ###############################################################################
+
+# Trackpad tracking speed
+# defaults write NSGlobalDomain com.apple.trackpad.scaling -float 0.7
 
 # Trackpad: enable tap to click for this user and for the login screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-#
-# NOT WORKING
-#
 # Trackpad: map bottom right corner to right-click
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
-
-# Disable “natural” (Lion-style) scrolling
-defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
@@ -190,8 +152,6 @@ defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 # Follow the keyboard focus while zoomed in
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
-# Automatically illuminate built-in MacBook keyboard in low light
-defaults write com.apple.BezelServices kDim -bool true
 # Turn off keyboard illumination when computer is not used for 5 minutes
 defaults write com.apple.BezelServices kDimTime -int 300
 
@@ -210,8 +170,7 @@ defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Enable subpixel font rendering on non-Apple LCDs
-defaults write NSGlobalDomain AppleFontSmoothing -int 2
-
+defaults write NSGlobalDomain AppleFontSmoothing -int 1
 
 ###############################################################################
 # Finder                                                                      #
@@ -227,6 +186,7 @@ defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desk
 
 # Show icons for external hard drives, servers, and removable media on the desktop
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
@@ -257,12 +217,11 @@ defaults write com.apple.finder FXPreferredViewStyle -string "icnv"
 # “General”, “Open with”, and “Sharing & Permissions”
 defaults write com.apple.finder FXInfoPanesExpanded -dict \
     General -bool true \
-    Name -bool true\
-    OpenWith -bool true \
-    Privileges -bool true
+    Name -bool true \
+    OpenWith -bool true
 
 ###############################################################################
-# Dock, Dashboard                                            #
+# Dock, Dashboard                                                             #
 ###############################################################################
 
 # Enable highlight hover effect for the grid view of a stack (Dock)
@@ -283,25 +242,37 @@ defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 # Show indicator lights for open applications in the Dock
 defaults write com.apple.dock show-process-indicators -bool true
 
-# Disable Dashboard
-defaults write com.apple.dashboard mcx-disabled -bool true
-
-# Don’t show Dashboard as a Space
-defaults write com.apple.dock dashboard-in-overlay -bool true
-
 # Don’t automatically rearrange Spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 
 # Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
 
+# Don’t show recent applications in Dock
+defaults write com.apple.dock show-recents -bool false
+
+# Make Dock icons of hidden applications translucent
+defaults write com.apple.dock showhidden -bool true
+
 # Change minimize/maximize window effect
 defaults write com.apple.dock mineffect -string "genie"
 
-# Add iOS & Watch Simulator to Launchpad
-sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app" "/Applications/Simulator.app"
-sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator (Watch).app" "/Applications/Simulator (Watch).app"
+###############################################################################
+# Activity Monitor                                                            #
+###############################################################################
 
+# Show the main window when launching Activity Monitor
+defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
+
+# Visualize CPU usage in the Activity Monitor Dock icon
+defaults write com.apple.ActivityMonitor IconType -int 5
+
+# Show all processes in Activity Monitor
+defaults write com.apple.ActivityMonitor ShowCategory -int 0
+
+# Sort Activity Monitor results by CPU usage
+defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+defaults write com.apple.ActivityMonitor SortDirection -int 0
 
 ###############################################################################
 # Safari & WebKit                                                             #
@@ -310,6 +281,9 @@ sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator (
 # Privacy: don’t send search queries to Apple
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
 defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+
+# Show the full URL in the address bar (note: this still hides the scheme)
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
 # Press Tab to highlight each item on a web page
 defaults write com.apple.Safari WebKitTabToLinksPreferenceKey -bool true
@@ -323,9 +297,6 @@ defaults write com.apple.Safari ShowFavoritesBar -bool false
 
 # Hide Safari’s sidebar in Top Sites
 defaults write com.apple.Safari ShowSidebarInTopSites -bool false
-
-# Enable Safari’s debug menu
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 
 # Make Safari’s search banners default to Contains instead of Starts With
 defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
@@ -362,10 +333,9 @@ defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
 
-# Enable “focus follows mouse” for Terminal.app and all X11 apps
+# Enable “focus follows mouse” for Terminal.app
 # i.e. hover over a window and start typing in it without clicking first
 defaults write com.apple.terminal FocusFollowsMouse -bool true
-#defaults write org.x.X11 wm_ffm -bool true
 
 # Enable Secure Keyboard Entry in Terminal.app
 # See: https://security.stackexchange.com/a/47786/8918
@@ -375,7 +345,8 @@ defaults write com.apple.terminal SecureKeyboardEntry -bool true
 defaults write com.apple.Terminal ShowLineMarks -int 0
 
 # Install the Solarized Dark theme for iTerm
-open "${HOME}/.dotfiles/iTerm2/gruvbox-dark.itermcolors"
+open "${HOME}/.dotfiles/themes/iTerm/gruvbox-light.itermcolors"
+open "${HOME}/.dotfiles/themes/iTerm/gruvbox-dark.itermcolors"
 
 # Don’t display the annoying prompt when quitting iTerm
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
@@ -390,23 +361,14 @@ defaults write com.apple.dt.Xcode DVTTextEditorTrimTrailingWhitespace -bool true
 # Trim whitespace only lines
 defaults write com.apple.dt.Xcode DVTTextEditorTrimWhitespaceOnlyLines -bool true
 
-# Don't show completion on escape
-defaults write com.apple.dt.Xcode DVTTextShowCompletionsOnEsc -bool false
-
 # Show line numbers
 defaults write com.apple.dt.Xcode DVTTextShowLineNumbers -bool true
-
-# Hide the code folding ribbon
-defaults write com.apple.dt.Xcode DVTTextShowFoldingSidebar -bool false
 
 # Enable automatic updates
 defaults write com.apple.dt.Xcode DVTDownloadableAutomaticUpdate -bool true
 
 # Live issues
 defaults write com.apple.dt.Xcode IDEEnableLiveIssues -bool true
-
-# Continue building after errors
-defaults write com.apple.dt.Xcode IDEBuildingContinueBuildingAfterErrors -bool true
 
 # Setup page guide
 defaults write com.apple.dt.Xcode DVTTextShowPageGuide -bool true
@@ -453,33 +415,66 @@ defaults write com.apple.dt.Xcode IDEDisableStateRestoration -bool true
 # be created there instead
 defaults write com.apple.dt.Xcode EnableBuildSystemLogging -bool true
 
-
-
-
-
-
 ###############################################################################
 # Transmission.app                                                            #
 ###############################################################################
 
-# Use `~/Documents/Torrents` to store incomplete downloads
-defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
-defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
-
 # Trash original torrent files
 defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
+
+# # Use `~/Documents/Torrents` to store incomplete downloads
+# defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
+# defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
+
+# # Use `~/Downloads` to store completed downloads
+# defaults write org.m0k.transmission DownloadLocationConstant -bool true
 
 # Hide the donate message
 defaults write org.m0k.transmission WarningDonate -bool false
 # Hide the legal disclaimer
 defaults write org.m0k.transmission WarningLegal -bool false
 
-# IP block list.
-# Source: https://giuliomac.wordpress.com/2014/02/19/best-blocklist-for-transmission/
-defaults write org.m0k.transmission BlocklistNew -bool true
-defaults write org.m0k.transmission BlocklistURL -string "http://john.bitsurge.net/public/biglist.p2p.gz"
-defaults write org.m0k.transmission BlocklistAutoUpdate -bool true
+# Randomize port on launch
+defaults write org.m0k.transmission RandomPort -bool true
 
+###############################################################################
+# ZSH                                                                         #
+###############################################################################
+
+# Download ZSH Theme
+curl -L https://raw.githubusercontent.com/21stBam/gruvbox-zsh/master/gruvbox.zsh-theme > ~/.oh-my-zsh/custom/themes/gruvbox.zsh-theme
+
+###############################################################################
+# 21stBam                                                                     #
+###############################################################################
+
+# # Set a custom user account image
+# dscl . delete "${HOME}" JPEGPhoto
+# dscl . delete "${HOME}" Picture
+# sudo dscl . create "${HOME}" Picture "${PWD}/avatar.jpg"
+
+# # Set a dark gray wallpaper on all desktops
+# if [[ '10.13' =~ ${os_release} ]]; then
+#   # High Sierra
+#   osascript -e 'tell application "System Events" to set picture of every desktop to "/Library/Desktop Pictures/Solid Colors/Solid Gray Pro Ultra Dark.png"'
+# fi
+# if [[ '10.14' =~ ${os_release} ]]; then
+#   # Mojave
+#   osascript -e 'tell application "System Events" to set picture of every desktop to "/Library/Desktop Pictures/Solid Colors/Stone.png"'
+# fi
+# if [[ '10.15' =~ ${os_release} ]]; then
+#   # Catalina
+#   osascript -e 'tell application "System Events" to set picture of every desktop to "/System/Library/Desktop Pictures/Solid Colors/Stone.png"'
+# fi
+
+# # Add AnyBar to user login items
+# osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/AnyBar.app", hidden:false}' 1> /dev/null
+
+# # Add Rectangle to login items
+# osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Rectangle.app", hidden:false}' 1> /dev/null
+
+# # Add Resilio Sync to login items
+# osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Resilio Sync.app", hidden:false}' 1> /dev/null
 
 ###############################################################################
 # Kill affected applications                                                  #
@@ -488,7 +483,8 @@ defaults write org.m0k.transmission BlocklistAutoUpdate -bool true
 for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
 	"Dock" "Finder" "Google Chrome" "Mail" "Messages" \
 	"Photos" "Safari" "SystemUIServer" \
-	"Transmission" "Twitter" "iCal"; do
+	"Transmission"; do
 	killall "${app}" &> /dev/null
 done
+
 echo "Done. Note that some of these changes require a logout/restart to take effect."
