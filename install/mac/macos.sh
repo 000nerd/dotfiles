@@ -26,10 +26,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ###############################################################################
 
 # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "iObsa"
-sudo scutil --set HostName "iObsa"
-sudo scutil --set LocalHostName "iObsa"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "iObsa"
+read -r -p "Name this computer (e.g. iObsa Air): " device
+sudo scutil --set ComputerName "${device}"
+sudo scutil --set HostName "${device}"
+sudo scutil --set LocalHostName "${device}"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${device}"
 
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
@@ -91,6 +92,7 @@ sudo sysadminctl -guestAccount off &> /dev/null
 sudo systemsetup -setrestartfreeze on
 
 # # Enable automatic software update checks
+softwareupdate --schedule on
 sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool TRUE
 # # Check for software updates daily, not just once per week
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
@@ -227,8 +229,8 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
 
-# Set the icon size of Dock items to 63 pixels
-defaults write com.apple.dock tilesize -int 63
+# Set the icon size of Dock items to 48 pixels
+defaults write com.apple.dock tilesize -int 48
 
 # Set the Dock magnification off
 defaults write com.apple.dock magnification -bool false
