@@ -73,6 +73,13 @@ https://github.com/mathiasbynens/dotfiles
 https://github.com/nicknisi/dotfiles
 https://github.com/0xadada/dotfiles
 
+
+TODOs: 
+
 Sheldon Plugin Manager
 https://github.com/denysdovhan/dotfiles
+
+Outbount Network Firewall
+Little Snitch(Paid) or Lulu(free) Look at other Objective-see applications
+Block Malicious Domain Names
  -->
