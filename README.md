@@ -65,6 +65,7 @@ Clone and install dotfiles:
         new              Generate new SSH key
         host             Add host to SSH config, use --key to generate new key
         remove           Remove host from SSH config
+
 <!--
 credits:
 https://github.com/mihaliak/dotfiles
@@ -75,9 +76,3 @@ https://github.com/0xadada/dotfiles
 Sheldon Plugin Manager
 https://github.com/denysdovhan/dotfiles
  -->
-
-
-*TODO :Fixes needed to be made *
- 1) Mapping Trackpad for Right Click
- 2) Changing UI to Dark theme
- 5) Update just the most recent for android sdk. do not need all the API levels
