@@ -48,11 +48,8 @@ defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 # Disable smart dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
-# Enable Dark Mode
-defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
-
-# # Set time and date automatically
-sudo systemsetup setusingnetworktime on
+# Enable Auto Mode
+defaults write -g AppleInterfaceStyleSwitchesAutomatically -bool true
 
 # Automatically quit printer app once the print jobs complete
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
@@ -93,7 +90,6 @@ sudo systemsetup -setrestartfreeze on
 
 # # Enable automatic software update checks
 softwareupdate --schedule on
-sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool TRUE
 # # Check for software updates daily, not just once per week
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 # Download newly available updates in background
@@ -107,6 +103,8 @@ defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Disable ad tracking library: System Preferences → Security & Privacy → Privacy → Advertising
 defaults write com.apple.AdLib forceLimitAdTracking -bool true
+# Disable Identifier for Advertising
+defaults write com.apple.AdLib allowIdentifierForAdvertising -bool false
 # NOTE: https://github.com/blochberger/IDFA#facts
 # Override ad tracking device ID with a zeroed ID
 defaults write com.apple.AdLib AD_DEVICE_IDFA -string '00000000-0000-0000-0000-000000000000'
@@ -128,7 +126,7 @@ sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
 ###############################################################################
 
 # Trackpad tracking speed
-# defaults write NSGlobalDomain com.apple.trackpad.scaling -float 0.7
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 0.7
 
 # Trackpad: enable tap to click for this user and for the login screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
@@ -223,7 +221,7 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
     OpenWith -bool true
 
 ###############################################################################
-# Dock, Dashboard                                                             #
+# Dock, MenuBar                                                               #
 ###############################################################################
 
 # Enable highlight hover effect for the grid view of a stack (Dock)
@@ -469,23 +467,15 @@ curl -L https://raw.githubusercontent.com/21stBam/gruvbox-zsh/master/gruvbox.zsh
 #   osascript -e 'tell application "System Events" to set picture of every desktop to "/System/Library/Desktop Pictures/Solid Colors/Stone.png"'
 # fi
 
-# # Add AnyBar to user login items
-# osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/AnyBar.app", hidden:false}' 1> /dev/null
-
 # # Add Rectangle to login items
 # osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Rectangle.app", hidden:false}' 1> /dev/null
-
-# # Add Resilio Sync to login items
-# osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Resilio Sync.app", hidden:false}' 1> /dev/null
 
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
 
-for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-	"Dock" "Finder" "Google Chrome" "Mail" "Messages" \
-	"Photos" "Safari" "SystemUIServer" \
-	"Transmission"; do
+for app in "Activity Monitor" "Calendar" "cfprefsd" "Dock" "Finder" \
+	"Photos" "Safari" "SystemUIServer" "Transmission" "iterm2" "Xcode"; do
 	killall "${app}" &> /dev/null
 done
 
