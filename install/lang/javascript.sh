@@ -27,7 +27,10 @@ echo "=============================="
 # Install nvm for node versions
 brew install nvm
 
-mkdir ~/.nvm
+if [[ ! -d "$DIRECTORY" ]]; then
+    mkdir ~/.nvm
+fi
+
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
