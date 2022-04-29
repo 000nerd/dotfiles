@@ -27,6 +27,7 @@ export PATH="$HOME/.jenv/bin:$PATH"
 # Update your paths
 export PATH="$GRADLE_HOME/bin:$PATH"
 export PATH="$MAVEN_HOME/bin:$PATH"
+export PATH="$JBOSS_HOME/bin:$PATH"
 
 # Will switch from miniforge to anaconda when m1 support is added
 # Switch export then
