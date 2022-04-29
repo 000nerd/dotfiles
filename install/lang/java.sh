@@ -31,6 +31,7 @@ formulas=(
 	maven
 	openjdk@11
     openjdk@17
+    wildfly-as
 )
 
 for formula in "${formulas[@]}"; do
