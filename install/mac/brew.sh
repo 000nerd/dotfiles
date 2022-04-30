@@ -30,6 +30,7 @@ formulas=(
     awscli
     curl
     ffmpeg
+    gh
     git
     markdown
     mas
@@ -56,17 +57,18 @@ formulas=(
 cask_formulas=(
     # General Applications
     adapter
-    android-studio
+    # android-studio
     appcleaner
     dupeguru
     google-chrome
-    google-drive
+    # google-drive
     grandperspective
     handbrake
     iina
     intellij-idea
     # intellij-idea-ce
     iterm2
+    microsoft-teams
     mysqlworkbench
     # pgadmin4
     postman
