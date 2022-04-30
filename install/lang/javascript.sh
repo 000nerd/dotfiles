@@ -16,9 +16,10 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if test ! "$(which brew)"; then
-    echo "Installing homebrew"
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if test ! "$(command -v brew)"; then
+    info "Homebrew not installed. Installing."
+    # Run as a login shell (non-interactive) so that the script doesn't pause for user input
+    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash --login
 fi
 
 echo -e "\n\nInstalling JavaScript enviroment"
@@ -27,10 +28,9 @@ echo "=============================="
 # Install nvm for node versions
 brew install nvm
 
-if [[ ! -d "$DIRECTORY" ]]; then
+if [[ ! -d "~/.nvm" ]]; then
     mkdir ~/.nvm
 fi
-
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
@@ -39,7 +39,6 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 14
 nvm install 16
 nvm install node
-
 
 packages=(
     @angular/cli
@@ -52,6 +51,7 @@ packages=(
     vtop
     yarn
 )
+
 for package in "${packages[@]}"; do
 	npm install -g "$package"
 done

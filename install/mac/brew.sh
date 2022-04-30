@@ -16,9 +16,10 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until the script has finished.
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if test ! "$(which brew)"; then
-    echo "Installing homebrew"
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if test ! "$(command -v brew)"; then
+    info "Homebrew not installed. Installing."
+    # Run as a login shell (non-interactive) so that the script doesn't pause for user input
+    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash --login
 fi
 
 echo -e "\n\nInstalling homebrew packages..."
@@ -72,7 +73,7 @@ cask_formulas=(
     pycharm-ce
     rectangle
     the-unarchiver
-    # tibco-jaspersoft-studio
+    tibco-jaspersoft-studio
     transmission
     visual-studio-code
     vlc
