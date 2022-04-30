@@ -54,12 +54,6 @@ defaults write -g AppleInterfaceStyleSwitchesAutomatically -bool true
 # Automatically quit printer app once the print jobs complete
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
-# # Set a custom wallpaper image. `DefaultDesktop.jpg` is already a symlink, and
-# # all wallpapers are in `/Library/Desktop Pictures/`. The default is `Wave.jpg`.
-# #rm -rf ~/Library/Application Support/Dock/desktoppicture.db
-# #sudo rm -rf /System/Library/CoreServices/DefaultDesktop.jpg
-# #sudo ln -s /path/to/your/image /System/Library/CoreServices/DefaultDesktop.jpg
-
 ###############################################################################
 # Security                                                                    #
 # read more: https://github.com/kristovatlas/osx-config-check                 #
@@ -167,10 +161,6 @@ defaults write NSGlobalDomain AppleMetricUnits -bool false
 ###############################################################################
 # Screen                                                                      #
 ###############################################################################
-
-# Require password immediately after sleep or screen saver begins
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Enable subpixel font rendering on non-Apple LCDs
 defaults write NSGlobalDomain AppleFontSmoothing -int 1
@@ -450,6 +440,12 @@ curl -L https://raw.githubusercontent.com/21stBam/gruvbox-zsh/master/gruvbox.zsh
 ###############################################################################
 # 21stBam                                                                     #
 ###############################################################################
+
+# # Set a custom wallpaper image. `DefaultDesktop.jpg` is already a symlink, and
+# # all wallpapers are in `/Library/Desktop Pictures/`. The default is `Wave.jpg`.
+# #rm -rf ~/Library/Application Support/Dock/desktoppicture.db
+# #sudo rm -rf /System/Library/CoreServices/DefaultDesktop.jpg
+# #sudo ln -s /path/to/your/image /System/Library/CoreServices/DefaultDesktop.jpg
 
 # # Set a custom user account image
 # dscl . delete "${HOME}" JPEGPhoto
