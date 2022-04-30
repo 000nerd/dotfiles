@@ -14,6 +14,12 @@ command_exists() {
     type "$1" > /dev/null 2>&1
 }
 
+# Ask for the administrator password upfront.
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until the script has finished.
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
 echo "Installing dotfiles."
 
 source install/symlinks.sh
@@ -30,11 +36,11 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Install programming enviroments
 
-    source install/javascript.sh
+    source install/lang/javascript.sh
 
-    source install/java.sh
+    source install/lang/java.sh
 
-    source install/python.sh
+    source install/lang/python.sh
 
 fi
 
