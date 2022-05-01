@@ -72,6 +72,7 @@ cask_formulas=(
     mysqlworkbench
     # pgadmin4
     postman
+    pritunl
     pycharm-ce
     rectangle
     the-unarchiver
