@@ -36,24 +36,24 @@ function sdb() {
     db_env=$1
     case ${db_env:u} in
         LOCAL)
-            echo "Local"
-            ln -sf [local DataSource] [DataSource]
-            ;;
-        QA3)
-            echo "QA3"
-            ln -sf [QA3 DataSource] [DataSource]
+            echo "Using Local DB instance"
+            ln -sf $HOME/.config/nettracer/datasource.local.properties $HOME/.config/nettracer/datasource.properties
             ;;
         TESTING)
-            echo "Testing"
-            ln -sf [testing DataSource] [DataSource]
+            echo "Using Testing DB instance"
+            ln -sf $HOME/.config/nettracer/datasource.testing.properties $HOME/.config/nettracer/datasource.properties
             ;;
         TRAINING)
-            echo "Training"
-            ln -sf [training DataSource] [DataSource]
+            echo "Using Training DB instance"
+            ln -sf $HOME/.config/nettracer/datasource.training.properties $HOME/.config/nettracer/datasource.properties
+            ;;
+        QA3)
+            echo "Using QA3 DB instance"
+            ln -sf $HOME/.config/nettracer/datasource.qa3.properties $HOME/.config/nettracer/datasource.properties
             ;;
         *)
-            echo "QA1"
-            ln -sf [QA1 DataSource] [DataSource]
+            echo "Using QA1 DB instance"
+            ln -sf $HOME/.config/nettracer/datasource.qa1.properties $HOME/.config/nettracer/datasource.properties
             ;;
     esac
 }
