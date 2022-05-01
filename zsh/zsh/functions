@@ -30,3 +30,30 @@ function escape() {
     printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
     echo # newline
 }
+
+# Switch DB enviroments
+function sdb() {
+    db_env=$1
+    case ${db_env:u} in
+        LOCAL)
+            echo "Local"
+            ln -sf [local DataSource] [DataSource]
+            ;;
+        QA3)
+            echo "QA3"
+            ln -sf [QA3 DataSource] [DataSource]
+            ;;
+        TESTING)
+            echo "Testing"
+            ln -sf [testing DataSource] [DataSource]
+            ;;
+        TRAINING)
+            echo "Training"
+            ln -sf [training DataSource] [DataSource]
+            ;;
+        *)
+            echo "QA1"
+            ln -sf [QA1 DataSource] [DataSource]
+            ;;
+    esac
+}
