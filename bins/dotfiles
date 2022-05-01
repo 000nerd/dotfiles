@@ -71,11 +71,6 @@ sub_brew () {
     echo -e "${GREEN}$ARROW Success! Brew command finished.${NC}"
 }
 
-sub_hosts () {
-    source "$DOTFILES_DIR/install/hosts.sh"
-    echo -e "${GREEN}$ARROW Success! Hosts command finished.${NC}"
-}
-
 sub_defaults () {
     source "$DOTFILES_DIR/install/macos.sh"
     echo -e "${GREEN}$ARROW Success! MacOS defaults command finished.${NC}"
