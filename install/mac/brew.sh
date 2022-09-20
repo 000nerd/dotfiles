@@ -52,6 +52,7 @@ formulas=(
     wget
     youtube-dl
     yt-dlp
+    zsh-completions
 )
 
 cask_formulas=(

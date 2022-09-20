@@ -117,6 +117,11 @@ command -v md5sum > /dev/null || alias md5sum="md5"
 # MacOS has no `sha1sum`, so use `shasum` as a fallback
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
+# history aliases
+alias h='history'
+alias hs='history | grep'
+alias hsi='history | grep -i'
+
 # tmux aliases
 alias ta='tmux attach'
 alias tls='tmux ls'
@@ -126,9 +131,9 @@ alias tns='tmux new-session -s'
 alias lol=git log --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(green)%cd(%cr) %C(bold blue)<%an>%Creset' --date=short --all
 
 # Maven aliases
-alias mci='mvn -T1C clean install'
-alias mcint='mvn -T1C clean install -DskipTests=true -Djacoco.skip=true -Dpmd.skip=true -Dcpd.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-alias mcomp='mvn -T1C compile -Dcheckstyle.skip=true'
-alias mcpd='mvn -T1C pmd:cpd-check'
-alias mpmd='mvn -T1C pmd:check'
-alias mspotbugs='mvn -T1C org.commonjava.maven.plugins:directory-maven-plugin:0.3.1:highest-basedir@directories spotbugs:check'
+alias mci='mvn -T1.5C clean install'
+alias mcint='mvn -T1.5C clean install -DskipTests=true -Djacoco.skip=true -Dpmd.skip=true -Dcpd.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+alias mcomp='mvn -T1.5C compile -Dcheckstyle.skip=true'
+alias mcpd='mvn -T1.5C pmd:cpd-check'
+alias mpmd='mvn -T1.5C pmd:check'
+alias mspotbugs='mvn -T1.5C org.commonjava.maven.plugins:directory-maven-plugin:0.3.1:highest-basedir@directories spotbugs:check'

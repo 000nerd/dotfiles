@@ -9,6 +9,15 @@
 #  $$ |      \$$$$$$  |$$ | \$$ |\$$$$$$  |  $$ |   $$$$$$\  $$$$$$  |$$ | \$$ |\$$$$$$  |
 #  \__|       \______/ \__|  \__| \______/   \__|   \______| \______/ \__|  \__| \______/
 
+
+# Load the functions dotfiles, and then some:
+for file in ~/.dotfiles/zsh/zsh/function/{git,extract}; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+
+
 # find shorthand
 function f() {
     find . -name "$1"
@@ -31,6 +40,63 @@ function escape() {
     echo # newline
 }
 
+function clipcopy() {
+    pbcopy < "${1:-/dev/stdin}";
+}
+
+function clippaste() {
+    pbpaste;
+}
+
+function open_command() {
+    local open_cmd
+
+    # define the open command
+    case "$OSTYPE" in
+        darwin*)  open_cmd='open' ;;
+        cygwin*)  open_cmd='cygstart' ;;
+        linux*)   [[ "$(uname -r)" != *icrosoft* ]] && open_cmd='nohup xdg-open' || {
+                    open_cmd='cmd.exe /c start ""'
+                    [[ -e "$1" ]] && { 1="$(wslpath -w "${1:a}")" || return 1 }
+                } ;;
+        msys*)    open_cmd='start ""' ;;
+        *)        echo "Platform $OSTYPE not supported"
+                return 1
+                    ;;
+    esac
+
+    ${=open_cmd} "$@" &>/dev/null
+}
+
+copybuffer () {
+    if which clipcopy &>/dev/null; then
+        printf "%s" "$BUFFER" | clipcopy
+    else
+        zle -M "clipcopy not found. Please make sure you have Oh My Zsh installed correctly."
+    fi
+}
+
+function copyfile {
+    emulate -L zsh
+    clipcopy $1
+}
+
+# Copies the path of given directory or file to the system or X Windows clipboard.
+# Copy current directory if no parameter.
+function copypath {
+    # If no argument passed, use current directory
+    local file="${1:-.}"
+
+    # If argument is not an absolute path, prepend $PWD
+    [[ $file = /* ]] || file="$PWD/$file"
+
+    # Copy the absolute path without resolving symlinks
+    # If clipcopy fails, exit the function with an error
+    print -n "${file:a}" | clipcopy || return 1
+
+    echo ${(%):-"%B${file:a}%b copied to clipboard."}
+}
+
 # Switch DB enviroments
 function sdb() {
     db_env=$1
@@ -50,6 +116,10 @@ function sdb() {
         QA3)
             echo "Using QA3 DB instance"
             ln -sf $HOME/.config/nettracer/datasource.qa3.properties $HOME/.config/nettracer/datasource.properties
+            ;;
+        QA2)
+            echo "Using QA2 DB instance"
+            ln -sf $HOME/.config/nettracer/datasource.qa2.properties $HOME/.config/nettracer/datasource.properties
             ;;
         *)
             echo "Using QA1 DB instance"

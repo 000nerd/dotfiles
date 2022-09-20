@@ -27,8 +27,8 @@ echo "=============================="
 
 # Install Python
 brew install python
-# Install Conda. Will switch to anaconda or miniconda when apple silicon ready
-brew install --cask miniforge
+# Install Conda.
+brew install --cask anaconda
 
 packages=(
     black
