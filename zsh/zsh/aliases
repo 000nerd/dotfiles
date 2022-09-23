@@ -38,6 +38,25 @@ alias cp='cp -i'
 alias df='df -h' # disk free, in Gigabytes, not bytes
 alias du='du -h -c' # calculate disk usage for a folder
 
+# history aliases
+alias h='history'
+alias hs='history | grep'
+alias hsi='history | grep -i'
+
+# tmux aliases
+alias ta='tmux attach'
+alias tls='tmux ls'
+alias tat='tmux attach -t'
+alias tns='tmux new-session -s'
+
+# Maven aliases
+alias mci='mvn -T1.5C clean install'
+alias mcint='mvn -T1.5C clean install -DskipTests=true -Djacoco.skip=true -Dpmd.skip=true -Dcpd.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+alias mcomp='mvn -T1.5C compile -Dcheckstyle.skip=true'
+alias mcpd='mvn -T1.5C pmd:cpd-check'
+alias mpmd='mvn -T1.5C pmd:check'
+alias mspotbugs='mvn -T1.5C org.commonjava.maven.plugins:directory-maven-plugin:0.3.1:highest-basedir@directories spotbugs:check'
+
 # More usable PS processes
 if [[ $OSTYPE == darwin* ]]; then
     alias ps='ps -j'
@@ -45,17 +64,8 @@ else
     alias ps='ps uf -U `whoami`'
 fi;
 
-# IP addresses
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
-alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-
 # Flush Directory Service cache
 alias flush="dscacheutil -flushcache"
-
-# View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
@@ -72,19 +82,6 @@ alias badge="tput bel"
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
-
-# Empty the Trash on all mounted volumes and the main HDD
-# Also, clear Apple’s System Logs to improve shell startup speed
-# Also, run periodic maintenence tasks
-alias emptytrash="echo Emptying trashes...; \
-    sudo rm -rfv /Volumes/*/.Trashes; \
-    sudo rm -rfv ~/.Trash; \
-    echo Running all periodic maintenence tasks...; \
-    sudo periodic daily weekly monthly; \
-    echo Removing old logs...; \
-    sudo rm -rfv /private/var/log/asl/*.asl; \
-    sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'delete from LSQuarantineEvent' >/dev/null 2>&1; \
-    sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'vacuum' >/dev/null 2>&1"
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
@@ -108,32 +105,4 @@ alias battery="acpi -V"
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 alias lslist="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -dump"
 
-# Canonical hex dump; some systems have this symlinked
-command -v hd > /dev/null || alias hd="hexdump -C"
-
-# MacOS has no `md5sum`, so use `md5` as a fallback
-command -v md5sum > /dev/null || alias md5sum="md5"
-
-# MacOS has no `sha1sum`, so use `shasum` as a fallback
-command -v sha1sum > /dev/null || alias sha1sum="shasum"
-
-# history aliases
-alias h='history'
-alias hs='history | grep'
-alias hsi='history | grep -i'
-
-# tmux aliases
-alias ta='tmux attach'
-alias tls='tmux ls'
-alias tat='tmux attach -t'
-alias tns='tmux new-session -s'
-
 alias lol=git log --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(green)%cd(%cr) %C(bold blue)<%an>%Creset' --date=short --all
-
-# Maven aliases
-alias mci='mvn -T1.5C clean install'
-alias mcint='mvn -T1.5C clean install -DskipTests=true -Djacoco.skip=true -Dpmd.skip=true -Dcpd.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
-alias mcomp='mvn -T1.5C compile -Dcheckstyle.skip=true'
-alias mcpd='mvn -T1.5C pmd:cpd-check'
-alias mpmd='mvn -T1.5C pmd:check'
-alias mspotbugs='mvn -T1.5C org.commonjava.maven.plugins:directory-maven-plugin:0.3.1:highest-basedir@directories spotbugs:check'

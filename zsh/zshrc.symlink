@@ -9,54 +9,83 @@
 #  $$$$$$$$\ \$$$$$$  |$$ |  $$ |$$ |  $$ |\$$$$$$  |
 #  \________| \______/ \__|  \__|\__|  \__| \______/
 
-
 # Load the shell dotfiles, and then some:
-for file in ~/.dotfiles/zsh/zsh/{aliases,exports,completion,functions,gruvbox}; do
+for file in ~/.dotfiles/zsh/zsh/{aliases,exports,functions,gruvbox}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
 ###############################################################################
+#                                 SETTINGS                                    #
+###############################################################################
+
+#append into history file
+setopt INC_APPEND_HISTORY
+#save only one command if 2 common are same and consistent
+setopt HIST_IGNORE_DUPS
+# ignore commands that start with space
+setopt HIST_IGNORE_SPACE
+#add timestamp for each entry
+setopt EXTENDED_HISTORY
+# delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt HIST_EXPIRE_DUPS_FIRST
+# show command with history expansion to user before running it
+setopt HIST_VERIFY
+#set history size
+# setopt auto_pushd
+# setopt pushd_ignore_dups
+# setopt pushdminus
+
+###############################################################################
 #                                 PATHS                                       #
 ###############################################################################
 
-export PATH="$HOME/.dotfiles/bins:$PATH"
-
 # JENV Path
 export PATH="$HOME/.jenv/bin:$PATH"
-# Update your paths
+# Gradle, Maven, Wildfly Path
 export PATH="$GRADLE_HOME/bin:$PATH"
 export PATH="$MAVEN_HOME/bin:$PATH"
 export PATH="$JBOSS_HOME/bin:$PATH"
+# Dotfiles Path
+export PATH="$HOME/.dotfiles/bins:$PATH"
 
-# Will switch from miniforge to anaconda when m1 support is added
-# Switch export then
-# export PATH=~/anaconda3/bin:$PATH
-
-# Add XCode bin to the `$PATH`
-export PATH="$PATH:/Applications/Xcode.app/Contents/Developer/usr/bin"
-
-alias rbrew='arch -x86_64 /usr/local/bin/brew'
-
+###############################################################################
+#                         Language Version Managers                           #
+###############################################################################
 
 #JENV Eval
 eval "$(jenv init -)"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+# Source NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
+
+###############################################################################
+#                                 ZPLUG                                       #
+###############################################################################
+source $ZPLUG_HOME/init.zsh
+
+zplug "lib/clipboard", from:oh-my-zsh
+zplug "lib/completion", from:oh-my-zsh
+zplug "lib/functions", from:oh-my-zsh
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:2
+# Supports oh-my-zsh plugins and the like
+zplug "plugins/aws", from:oh-my-zsh
+zplug "plugins/jira", from:oh-my-zsh
+zplug "plugins/macos",   from:oh-my-zsh
+zplug "plugins/web-search", from:oh-my-zsh
+# zplug "caiomcg/gruvbox-zsh-theme", as:theme
+# zplug "sbugzu/gruvbox-zsh", as:theme
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
     fi
 fi
-unset __conda_setup
-# <<< conda initialize <<<
 
-# conda config --set auto_activate_base False
-
-# plugins=(macos extract jira web-search)
+# Then, source plugins and add commands to $PATH
+zplug load

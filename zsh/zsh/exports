@@ -16,17 +16,13 @@ export LC_ALL="en_US.UTF-8"
 # Disable homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 
+export ZPLUG_HOME=/opt/homebrew/opt/zplug
+
 # Java variables
 export MAVEN_HOME="$(brew --prefix)/opt/maven"
 export GRADLE_HOME="$(brew --prefix)/opt/gradle"
 export JBOSS_HOME="$(brew --prefix)/opt/wildfly-as/libexec"
 
-# Node variables
-# Source NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
-
-#set history size
 export HISTSIZE=10000
 #save history after logout
 export SAVEHIST=10000
@@ -34,25 +30,6 @@ export SAVEHIST=10000
 export HISTFILE=~/.zhistory
 # Make some commands not show up in history
 export HISTORY_IGNORE="(ls|cd -|pwd|exit|date|* --help|&|[ ]*|bg|fg|history|clear)"
-#append into history file
-setopt INC_APPEND_HISTORY
-#save only one command if 2 common are same and consistent
-setopt HIST_IGNORE_DUPS
-# ignore commands that start with space
-setopt HIST_IGNORE_SPACE
-#add timestamp for each entry
-setopt EXTENDED_HISTORY
-# delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt HIST_EXPIRE_DUPS_FIRST
-# show command with history expansion to user before running it
-setopt HIST_VERIFY
-
-# THEME COLOR
-export SOLARIZED_THEME="dark"
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
 
 export LS_COLORS='no=00:fi=00:di=01;34:ow=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
 
