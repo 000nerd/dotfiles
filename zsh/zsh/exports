@@ -23,6 +23,7 @@ export MAVEN_HOME="$(brew --prefix)/opt/maven"
 export GRADLE_HOME="$(brew --prefix)/opt/gradle"
 export JBOSS_HOME="$(brew --prefix)/opt/wildfly-as/libexec"
 
+#set history size
 export HISTSIZE=10000
 #save history after logout
 export SAVEHIST=10000

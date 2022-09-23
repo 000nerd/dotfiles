@@ -19,6 +19,12 @@ unset file;
 #                                 SETTINGS                                    #
 ###############################################################################
 
+# correct spelling of all arguments
+setopt CORRECT_ALL
+# case insensitive globbing
+setopt NO_CASE_GLOB
+# if directory given with no command, then cd into it
+setopt AUTO_CD
 #append into history file
 setopt INC_APPEND_HISTORY
 #save only one command if 2 common are same and consistent
@@ -29,12 +35,6 @@ setopt HIST_IGNORE_SPACE
 setopt EXTENDED_HISTORY
 # delete duplicates first when HISTFILE size exceeds HISTSIZE
 setopt HIST_EXPIRE_DUPS_FIRST
-# show command with history expansion to user before running it
-setopt HIST_VERIFY
-#set history size
-# setopt auto_pushd
-# setopt pushd_ignore_dups
-# setopt pushdminus
 
 ###############################################################################
 #                                 PATHS                                       #
