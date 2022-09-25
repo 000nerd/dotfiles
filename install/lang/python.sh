@@ -49,7 +49,7 @@ packages=(
 )
 
 for package in "${packages[@]}"; do
-	pip install --upgrade "$package"
+	pip install "$package"
 done
 
 # Remove outdated versions from the cellar.
