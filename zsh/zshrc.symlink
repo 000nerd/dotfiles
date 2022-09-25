@@ -10,7 +10,7 @@
 #  \________| \______/ \__|  \__|\__|  \__| \______/
 
 # Load the shell dotfiles, and then some:
-for file in ~/.dotfiles/zsh/zsh/{aliases,exports,functions,gruvbox}; do
+for file in ~/.dotfiles/zsh/zsh/{aliases,completion,exports,functions,prompt}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -18,7 +18,12 @@ unset file;
 ###############################################################################
 #                                 SETTINGS                                    #
 ###############################################################################
-
+# show completion menu on successive tab press
+setopt AUTO_MENU
+# cursor moved to end of word if completion started
+setopt COMPLETE_IN_WORD
+# cursor moved to end of word after completion
+setopt ALWAYS_TO_END
 # correct spelling of all arguments
 setopt CORRECT_ALL
 # case insensitive globbing
@@ -65,19 +70,19 @@ export NVM_DIR="$HOME/.nvm"
 ###############################################################################
 source $ZPLUG_HOME/init.zsh
 
-zplug "lib/clipboard", from:oh-my-zsh
-zplug "lib/completion", from:oh-my-zsh
-zplug "lib/functions", from:oh-my-zsh
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-autosuggestions", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:2
-# Supports oh-my-zsh plugins and the like
+# oh-my-zsh plugins
 zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/jira", from:oh-my-zsh
 zplug "plugins/macos",   from:oh-my-zsh
 zplug "plugins/web-search", from:oh-my-zsh
+# zsh-users plugins
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:2
+# themes
 # zplug "caiomcg/gruvbox-zsh-theme", as:theme
 # zplug "sbugzu/gruvbox-zsh", as:theme
+# zplug "DTan13/zsh1999", as:theme
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
