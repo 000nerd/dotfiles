@@ -43,7 +43,6 @@
 [color "sh"]
     branch = yellow
 [core]
-    gitproxy = i2p-socks-proxy for i2p
     excludesfile = ~/.gitignore_global
     pager = less -FXRS -x2
     editor = code --wait
