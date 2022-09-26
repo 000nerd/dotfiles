@@ -13,7 +13,7 @@ BACKUP_DIR   = os.path.join(DOTFILES_DIR, 'backup')
 HOME_DIR     = os.path.expanduser('~')
 
 # remove path
-def forse_remove(path):
+def force_remove(path):
     if os.path.isdir(path) and not os.path.islink(path):
         shutil.rmtree(path, False)
     else:
@@ -32,11 +32,11 @@ def main():
         for filename in os.listdir(BACKUP_DIR):
             dest = os.path.join(HOME_DIR, filename)
             if os.path.exists(dest):
-                forse_remove(dest)
+                force_remove(dest)
             copy(filename, dest)
-            print "'%s' has been restored!" % dest
+            print(f"{dest} has been restored!")
     else:
-        print "There isn't backup in '%s'!" % BACKUP_DIR
+        print(f"There isn't backup in {BACKUP_DIR}!")
 
 if __name__ == '__main__':
     main()
