@@ -425,13 +425,6 @@ defaults write org.m0k.transmission WarningLegal -bool false
 defaults write org.m0k.transmission RandomPort -bool true
 
 ###############################################################################
-# ZSH                                                                         #
-###############################################################################
-
-# Download ZSH Theme
-curl -L https://raw.githubusercontent.com/21stBam/gruvbox-zsh/master/gruvbox.zsh-theme > ~/.oh-my-zsh/custom/themes/gruvbox.zsh-theme
-
-###############################################################################
 # 21stBam                                                                     #
 ###############################################################################
 

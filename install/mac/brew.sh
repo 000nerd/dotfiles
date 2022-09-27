@@ -52,6 +52,7 @@ formulas=(
     wget
     youtube-dl
     yt-dlp
+    zplug
     zsh-completions
 )
 

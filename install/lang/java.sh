@@ -30,7 +30,6 @@ formulas=(
 	gradle
 	jenv
 	maven
-    openjdk@8
 	openjdk@11
     openjdk@17
     wildfly-as
@@ -49,11 +48,9 @@ eval "$(jenv init -)"
 jenv enable-plugin export
 jenv enable-plugin maven
 
-sudo ln -sfn "$(brew --prefix)"/opt/openjdk@8/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-8.jdk
 sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
 sudo ln -sfn "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
 
-jenv add "$(brew --prefix)"/opt/openjdk@8/libexec/openjdk.jdk/Contents/Home
 jenv add "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home
 jenv add "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 
