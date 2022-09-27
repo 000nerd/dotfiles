@@ -1,15 +1,17 @@
 # Dotfiles
+
 # UNDER CONSTRUCTION
 
 Contains:
-  1. [System defaults]() and [Dock icons setup]()
-  2. [Git config with aliases]() and [Git global ignore]()
-  3. [Packaages and Applications]() and [macOS Defaults]()
-  4. [Themes]()
-  5. []()
-  6. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
-  <!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
-  10. Applications () -->
+
+1. [System defaults]() and [Dock icons setup]()
+2. [Git config with aliases]() and [Git global ignore]()
+3. [Packaages and Applications]() and [macOS Defaults]()
+4. [Themes]()
+5. []()
+6. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
+ <!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
+7. Applications () -->
 
 ## Install
 
@@ -17,6 +19,9 @@ On fresh installation of MacOS:
 
     sudo softwareupdate -i -a
     xcode-select --install
+
+Download HomeBrew:
+curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master install.sh | bash --login
 
 Clone and install dotfiles:
 
@@ -29,9 +34,9 @@ Clone and install dotfiles:
 ## Additional steps
 
 1. Install fonts
-3. Import Intellij/Xcode/PyCharm/VSCode settings
-4. `sudo reboot`
-5. Enjoy
+2. Import Intellij/Xcode/PyCharm/VSCode settings
+3. `sudo reboot`
+4. Enjoy
 
 ## The `dotfiles` command
 
@@ -74,7 +79,7 @@ https://github.com/nicknisi/dotfiles
 https://github.com/0xadada/dotfiles
 
 
-TODOs: 
+TODOs:
 
 Sheldon Plugin Manager
 https://github.com/denysdovhan/dotfiles
