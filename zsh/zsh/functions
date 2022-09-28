@@ -87,26 +87,32 @@ function sdb() {
         LOCAL)
             echo "Using Local DB instance"
             ln -sf $HOME/.config/nettracer/datasource.local.properties $HOME/.config/nettracer/datasource.properties
+            ln -sf $HOME/.config/nettracer/ntrdatasource.local.properties $HOME/.config/nettracer/ntrdatasource.properties
             ;;
         TESTING)
             echo "Using Testing DB instance"
             ln -sf $HOME/.config/nettracer/datasource.testing.properties $HOME/.config/nettracer/datasource.properties
+            ln -sf $HOME/.config/nettracer/ntrdatasource.testing.properties $HOME/.config/nettracer/ntrdatasource.properties
             ;;
         TRAINING)
             echo "Using Training DB instance"
             ln -sf $HOME/.config/nettracer/datasource.training.properties $HOME/.config/nettracer/datasource.properties
+            ln -sf $HOME/.config/nettracer/ntrdatasource.training.properties $HOME/.config/nettracer/ntrdatasource.properties
             ;;
         QA3)
             echo "Using QA3 DB instance"
             ln -sf $HOME/.config/nettracer/datasource.qa3.properties $HOME/.config/nettracer/datasource.properties
+            ln -sf $HOME/.config/nettracer/ntrdatasource.qa3.properties $HOME/.config/nettracer/ntrdatasource.properties
             ;;
         QA2)
             echo "Using QA2 DB instance"
             ln -sf $HOME/.config/nettracer/datasource.qa2.properties $HOME/.config/nettracer/datasource.properties
+            ln -sf $HOME/.config/nettracer/ntrdatasource.qa2.properties $HOME/.config/nettracer/ntrdatasource.properties
             ;;
         *)
             echo "Using QA1 DB instance"
             ln -sf $HOME/.config/nettracer/datasource.qa1.properties $HOME/.config/nettracer/datasource.properties
+            ln -sf $HOME/.config/nettracer/ntrdatasource.qa1.properties $HOME/.config/nettracer/ntrdatasource.properties
             ;;
     esac
 }
