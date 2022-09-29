@@ -65,6 +65,3 @@
 	autoStash = true
 [rerere]
     enabled = true
-
-
-
