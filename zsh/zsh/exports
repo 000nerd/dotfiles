@@ -21,6 +21,7 @@ export ZPLUG_HOME="$(brew --prefix)/opt/zplug"
 
 # Java variables
 export MAVEN_HOME="$(brew --prefix)/opt/maven"
+export M2_HOME=$MAVEN_HOME
 export GRADLE_HOME="$(brew --prefix)/opt/gradle"
 export JBOSS_HOME="$(brew --prefix)/opt/wildfly-as/libexec"
 
