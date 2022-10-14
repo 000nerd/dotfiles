@@ -39,6 +39,7 @@ alias df='df -h' # disk free, in Gigabytes, not bytes
 alias du='du -h -c' # calculate disk usage for a folder
 
 # history aliases
+alias history='history 1'
 alias h='history'
 alias hs='history | grep'
 alias hsi='history | grep -i'
