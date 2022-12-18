@@ -59,26 +59,28 @@ formulas=(
 cask_formulas=(
     # General Applications
     adapter
-    # android-studio
+    android-studio
     appcleaner
     dupeguru
     google-chrome
-    # google-drive
+    google-drive
     grandperspective
     handbrake
     iina
-    intellij-idea
-    # intellij-idea-ce
+    # intellij-idea
+    intellij-idea-ce
     iterm2
+    microsoft-edge
     microsoft-teams
-    mysqlworkbench
-    # pgadmin4
+    # mysqlworkbench
+    pgadmin4
     postman
-    pritunl
+    # pritunl
     pycharm-ce
+    react-native-debugger
     rectangle
     the-unarchiver
-    tibco-jaspersoft-studio
+    # tibco-jaspersoft-studio
     transmission
     visual-studio-code
     vlc
