@@ -25,8 +25,8 @@ export M2_HOME=$MAVEN_HOME
 export GRADLE_HOME="$(brew --prefix)/opt/gradle"
 export JBOSS_HOME="$(brew --prefix)/opt/wildfly-as/libexec"
 # Android
-export ANDROID_SDK_HOME=/Users/obsa/Library/Android/sdk
-export ANDROID_HOME=$ANDROID_SDK_HOME
+export ANDROID_SDK_ROOT=/Users/obsa/Library/Android/sdk
+export ANDROID_HOME=$ANDROID_SDK_ROOT
 
 # Anaconda
 export CONDA_HOME="$(brew --prefix)/anaconda3"
