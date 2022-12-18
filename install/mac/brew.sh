@@ -36,6 +36,7 @@ formulas=(
     mas
     mycli
     mysql
+    ios-deploy
     p7zip
     pacvim
     pgcli
@@ -49,6 +50,7 @@ formulas=(
     trash
     tree
     unar
+    watchman
     wget
     youtube-dl
     yt-dlp
