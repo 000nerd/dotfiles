@@ -50,16 +50,16 @@
 [credential]
 	helper = osxkeychain
 [diff]
-  tool = vscode
+    tool = vscode
 [difftool "vscode"]
-  cmd = code --wait --diff $LOCAL $REMOTE
+    cmd = code --wait --diff $LOCAL $REMOTE
 [grep]
     extendRegexp = true
     lineNumber = true
 [merge]
-  tool = vscode
+    tool = vscode
 [mergetool "vscode"]
-  cmd = code --wait $MERGED
+    cmd = code --wait $MERGED
 [rebase]
 	instructionFormat = "[%an - %ar] %s"
 	autoStash = true
