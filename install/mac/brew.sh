@@ -28,6 +28,7 @@ echo "=============================="
 formulas=(
     # flags should pass through the the `brew list check`
     awscli
+    cocoapods
     curl
     ffmpeg
     gh
