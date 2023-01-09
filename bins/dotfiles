@@ -34,13 +34,10 @@ sub_update () {
     # Update App Store apps
     sudo softwareupdate -i -a
     # Update Homebrew (Cask) & packages
-    brew update
-    brew upgrade
+    brew upgrade --greedy
     # Update node & npm & packages
     nvm install --lts # install last lts node instance
     npm install npm -g
-    npm update -g
-    npx ncu -g
     # Update Conda
     # conda env update
     # conda update --all
@@ -51,7 +48,6 @@ sub_update () {
 
 sub_clean () {
     brew cleanup
-    brew cask cleanup
     npm cache clean --force
     echo -e "${GREEN}$ARROW Success! Clean command finished.${NC}"
 }
