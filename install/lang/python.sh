@@ -49,7 +49,7 @@ packages=(
 )
 
 for package in "${packages[@]}"; do
-	pip install "$package"
+	"$(brew --prefix)/anaconda3/bin/pip" install "$package"
 done
 
 # Remove outdated versions from the cellar.
