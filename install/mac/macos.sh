@@ -28,8 +28,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Set computer name (as done via System Preferences → Sharing)
 read -r -p "Name this computer (e.g. iObsa Air): " device
 sudo scutil --set ComputerName "${device}"
-sudo scutil --set HostName "${device}"
-sudo scutil --set LocalHostName "${device}"
+sudo scutil --set HostName "iObsa"
+sudo scutil --set LocalHostName "${device// /-}"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${device}"
 
 # Save to disk (not to iCloud) by default
