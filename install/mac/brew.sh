@@ -52,6 +52,7 @@ formulas=(
     rclone
     redis
     ripgrep
+    # rmlint
     rsync
     shellcheck
     source-highlight
