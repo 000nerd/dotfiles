@@ -28,21 +28,31 @@ echo "=============================="
 formulas=(
     # flags should pass through the the `brew list check`
     awscli
+    bat # cat replacement
+    btop
     cocoapods
     curl
+    exa # ls replacement
     ffmpeg
+    fzf
     gh
     git
+    hub
+    jq
     markdown
     mas
     mycli
     mysql
+    ncdu
     ios-deploy
     p7zip
     pacvim
     pgcli
     postgresql
+    rclone
     redis
+    ripgrep
+    rsync
     shellcheck
     source-highlight
     streamlink
@@ -51,10 +61,10 @@ formulas=(
     trash
     tree
     unar
-    watchman
     wget
     youtube-dl
     yt-dlp
+    z # cd replacement
     zplug
     zsh-completions
 )
