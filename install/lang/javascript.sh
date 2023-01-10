@@ -42,13 +42,9 @@ nvm install node
 
 packages=(
     @angular/cli
-    eslint
+    @nestjs/cli
     fkill-cli
     nodemon
-    prettier
-    spoof
-    typescript
-    vtop
     yarn
 )
 
