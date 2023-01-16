@@ -20,8 +20,6 @@ export HOMEBREW_NO_ANALYTICS=1
 export ZPLUG_HOME="$(brew --prefix)/opt/zplug"
 
 # Java variables
-export MAVEN_HOME="$(brew --prefix)/opt/maven"
-export M2_HOME=$MAVEN_HOME
 export GRADLE_HOME="$(brew --prefix)/opt/gradle"
 export JBOSS_HOME="$(brew --prefix)/opt/wildfly-as/libexec"
 # Android
@@ -53,3 +51,5 @@ export LESS_TERMCAP_se=$'\E[0m'          # end standout-mode
 export LESS_TERMCAP_so=$'\E[01;44;33m'   # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'          # end underline
 export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
+
+export LESSHISTFILE=-
