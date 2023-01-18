@@ -10,7 +10,7 @@ Contains:
 4. [Themes]()
 5. []()
 6. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
- <!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
+<!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
 7. Applications () -->
 
 ## Install
@@ -45,14 +45,10 @@ Clone and install dotfiles:
 
     Commands:
         help             This help message
-        update           Update packages and pkg managers (OS, brew, npm, yarn, commposer)
-        clean            Clean up caches (brew, npm, yarn, composer)
+        update           Update packages and pkg managers (OS, brew, npm, yarn)
+        clean            Clean up caches (brew, npm, yarn)
         symlinks         Run symlinks script
         brew             Run brew script
-        homestead        Run homestead script
-        valet            Run valet script
-        ohmyzsh          Run oh my zsh script
-        hosts            Run hosts script
         defaults         Run MacOS defaults script
         dock             Run MacOS dock script
 
