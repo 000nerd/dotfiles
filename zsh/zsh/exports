@@ -29,12 +29,12 @@ export ANDROID_HOME=$ANDROID_SDK_ROOT
 # Anaconda
 export CONDA_HOME="$(brew --prefix)/anaconda3"
 
+#history file
+export HISTFILE=~/.zhistory
 #set history size
 export HISTSIZE=10000
 #save history after logout
 export SAVEHIST=10000
-#history file
-export HISTFILE=~/.zhistory
 # Make some commands not show up in history
 export HISTORY_IGNORE="(ls|cd -|pwd|exit|date|* --help|&|[ ]*|bg|fg|history|clear)"
 
