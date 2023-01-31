@@ -36,8 +36,7 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
 defaults write -g NSDocumentSaveNewDocumentsToCloud -bool false
 
 # # Replace Time Machine with Volume on the menu bar  - ADD POSITIONS
-defaults write  com.apple.controlcenter Bluetooth -int 2
-defaults write  com.apple.controlcenter Sound -int 2
+defaults write  com.apple.controlcenter Sound -int 18
 
 # Disable smart quotes as they’re annoying when typing code
 defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
