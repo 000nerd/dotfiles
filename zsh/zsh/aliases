@@ -52,7 +52,7 @@ alias tns='tmux new-session -s'
 
 # Maven aliases
 alias mci='mvn -T1.5C clean install'
-alias mcint='mvn -T1.5C clean install -DskipTests=true -Djacoco.skip=true -Dpmd.skip=true -Dcpd.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+alias mcint='mvn -T1.5C clean install -DskipTests=true'
 alias mcomp='mvn -T1.5C compile -Dcheckstyle.skip=true'
 alias mcpd='mvn -T1.5C pmd:cpd-check'
 alias mpmd='mvn -T1.5C pmd:check'
