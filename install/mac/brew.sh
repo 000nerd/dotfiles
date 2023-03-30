@@ -72,7 +72,6 @@ formulas=(
 
 cask_formulas=(
     # General Applications
-    adapter
     android-studio
     appcleaner
     dupeguru
