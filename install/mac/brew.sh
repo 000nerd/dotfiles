@@ -57,7 +57,6 @@ formulas=(
     shellcheck
     source-highlight
     streamlink
-    tig
     tmux
     trash
     tree
@@ -84,7 +83,7 @@ cask_formulas=(
     intellij-idea-ce
     iterm2
     microsoft-edge
-    microsoft-teams
+    # microsoft-teams
     # mysqlworkbench
     pgadmin4
     postman

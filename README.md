@@ -9,8 +9,10 @@ Contains:
 3. [Packaages and Applications]() and [macOS Defaults]()
 4. [Themes]()
 5. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
-<!-- 6. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, httpie, git, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
-6. Applications () -->
+6. Packages / CLI (brew, dockutil, mycli, mysql, ncdu, ios-deploy, p7zip, pacvim
+   pgcli, postgresql, rclone, redis, tmux, trash, tree, unar, wget, wget, yarn, zsh, zsh-completions)
+7. Applications (android-studio, google-chrome, iina, intellij-idea, iterm2, microsoft-edge,
+   pgadmin4, postman, pycharm, react-native-debugger, rectangle, the-unarchiver, visual-studio-code)
 
 ## Install
 
