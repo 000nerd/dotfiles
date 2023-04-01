@@ -8,35 +8,28 @@ Contains:
 2. [Git config with aliases]() and [Git global ignore]()
 3. [Packaages and Applications]() and [macOS Defaults]()
 4. [Themes]()
-5. []()
-6. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
+5. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
 <!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
-7. Applications () -->
+6. Applications () -->
 
 ## Install
 
-On fresh installation of MacOS:
+1.  On fresh installation of MacOS:
 
-    sudo softwareupdate -i -a
-    xcode-select --install
+        sudo softwareupdate -i -a
+        xcode-select --install
 
-Download HomeBrew:
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master install.sh | bash --login
+2.  Download HomeBrew:
 
-Clone and install dotfiles:
+        curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master install.sh | bash --login
 
-    git clone https://github.com/21stBam/dotfiles.git ~/.dotfiles
-    cd ~/.dotfiles
-    chmod +wx setup.sh
-    chmod -R +wx ~/dotfiles/bin
-    ./setup.sh
+3.  Clone and install dotfiles:
 
-## Additional steps
-
-1. Install fonts
-2. Import Intellij/Xcode/PyCharm/VSCode settings
-3. `sudo reboot`
-4. Enjoy
+        git clone https://github.com/21stBam/dotfiles.git ~/.dotfiles
+        cd ~/.dotfiles
+        chmod +wx setup.sh
+        chmod -R +wx ~/dotfiles/bins
+        ./install.sh
 
 ## The `dotfiles` command
 
