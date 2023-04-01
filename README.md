@@ -9,7 +9,7 @@ Contains:
 3. [Packaages and Applications]() and [macOS Defaults]()
 4. [Themes]()
 5. `ssh-manager` command to manage ssh config hosts and keys, including copy public keys to clipboard, transfer to server and more with autocomplete
-<!-- 9. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, composer, httpie, nmap, php71, git, subversion, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
+<!-- 6. Packages / CLI (brew, brew cask, dockutil, htop, iftop, openssl, tig, httpie, git, node, python3, thefuck, wget, yarn, zsh, zsh-completions)
 6. Applications () -->
 
 ## Install
@@ -63,15 +63,7 @@ Contains:
 <!--
 credits:
 https://github.com/mihaliak/dotfiles
-https://github.com/mathiasbynens/dotfiles
 https://github.com/nicknisi/dotfiles
-https://github.com/0xadada/dotfiles
-
-
-TODOs:
-
-Sheldon Plugin Manager
-https://github.com/denysdovhan/dotfiles
 
 Outbount Network Firewall
 Little Snitch(Paid) or Lulu(free) Look at other Objective-see applications
