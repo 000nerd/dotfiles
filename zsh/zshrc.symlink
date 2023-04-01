@@ -30,8 +30,8 @@ setopt CORRECT_ALL
 setopt NO_CASE_GLOB
 # if directory given with no command, then cd into it
 setopt AUTO_CD
-#append into history file
-setopt INC_APPEND_HISTORY
+# share command history data
+setopt SHARE_HISTORY
 #save only one command if 2 common are same and consistent
 setopt HIST_IGNORE_DUPS
 # ignore commands that start with space
@@ -42,8 +42,6 @@ setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 # show command with history expansion to user before running it
 setopt HIST_VERIFY
-# share command history data
-setopt SHARE_HISTORY
 ###############################################################################
 #                                 PATHS                                       #
 ###############################################################################
@@ -101,10 +99,7 @@ zplug "plugins/web-search", from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
-# themes
-# zplug "caiomcg/gruvbox-zsh-theme", as:theme
-# zplug "sbugzu/gruvbox-zsh", as:theme
-# zplug "DTan13/zsh1999", as:theme
+
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
