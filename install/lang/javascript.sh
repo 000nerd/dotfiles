@@ -39,6 +39,7 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 14
 nvm install 16
 nvm install node
+nvm use node
 
 packages=(
     @angular/cli
