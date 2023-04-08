@@ -73,6 +73,7 @@ cask_formulas=(
     # General Applications
     android-studio
     appcleaner
+    devtoys
     dupeguru
     google-chrome
     google-drive
@@ -82,6 +83,7 @@ cask_formulas=(
     # intellij-idea
     intellij-idea-ce
     iterm2
+    maccy
     microsoft-edge
     # microsoft-teams
     # mysqlworkbench
