@@ -38,7 +38,7 @@ formulas=(
     gh
     git
     hub
-    jq
+    jq # or use fx
     markdown
     mas
     mycli
