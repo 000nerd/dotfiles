@@ -29,7 +29,6 @@ formulas=(
     # flags should pass through the the `brew list check`
     awscli
     bat # cat replacement
-    btop
     cocoapods
     curl
     exa # ls replacement
@@ -40,7 +39,6 @@ formulas=(
     hub
     jq # or use fx
     markdown
-    mas
     mycli
     mysql
     ncdu
@@ -52,7 +50,7 @@ formulas=(
     rclone
     redis
     ripgrep
-    # rmlint
+    rmlint
     rsync
     shellcheck
     source-highlight
