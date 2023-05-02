@@ -36,15 +36,15 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
 
 # Install latest node and set it as default
-nvm install 14
 nvm install 16
+nvm install 18
 nvm install node
 nvm use node
 
 packages=(
     @angular/cli
     @nestjs/cli
-    fkill-cli
+    aws-cdk
     nodemon
     yarn
 )
