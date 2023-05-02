@@ -45,6 +45,7 @@ packages=(
     @angular/cli
     @nestjs/cli
     aws-cdk
+    eas-cli
     nodemon
     yarn
 )
