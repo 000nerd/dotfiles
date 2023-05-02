@@ -39,7 +39,8 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 16
 nvm install 18
 nvm install node
-nvm use node
+nvm alias default 'lts/*'
+nvm use default # need to open new terminal/tab for changes to work
 
 packages=(
     @angular/cli
@@ -55,7 +56,7 @@ for package in "${packages[@]}"; do
 done
 
 # Update npm
-npm install -g npm@latest # Didn't work on first Go.
+npm install -g npm@latest
 
 # Remove outdated versions from the cellar.
 brew cleanup
