@@ -82,6 +82,7 @@ cask_formulas=(
     intellij-idea-ce
     iterm2
     maccy
+    memory-clean-3
     microsoft-edge
     # microsoft-teams
     # mysqlworkbench

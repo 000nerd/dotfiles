@@ -31,19 +31,8 @@ brew install python
 brew install --cask anaconda
 
 packages=(
-    black
-    coverage[toml]
-    flake8
-    flake8-bandit
-    flake8-black
-    flake8-bugbear
-    flake8-docstrings
-    flake8-import-order
-    nox
+    cyberdrop-dl
     poetry
-    pytest
-    pytest-cov
-    pytest-mock
     requests
     streamlink
 )

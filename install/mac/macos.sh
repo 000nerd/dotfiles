@@ -103,7 +103,9 @@ defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClic
 defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
 
 # Disable press-and-hold for keys in favor of key repeat
+# Do it for Spefici Programs (IDE, Terminal) or Global
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+# defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 ###############################################################################
 # Screen                                                                      #
