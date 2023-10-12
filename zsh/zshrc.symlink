@@ -94,6 +94,7 @@ source $ZPLUG_HOME/init.zsh
 zplug "plugins/aws", from:oh-my-zsh
 zplug "plugins/jira", from:oh-my-zsh
 zplug "plugins/macos",   from:oh-my-zsh
+# zplug "plugins/vi-mode", from:oh-my-zsh
 zplug "plugins/web-search", from:oh-my-zsh
 # zsh-users plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
