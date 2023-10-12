@@ -166,6 +166,16 @@ prompt_git() {
       mode=" >R>"
     fi
 
+    local MARKS
+    GIT_NEED_PUSH_SYMBOL='⇡'
+    GIT_NEED_PULL_SYMBOL='⇣'
+    # how many commits local branch is ahead/behind of remote?
+    local stat="$(git status --porcelain --branch | grep '^##' | grep -o '\[.\+\]$')"
+    local aheadN="$(echo $stat | grep -o 'ahead \d\+' | grep -o '\d\+')"
+    local behindN="$(echo $stat | grep -o 'behind \d\+' | grep -o '\d\+')"
+    [ -n "$aheadN" ] && MARKS+=" $GIT_NEED_PUSH_SYMBOL$aheadN"
+    [ -n "$behindN" ] && MARKS+=" $GIT_NEED_PULL_SYMBOL$behindN"
+
     zstyle ':vcs_info:*' enable git
     zstyle ':vcs_info:*' get-revision true
     zstyle ':vcs_info:*' check-for-changes true
@@ -174,7 +184,7 @@ prompt_git() {
     zstyle ':vcs_info:*' formats ' %u%c'
     zstyle ':vcs_info:*' actionformats ' %u%c'
     vcs_info
-    echo -n "${ref/refs\/heads\//$PL_BRANCH_CHAR }${vcs_info_msg_0_%% }${mode}"
+    echo -n "${ref/refs\/heads\//$PL_BRANCH_CHAR }${vcs_info_msg_0_%% }${MARKS}${mode}"
   fi
 }
 
