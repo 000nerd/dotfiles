@@ -38,7 +38,7 @@ export NVM_DIR="$HOME/.nvm"
 # Install latest node and set it as default
 nvm install 16
 nvm install 18
-nvm install node
+nvm install --lts
 nvm alias default 'lts/*'
 nvm use default # need to open new terminal/tab for changes to work
 

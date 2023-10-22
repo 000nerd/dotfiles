@@ -32,6 +32,7 @@ formulas=(
 	maven
 	openjdk@11
     openjdk@17
+    openjdk@21
     wildfly-as
 )
 
@@ -50,9 +51,11 @@ jenv enable-plugin maven
 
 sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
 sudo ln -sfn "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+sudo ln -sfn "$(brew --prefix)"/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
 
 jenv add "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home
 jenv add "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+jenv add "$(brew --prefix)"/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home
 
 # Remove outdated versions from the cellar.
 brew cleanup

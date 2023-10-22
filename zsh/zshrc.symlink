@@ -98,6 +98,7 @@ zplug "plugins/macos",   from:oh-my-zsh
 zplug "plugins/web-search", from:oh-my-zsh
 # zsh-users plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-completions", defer:2
 zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 

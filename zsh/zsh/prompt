@@ -34,9 +34,7 @@
 
 CURRENT_BG='NONE'
 
-setopt PROMPT_SUBST
-autoload -Uz vcs_info
-
+setopt promptsubst
 # THEME COLOR
 SOLARIZED_THEME="dark"
 
@@ -190,6 +188,8 @@ prompt_git() {
       mode=" >R>"
     fi
 
+    autoload -Uz vcs_info
+
     zstyle ':vcs_info:*' enable git
     zstyle ':vcs_info:*' get-revision true
     zstyle ':vcs_info:*' check-for-changes true
@@ -204,7 +204,7 @@ prompt_git() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment 4 $CURRENT_FG '%~'
+  prompt_segment 4 $CURRENT_FG '%(6~|%-1~/…/%4~|%5~)'
 }
 
 # Virtualenv: current working virtualenv
