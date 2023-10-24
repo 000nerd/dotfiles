@@ -47,6 +47,7 @@ done
 eval "$(jenv init -)"
 
 jenv enable-plugin export
+jenv enable-plugin gradle
 jenv enable-plugin maven
 
 sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
