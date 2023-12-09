@@ -24,7 +24,12 @@ function gitexport(){
 function slr() {
     # Need to fix URL pasting issue
     streamlink --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Safari/605.1.15" \
-        --record "{author}-{time:%Y%m%d_%H%M%S}.ts" "$1" best
+        -p iina -a "--stdin" --record "{author}-{time:%Y%m%d_%H%M%S}.ts" "$1" best
+}
+
+function sl() {
+    streamlink --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Safari/605.1.15" \
+        -p iina -a "--stdin" "$1" best
 }
 
 # Escape UTF-8 characters into their 3-byte format
