@@ -58,6 +58,8 @@ export PATH="$ANDROID_HOME/emulator:$PATH"
 export PATH="$HOME/.dotfiles/bins:$PATH"
 # anaconda3
 export PATH="$CONDA_HOME/bin:$PATH"
+# .local
+export PATH="$HOME/.local/bin:$PATH"
 
 ###############################################################################
 #                         Language Version Managers                           #
