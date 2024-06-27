@@ -13,7 +13,7 @@
     email = oabawaji@gmail.com
 [github]
     user = 21stBam
-[includeIf "gitdir:~/Workspace/wotk/"]
+[includeIf "gitdir:~/Workspace/work/"]
     path = ~/Workspace/work/.gitconfig
 [alias]
     # Aliases Go Here

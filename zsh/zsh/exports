@@ -21,7 +21,7 @@ export ZPLUG_HOME="$(brew --prefix)/opt/zplug"
 
 # Java variables
 export GRADLE_HOME="$(brew --prefix)/opt/gradle"
-export JBOSS_HOME="$(brew --prefix)/opt/wildfly-as/libexec"
+export JBOSS_HOME="$(brew --prefix)/Cellar/wildfly-as/26.1.2/libexec"
 # Android
 export ANDROID_SDK_ROOT=/Users/obsa/Library/Android/sdk
 export ANDROID_HOME=$ANDROID_SDK_ROOT

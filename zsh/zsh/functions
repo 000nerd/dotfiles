@@ -99,3 +99,10 @@ function sdb() {
         ln -sf $HOME/.config/nettracer/${db_env:l}/* $HOME/.config/nettracer/db
     fi
 }
+
+function mvn_sym() {
+    ln -s /opt/homebrew/Cellar/maven/3.8.7/bin/mvn /opt/homebrew/bin/mvn
+    ln -s /opt/homebrew/Cellar/maven/3.8.7/bin/mvnDebug /opt/homebrew/bin/mvnDebug
+    ln -s /opt/homebrew/Cellar/maven/3.8.7/bin/mvnyjp /opt/homebrew/bin/mvnyjp
+    ln -s /opt/homebrew/Cellar/maven/3.8.7 /opt/homebrew/opt/maven@3.8
+}
