@@ -17,6 +17,7 @@
     path = ~/Workspace/work/.gitconfig
 [alias]
     # Aliases Go Here
+    hist = log --graph --branches --remotes --tags --oneline
 [apply]
     # do not warn about missing whitespace at EOF
     whitespace = nowarn
@@ -62,6 +63,8 @@
     tool = vscode
 [mergetool "vscode"]
     cmd = code --wait $MERGED
+[push]
+	autoSetupRemote = true
 [rebase]
 	instructionFormat = "[%an - %ar] %s"
 	autoStash = true
