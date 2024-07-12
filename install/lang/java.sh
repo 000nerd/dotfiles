@@ -50,9 +50,11 @@ jenv enable-plugin export
 jenv enable-plugin gradle
 jenv enable-plugin maven
 
-sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-sudo ln -sfn "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
-sudo ln -sfn "$(brew --prefix)"/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
+if [[ $OSTYPE == 'darwin'* ]]; then
+    sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+    sudo ln -sfn "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+    sudo ln -sfn "$(brew --prefix)"/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
+fi
 
 jenv add "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home
 jenv add "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home

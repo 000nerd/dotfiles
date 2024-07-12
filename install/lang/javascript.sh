@@ -36,7 +36,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
 
 # Install latest node and set it as default
-nvm install 16
 nvm install 18
 nvm install --lts
 nvm alias default 'lts/*'
