@@ -30,10 +30,14 @@ if [ "$(uname)" == "Darwin" ]; then
 
     # Install Applications and macOS tweaks for Development
 
-    source install/mac/brew.sh
+    if [[ $OSTYPE == 'darwin'* ]]; then
+        source install/mac/brew.sh
+        source install/mac/macos.sh
+    fi
 
-    source install/mac/macos.sh
-
+    if [[ $OSTYPE == 'linux'* ]]; then
+        source install/linux/brew.sh
+    fi
     # Install programming enviroments
 
     source install/lang/javascript.sh
