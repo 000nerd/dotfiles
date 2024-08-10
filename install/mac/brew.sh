@@ -31,7 +31,6 @@ formulas=(
     bat # cat replacement
     cocoapods
     curl
-    exa # ls replacement
     ffmpeg
     fzf
     gh
