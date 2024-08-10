@@ -115,8 +115,6 @@ for formula in "${formulas[@]}"; do
     fi
 done
 
-brew tap homebrew/cask-fonts
-
 for cask_formula in "${cask_formulas[@]}"; do
     if brew list --cask "$cask_formula" > /dev/null 2>&1; then
         echo "$cask_formula already installed... skipping."
