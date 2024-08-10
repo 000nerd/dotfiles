@@ -23,13 +23,15 @@ Contains:
 
 2.  Download HomeBrew:
 
-        curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master install.sh | bash --login
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        export PATH=/opt/homebrew/bin:$PATH
+        export PATH=/opt/homebrew/sbin:$PATH
 
-3.  Clone and install dotfiles:
+4.  Clone and install dotfiles:
 
         git clone https://github.com/21stBam/dotfiles.git ~/.dotfiles
         cd ~/.dotfiles
-        chmod +wx setup.sh
+        chmod +wx install.sh
         chmod -R +wx ~/dotfiles/bins
         ./install.sh
 
