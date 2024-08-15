@@ -26,11 +26,11 @@ echo -e "\n\nInstalling Java enviroment"
 echo "=============================="
 
 formulas=(
-	# install java and android dev tools
-	gradle
-	jenv
-	maven
-	openjdk@11
+    # install java and android dev tools
+    gradle
+    jenv
+    maven
+    openjdk@11
     openjdk@17
     openjdk@21
     wildfly-as
