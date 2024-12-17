@@ -35,9 +35,6 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
 # Save to disk (not to iCloud) by default
 defaults write -g NSDocumentSaveNewDocumentsToCloud -bool false
 
-# # Replace Time Machine with Volume on the menu bar  - ADD POSITIONS
-defaults -currentHost write  com.apple.controlcenter Sound -int 18
-
 # Disable smart quotes as they’re annoying when typing code
 defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
 
@@ -96,11 +93,8 @@ sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
 # # Trackpad, mouse, keyboard, Bluetooth accessories, and input                 #
 # ###############################################################################
 
-# Trackpad: map bottom right corner to right-click
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
-defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
-defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+# Increase sound quality for Bluetooth headphones/headsets
+defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
 # Disable press-and-hold for keys in favor of key repeat
 # Do it for Spefici Programs (IDE, Terminal) or Global

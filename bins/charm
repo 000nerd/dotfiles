@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if brew list "pycharm" > /dev/null 2>&1; then
-    open -na "PyCharm.app" --args "$@"
-else
-    open -na "PyCharm CE.app" --args "$@"
-fi
