@@ -50,7 +50,6 @@ setopt HIST_VERIFY
 export PATH="$HOME/.jenv/bin:$PATH"
 # Gradle, Maven, Wildfly Path
 export PATH="$GRADLE_HOME/bin:$PATH"
-export PATH="$JBOSS_HOME/bin:$PATH"
 # Android
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/emulator:$PATH"
