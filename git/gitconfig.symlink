@@ -13,8 +13,8 @@
     email = oabawaji@gmail.com
 [github]
     user = 21stBam
-[includeIf "gitdir:~/Workspace/work/"]
-    path = ~/Workspace/work/.gitconfig
+[includeIf "gitdir:~/Workspace/work/**"]
+    path = ~/.config/git/work
 [alias]
     # Aliases Go Here
     hist = log --graph --branches --remotes --tags --oneline
