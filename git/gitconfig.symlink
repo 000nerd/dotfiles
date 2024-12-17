@@ -14,7 +14,7 @@
 [github]
     user = 21stBam
 [includeIf "gitdir:~/Workspaces/work/**"]
-    path = ~/.config/git/work
+    path = ~/.config/git/work.gitconfig
 [alias]
     # Aliases Go Here
     hist = log --graph --branches --remotes --tags --oneline
