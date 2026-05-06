@@ -1,0 +1,50 @@
+name: Test Dotfiles
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax Check
+        run: |
+          bash -n install.sh install/symlinks.sh install/backup.sh install/mac/brew.sh install/mac/macos.sh install/linux/brew.sh install/lang/javascript.sh install/lang/java.sh install/lang/python.sh
+          python3 -m py_compile install/restore.py
+      - name: Dry Run Install
+        env:
+          CI: true
+        run: |
+          chmod +x install.sh
+          ./install.sh --profile personal --dry-run
+      - name: Verify Symlink Logic
+        run: |
+          HOME="$(mktemp -d)" ./install.sh --only symlinks
+      - name: Verify macOS Logic Harness
+        run: |
+          ./test_macos_logic.sh
+
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax Check
+        run: |
+          bash -n install.sh install/symlinks.sh install/backup.sh install/mac/brew.sh install/mac/macos.sh install/linux/brew.sh install/lang/javascript.sh install/lang/java.sh install/lang/python.sh
+          python3 -m py_compile install/restore.py
+      - name: Dry Run Install
+        env:
+          CI: true
+        run: |
+          chmod +x install.sh
+          ./install.sh --profile personal --dry-run
+      - name: Verify Symlink Logic
+        run: |
+          HOME="$(mktemp -d)" ./install.sh --only symlinks
+      - name: Verify macOS Logic Harness
+        run: |
+          ./test_macos_logic.sh

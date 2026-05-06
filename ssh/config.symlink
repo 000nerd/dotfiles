@@ -1,0 +1,29 @@
+#   $$$$$$\   $$$$$$\  $$\   $$
+#  $$  __$$\ $$  __$$\ $$ |  $$ |
+#  $$ /  \__|$$ /  \__|$$ |  $$ |
+#  \$$$$$$\  \$$$$$$\  $$$$$$$$ |
+#   \____$$\  \____$$\ $$  __$$ |
+#  $$\   $$ |$$\   $$ |$$ |  $$ |
+#  \$$$$$$  |\$$$$$$  |$$ |  $$ |
+#   \______/  \______/ \__|  \__|
+
+# SSH config
+
+# Include local machine-specific config
+Include config.local
+
+Host *
+    # Always use the same SSH key for a host
+    IdentitiesOnly yes
+    # Keep the connection alive
+    ServerAliveInterval 60
+    ServerAliveCountMax 5
+    # Reuse connections to the same host
+    ControlMaster auto
+    ControlPath ~/.ssh/master-%r@%h:%p
+    ControlPersist yes
+    # Forward the SSH agent to the remote host
+    # ForwardAgent yes
+    # Preferred authentication methods
+    PubkeyAuthentication yes
+    PasswordAuthentication yes

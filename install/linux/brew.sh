@@ -10,16 +10,17 @@ set -euxo pipefail
 #  $$$$$$$  |$$ |  $$ |$$$$$$$$\ $$  /   \$$ |
 #  \_______/ \__|  \__|\________|\__/     \__|
 
-# Ask for the administrator password upfront.
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 if test ! "$(command -v brew)"; then
     echo "Homebrew not installed. Installing."
-    # Run as a login shell (non-interactive) so that the script doesn't pause for user input
-    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash --login
+    # Use HEAD instead of master
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # Load brew for the current session
+    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [ -d "$HOME/.linuxbrew" ]; then
+        eval "$($HOME/.linuxbrew/bin/brew shellenv)"
+    fi
 fi
 
 echo -e "\n\nInstalling homebrew packages..."
@@ -31,11 +32,13 @@ formulas=(
     bat # cat replacement
     cocoapods
     curl
-    exa # ls replacement
+    eza # ls replacement
+    fd # find replacement
     ffmpeg
     fzf
     gh
     git
+    git-delta # git diff replacement
     hub
     jq # or use fx
     markdown
@@ -78,4 +81,6 @@ done
 brew tap homebrew/cask-fonts
 
 # Remove outdated versions from the cellar.
+brew cleanup
+
 brew cleanup

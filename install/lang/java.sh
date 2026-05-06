@@ -10,30 +10,21 @@ set -euxo pipefail
 #  \$$$$$$  |$$ |  $$ |   \$  /   $$ |  $$ |
 #   \______/ \__|  \__|    \_/    \__|  \__|
 
-# Ask for the administrator password upfront.
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+echo -e "\n\nInstalling Java environment"
+echo "=============================="
 
 if test ! "$(command -v brew)"; then
-    echo "Homebrew not installed. Installing."
-    # Run as a login shell (non-interactive) so that the script doesn't pause for user input
-    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash --login
+    echo "Homebrew not installed. Skipping Java environment setup via brew."
+    exit 0
 fi
-
-echo -e "\n\nInstalling Java enviroment"
-echo "=============================="
 
 formulas=(
     # install java and android dev tools
     gradle
     jenv
     maven
-    openjdk@11
     openjdk@17
     openjdk@21
-    wildfly-as
 )
 
 for formula in "${formulas[@]}"; do
@@ -44,21 +35,27 @@ for formula in "${formulas[@]}"; do
     fi
 done
 
+# Initialize jenv
 eval "$(jenv init -)"
 
 jenv enable-plugin export
 jenv enable-plugin gradle
 jenv enable-plugin maven
 
-if [[ $OSTYPE == 'darwin'* ]]; then
-    sudo ln -sfn "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
-    sudo ln -sfn "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
-    sudo ln -sfn "$(brew --prefix)"/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
-fi
+BREW_PREFIX=$(brew --prefix)
 
-jenv add "$(brew --prefix)"/opt/openjdk@11/libexec/openjdk.jdk/Contents/Home
-jenv add "$(brew --prefix)"/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
-jenv add "$(brew --prefix)"/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home
+if [ "$(uname)" == "Darwin" ]; then
+    # MacOS specific openjdk links
+    sudo ln -sfn "$BREW_PREFIX"/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk || true
+    sudo ln -sfn "$BREW_PREFIX"/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk || true
+
+    jenv add "$BREW_PREFIX"/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home || true
+    jenv add "$BREW_PREFIX"/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home || true
+elif [ "$(uname)" == "Linux" ]; then
+    # Linux specific openjdk links (usually they are already in a good place, but let's add them to jenv)
+    jenv add "$BREW_PREFIX"/opt/openjdk@17/libexec || true
+    jenv add "$BREW_PREFIX"/opt/openjdk@21/libexec || true
+fi
 
 # Remove outdated versions from the cellar.
 brew cleanup

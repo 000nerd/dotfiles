@@ -47,19 +47,28 @@
     branch = yellow
 [core]
     excludesfile = ~/.gitignore_global
-    pager = less -FXRS -x2
+    pager = delta
     editor = code --wait
     whitespace = cr-at-eol
 [credential]
 	helper = osxkeychain
+[delta]
+    navigate = true    # use n and p to move between diff sections
+    light = false      # set to true if you're using a light terminal theme
+    line-numbers = true
+    side-by-side = false
 [diff]
+    colorMoved = default
     tool = vscode
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [grep]
     extendRegexp = true
     lineNumber = true
+[interactive]
+    diffFilter = delta --color-only
 [merge]
+    conflictstyle = diff3
     tool = vscode
 [mergetool "vscode"]
     cmd = code --wait $MERGED

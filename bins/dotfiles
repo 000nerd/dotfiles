@@ -21,6 +21,8 @@ sub_help () {
     echo "   help             This help message"
     echo "   update           Update packages and pkg managers"
     echo "   clean            Clean up caches"
+    echo "   doctor           Check dotfiles health"
+    echo "   install          Run installer; passes through installer options"
     echo "   backup           Run backup script"
     echo "   symlinks         Run symlinks script"
     echo "   brew             Run brew script"
@@ -63,33 +65,87 @@ sub_symlinks () {
 }
 
 sub_brew () {
-    source "$DOTFILES_DIR/install/brew.sh"
+    case "$(uname)" in
+        Darwin) source "$DOTFILES_DIR/install/mac/brew.sh" ;;
+        Linux) source "$DOTFILES_DIR/install/linux/brew.sh" ;;
+        *) echo -e "${RED}$ARROW Brew install is not configured for $(uname).${NC}" >&2; return 1 ;;
+    esac
     echo -e "${GREEN}$ARROW Success! Brew command finished.${NC}"
 }
 
-sub_defaults () {
-    source "$DOTFILES_DIR/install/macos.sh"
+sub_macos () {
+    source "$DOTFILES_DIR/install/mac/macos.sh"
     echo -e "${GREEN}$ARROW Success! MacOS defaults command finished.${NC}"
 }
 
+sub_defaults () {
+    sub_macos "$@"
+}
+
 sub_dock () {
-    source "$DOTFILES_DIR/install/dock.sh"
-    echo -e "${GREEN}$ARROW Success! MacOS dock command finished.${NC}"
+    echo -e "${YELLOW}$ARROW Dock setup script does not exist yet.${NC}" >&2
+    return 1
 }
 
 sub_java () {
-    source "$DOTFILES_DIR/install/java.sh"
+    source "$DOTFILES_DIR/install/lang/java.sh"
     echo -e "${GREEN}$ARROW Success! Java command finished.${NC}"
 }
 
 sub_javascript () {
-    source "$DOTFILES_DIR/install/javascript.sh"
+    source "$DOTFILES_DIR/install/lang/javascript.sh"
     echo -e "${GREEN}$ARROW Success! Javascript command finished.${NC}"
 }
 
 sub_python () {
-    source "$DOTFILES_DIR/install/python.sh"
+    source "$DOTFILES_DIR/install/lang/python.sh"
     echo -e "${GREEN}$ARROW Success! Python command finished.${NC}"
+}
+
+sub_install () {
+    "$DOTFILES_DIR/install.sh" "$@"
+}
+
+sub_doctor () {
+    local ok=true
+
+    echo -e "$ARROW Checking dotfiles setup"
+
+    for dir in "$DOTFILES_DIR" "$DOTFILES_DIR/install" "$DOTFILES_DIR/zsh" "$DOTFILES_DIR/bin" "$DOTFILES_DIR/bins"; do
+        if [ -d "$dir" ]; then
+            echo -e "${GREEN}ok${NC} $dir"
+        else
+            echo -e "${RED}missing${NC} $dir"
+            ok=false
+        fi
+    done
+
+    for cmd in git zsh; do
+        if command -v "$cmd" >/dev/null 2>&1; then
+            echo -e "${GREEN}ok${NC} $cmd"
+        else
+            echo -e "${RED}missing${NC} $cmd"
+            ok=false
+        fi
+    done
+
+    if command -v brew >/dev/null 2>&1; then
+        echo -e "${GREEN}ok${NC} brew $(brew --version | head -n 1)"
+    else
+        echo -e "${YELLOW}warn${NC} brew not found"
+    fi
+
+    for link in "$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/.gitignore_global"; do
+        if [ -L "$link" ]; then
+            echo -e "${GREEN}ok${NC} $link -> $(readlink "$link")"
+        elif [ -e "$link" ]; then
+            echo -e "${YELLOW}warn${NC} $link exists but is not a symlink"
+        else
+            echo -e "${YELLOW}warn${NC} $link is not installed"
+        fi
+    done
+
+    [ "$ok" = true ]
 }
 
 case $COMMAND_NAME in

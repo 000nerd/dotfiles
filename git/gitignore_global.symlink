@@ -67,6 +67,11 @@ tmp
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
+# Local overrides/secrets
+*.local.zsh
+.local.zsh
+.ssh/config.local
+
 ##############################
 ## Maven
 ##############################
