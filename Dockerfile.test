@@ -1,0 +1,46 @@
+FROM ubuntu:22.04
+
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install basic dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    sudo \
+    build-essential \
+    zsh \
+    locales \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up locales
+RUN locale-gen en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Create a test user
+RUN useradd -m -s /bin/zsh testuser && \
+    echo "testuser:testuser" | chpasswd && \
+    adduser testuser sudo
+
+# Allow sudo without password for testuser
+RUN echo "testuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER testuser
+WORKDIR /home/testuser
+
+# Copy dotfiles into the container
+# We assume the context is the root of the dotfiles repo
+COPY --chown=testuser:testuser . ./.dotfiles
+
+WORKDIR /home/testuser/.dotfiles
+
+# The install script might need some environment variables
+ENV HOME=/home/testuser
+ENV USER=testuser
+
+# We don't run the install.sh automatically because it might take a long time
+# and we want to let the user choose what to test.
+# But we can provide a default command.
+CMD ["/bin/zsh"]

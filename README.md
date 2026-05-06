@@ -35,6 +35,18 @@ Contains:
         chmod -R +wx ~/dotfiles/bins
         ./install.sh
 
+    Useful focused runs:
+
+        ./install.sh --dry-run
+        ./install.sh --profile personal
+        ./install.sh --only symlinks
+        ./install.sh --skip macos
+        ./install.sh --profile personal --dry-run --only symlinks,brew
+
+    Safe local test for the macOS path:
+
+        ./test_macos_logic.sh
+
 ## The `dotfiles` command
 
     $ dotfiles
@@ -44,10 +56,20 @@ Contains:
         help             This help message
         update           Update packages and pkg managers (OS, brew, npm, yarn)
         clean            Clean up caches (brew, npm, yarn)
+        doctor           Check dotfiles health
+        install          Run installer; passes through installer options
         symlinks         Run symlinks script
         brew             Run brew script
-        defaults         Run MacOS defaults script
-        dock             Run MacOS dock script
+        macos            Run MacOS defaults script
+        java             Run java script
+        javascript       Run javascript script
+        python           Run python script
+
+## Personal profile
+
+`install/profiles/personal.env` is the default place for machine bootstrap preferences that should be reusable but still personal. For example, set `DOTFILES_COMPUTER_NAME` there to avoid the macOS computer-name prompt on a fresh machine.
+
+Keep secrets and machine-only overrides in `~/.local.zsh`; it is sourced by `.zshrc` and should not be committed.
 
 ## The `ssh-manager` command
 

@@ -11,6 +11,21 @@
 
 echo -e "\n\nChanging macOS settings"
 echo "=============================="
+
+if [ -n "${DOTFILES_COMMAND_LOG:-}" ]; then
+    mkdir -p "$(dirname "$DOTFILES_COMMAND_LOG")"
+    dotfiles_log_command() {
+        printf '%q ' "$@" >> "$DOTFILES_COMMAND_LOG"
+        printf '\n' >> "$DOTFILES_COMMAND_LOG"
+    }
+    osascript() { dotfiles_log_command osascript "$@"; }
+    sudo() { dotfiles_log_command sudo "$@"; }
+    defaults() { dotfiles_log_command defaults "$@"; }
+    softwareupdate() { dotfiles_log_command softwareupdate "$@"; }
+    open() { dotfiles_log_command open "$@"; }
+    killall() { dotfiles_log_command killall "$@"; }
+fi
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -26,9 +41,13 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ###############################################################################
 
 # Set computer name (as done via System Preferences → Sharing)
-read -r -p "Name this computer (e.g. iObsa Air): " device
+if [ -n "${DOTFILES_COMPUTER_NAME:-}" ]; then
+    device="$DOTFILES_COMPUTER_NAME"
+else
+    read -r -p "Name this computer (e.g. iObsa Air): " device
+fi
 sudo scutil --set ComputerName "${device}"
-sudo scutil --set HostName "iObsa"
+sudo scutil --set HostName "${DOTFILES_HOST_NAME:-iObsa}"
 sudo scutil --set LocalHostName "${device// /-}"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${device}"
 

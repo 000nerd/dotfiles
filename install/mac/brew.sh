@@ -31,10 +31,13 @@ formulas=(
     bat # cat replacement
     cocoapods
     curl
+    eza # ls replacement
+    fd # find replacement
     ffmpeg
     fzf
     gh
     git
+    git-delta # git diff replacement
     hub
     jq # or use fx
     markdown
@@ -115,13 +118,17 @@ for formula in "${formulas[@]}"; do
     fi
 done
 
-for cask_formula in "${cask_formulas[@]}"; do
-    if brew list --cask "$cask_formula" > /dev/null 2>&1; then
-        echo "$cask_formula already installed... skipping."
-    else
-        brew install --cask "$cask_formula"
-    fi
-done
+if [ "${CI:-false}" = "true" ]; then
+    echo "CI environment detected. Skipping heavy cask installations."
+else
+    for cask_formula in "${cask_formulas[@]}"; do
+        if brew list --cask "$cask_formula" > /dev/null 2>&1; then
+            echo "$cask_formula already installed... skipping."
+        else
+            brew install --cask "$cask_formula"
+        fi
+    done
+fi
 
 # Remove outdated versions from the cellar.
 brew cleanup

@@ -24,11 +24,29 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
-alias l="ls -lah ${colorflag}"
-alias la="ls -AF ${colorflag}"
-alias ll="ls -lFh ${colorflag}"
+# Modern replacements
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza --icons --group-directories-first'
+    alias l='eza -lh --icons --group-directories-first'
+    alias la='eza -la --icons --group-directories-first'
+    alias ll='eza -l --icons --group-directories-first'
+    alias lt='eza --tree --icons'
+else
+    alias l="ls -lah ${colorflag}"
+    alias la="ls -AF ${colorflag}"
+    alias ll="ls -lFh ${colorflag}"
+    alias ls="ls ${colorflag}"
+fi
+
+if command -v fd >/dev/null 2>&1; then
+    alias find='fd'
+fi
+
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat'
+fi
+
 alias lld="ls -l | grep ^d"
-alias ls="ls ${colorflag}"
 alias rmf="rm -rf"
 
 # Helpers
@@ -106,4 +124,4 @@ alias battery="acpi -V"
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 alias lslist="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -dump"
 
-alias lol=git log --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(green)%cd(%cr) %C(bold blue)<%an>%Creset' --date=short --all
+alias lol="git log --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(green)%cd(%cr) %C(bold blue)<%an>%Creset' --date=short --all"

@@ -16,17 +16,33 @@ export LC_ALL="en_US.UTF-8"
 # Disable homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 
+if command -v brew >/dev/null 2>&1; then
+    BREW_PREFIX="$(brew --prefix)"
+else
+    BREW_PREFIX=""
+fi
+
 #ZPLUG
-export ZPLUG_HOME="$(brew --prefix)/opt/zplug"
+if [ -n "$BREW_PREFIX" ]; then
+    export ZPLUG_HOME="$BREW_PREFIX/opt/zplug"
+fi
 
 # Java variables
-export GRADLE_HOME="$(brew --prefix)/opt/gradle"
+if [ -n "$BREW_PREFIX" ]; then
+    export GRADLE_HOME="$BREW_PREFIX/opt/gradle"
+fi
 # Android
-export ANDROID_SDK_ROOT=/Users/obsa/Library/Android/sdk
+export ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$HOME/Library/Android/sdk}"
 export ANDROID_HOME=$ANDROID_SDK_ROOT
 
 # Anaconda
-export CONDA_HOME="$(brew --prefix)/anaconda3"
+if [ -n "$BREW_PREFIX" ]; then
+    export CONDA_HOME="$BREW_PREFIX/anaconda3"
+fi
+
+# Go
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
 
 #history file
 export HISTFILE=~/.zhistory

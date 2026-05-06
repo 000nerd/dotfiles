@@ -15,6 +15,9 @@ for file in ~/.dotfiles/zsh/zsh/{aliases,completion,exports,functions,prompt}; d
 done;
 unset file;
 
+# Load local overrides or secrets (this file should be gitignored)
+[ -f ~/.local.zsh ] && source ~/.local.zsh
+
 ###############################################################################
 #                                 SETTINGS                                    #
 ###############################################################################
@@ -49,14 +52,20 @@ setopt HIST_VERIFY
 # JENV Path
 export PATH="$HOME/.jenv/bin:$PATH"
 # Gradle, Maven, Wildfly Path
-export PATH="$GRADLE_HOME/bin:$PATH"
+if [ -n "${GRADLE_HOME:-}" ]; then
+    export PATH="$GRADLE_HOME/bin:$PATH"
+fi
 # Android
-export PATH="$ANDROID_HOME/platform-tools:$PATH"
-export PATH="$ANDROID_HOME/emulator:$PATH"
+if [ -n "${ANDROID_HOME:-}" ]; then
+    export PATH="$ANDROID_HOME/platform-tools:$PATH"
+    export PATH="$ANDROID_HOME/emulator:$PATH"
+fi
 # Dotfiles Path
 export PATH="$HOME/.dotfiles/bins:$PATH"
 # anaconda3
-export PATH="$CONDA_HOME/bin:$PATH"
+if [ -n "${CONDA_HOME:-}" ]; then
+    export PATH="$CONDA_HOME/bin:$PATH"
+fi
 # .local
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -65,52 +74,65 @@ export PATH="$HOME/.local/bin:$PATH"
 ###############################################################################
 
 #JENV Eval
-eval "$(jenv init -)"
+if command -v jenv >/dev/null 2>&1; then
+    eval "$(jenv init -)"
+fi
 
 # Source NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && . "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
+if command -v brew >/dev/null 2>&1; then
+    nvm_script="$(brew --prefix)/opt/nvm/nvm.sh"
+    [ -s "$nvm_script" ] && . "$nvm_script"
+    unset nvm_script
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/anaconda3/etc/profile.d/conda.sh"
+if [ -n "${CONDA_HOME:-}" ] && [ -x "$CONDA_HOME/bin/conda" ]; then
+    __conda_setup="$("$CONDA_HOME/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        export PATH="/opt/homebrew/anaconda3/bin:$PATH"
+        if [ -f "$CONDA_HOME/etc/profile.d/conda.sh" ]; then
+            . "$CONDA_HOME/etc/profile.d/conda.sh"
+        else
+            export PATH="$CONDA_HOME/bin:$PATH"
+        fi
     fi
+    unset __conda_setup
 fi
-unset __conda_setup
 # <<< conda initialize <<<
 
 ###############################################################################
 #                                 ZPLUG                                       #
 ###############################################################################
-source $ZPLUG_HOME/init.zsh
+if [ -n "${ZPLUG_HOME:-}" ] && [ -r "$ZPLUG_HOME/init.zsh" ]; then
+    source "$ZPLUG_HOME/init.zsh"
 
-# oh-my-zsh plugins
-zplug "plugins/aws", from:oh-my-zsh
-zplug "plugins/jira", from:oh-my-zsh
-zplug "plugins/macos",   from:oh-my-zsh
-# zplug "plugins/vi-mode", from:oh-my-zsh
-zplug "plugins/web-search", from:oh-my-zsh
-# zsh-users plugins
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-completions", defer:2
-zplug "zsh-users/zsh-autosuggestions", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:2
+    # oh-my-zsh plugins
+    zplug "plugins/aws", from:oh-my-zsh
+    zplug "plugins/jira", from:oh-my-zsh
+    zplug "plugins/macos",   from:oh-my-zsh
+    # zplug "plugins/vi-mode", from:oh-my-zsh
+    zplug "plugins/web-search", from:oh-my-zsh
+    # zsh-users plugins
+    zplug "zsh-users/zsh-syntax-highlighting", defer:2
+    zplug "zsh-users/zsh-completions", defer:2
+    zplug "zsh-users/zsh-autosuggestions", defer:2
+    zplug "zsh-users/zsh-history-substring-search", defer:2
 
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
+    # Install plugins if there are plugins that have not been installed
+    if ! zplug check --verbose; then
+        printf "Install? [y/N]: "
+        if read -q; then
+            echo; zplug install
+        fi
     fi
+
+    # Then, source plugins and add commands to $PATH
+    zplug load
 fi
 
-# Then, source plugins and add commands to $PATH
-zplug load
+if [[ "$TERM_PROGRAM" == "kiro" ]] && command -v kiro >/dev/null 2>&1; then
+    . "$(kiro --locate-shell-integration-path zsh)"
+fi

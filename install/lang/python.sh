@@ -10,36 +10,34 @@ set -euxo pipefail
 #  $$ |         $$ |       $$ |   $$ |  $$ | $$$$$$  |$$ | \$$ |
 #  \__|         \__|       \__|   \__|  \__| \______/ \__|  \__|
 
-# Ask for the administrator password upfront.
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until the script has finished.
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-if test ! "$(command -v brew)"; then
-    echo "Homebrew not installed. Installing."
-    # Run as a login shell (non-interactive) so that the script doesn't pause for user input
-    curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash --login
-fi
-
-echo -e "\n\nInstalling python enviroment"
+echo -e "\n\nInstalling python environment"
 echo "=============================="
 
+if test ! "$(command -v brew)"; then
+    echo "Homebrew not installed. Skipping Python environment setup via brew."
+    exit 0
+fi
+
 # Install Python
-brew install python
-# Install Conda.
-brew install --cask anaconda
+if ! brew list python > /dev/null 2>&1; then
+    brew install python
+fi
+
+# Install uv
+if ! brew list uv > /dev/null 2>&1; then
+    brew install uv
+fi
 
 packages=(
     cyberdrop-dl
-    poetry
-    requests
     streamlink
 )
 
-for package in "${packages[@]}"; do
-	"$(brew --prefix)/anaconda3/bin/pip" install "$package"
-done
+if command -v uv > /dev/null; then
+    for package in "${packages[@]}"; do
+        uv tool install "$package" || echo "Failed to install $package via uv, continuing..."
+    done
+fi
 
 # Remove outdated versions from the cellar.
 brew cleanup

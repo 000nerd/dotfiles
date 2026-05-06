@@ -1,0 +1,4 @@
+.DS_Store
+.local.zsh
+__pycache__/
+dotfiles-backup/
