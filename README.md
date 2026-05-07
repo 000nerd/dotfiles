@@ -78,11 +78,19 @@ Keep secrets and machine-only overrides in `~/.local.zsh`; it is sourced by `.zs
 
 ## Theme profiles
 
-Theme profiles live in `themes/profiles`. The first supported profile is `gruvbox`.
+Theme profiles live in `themes/profiles`.
+
+Available profiles:
+
+- `gruvbox`
+- `gruvbox-material`
+- `everforest`
 
     dotfiles theme list
     dotfiles theme current
     dotfiles theme apply gruvbox --dry-run
+    dotfiles theme apply gruvbox-material --dry-run
+    dotfiles theme apply everforest --dry-run
     dotfiles theme apply gruvbox
     dotfiles theme apply gruvbox --apps codex,vscode,obsidian
 

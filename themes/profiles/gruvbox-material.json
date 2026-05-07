@@ -1,0 +1,65 @@
+{
+  "name": "gruvbox-material",
+  "apps": {
+    "codex": {
+      "appearanceTheme": "system",
+      "lightCodeThemeId": "gruvbox-material",
+      "darkCodeThemeId": "gruvbox-material",
+      "lightChromeTheme": {
+        "accent": "#7daea3",
+        "contrast": 48,
+        "fonts": {
+          "code": null,
+          "ui": null
+        },
+        "ink": "#654735",
+        "opaqueWindows": false,
+        "semanticColors": {
+          "diffAdded": "#654735",
+          "diffRemoved": "#c14a4a",
+          "skill": "#945e80"
+        },
+        "surface": "#fbf1c7"
+      },
+      "darkChromeTheme": {
+        "accent": "#7daea3",
+        "contrast": 58,
+        "fonts": {
+          "code": null,
+          "ui": null
+        },
+        "ink": "#ddc7a1",
+        "opaqueWindows": false,
+        "semanticColors": {
+          "diffAdded": "#ddc7a1",
+          "diffRemoved": "#ea6962",
+          "skill": "#d3869b"
+        },
+        "surface": "#282828"
+      }
+    },
+    "intellij": {
+      "schemeName": "Gruvbox Material",
+      "installNote": "Install a JetBrains Gruvbox Material color scheme, or add a .icls file to the repo and wire it into this profile."
+    },
+    "iterm": {
+      "installNote": "No Gruvbox Material .itermcolors file is in this repo yet."
+    },
+    "obsidian": {
+      "cssTheme": "Gruvbox Material",
+      "accentColor": "#7daea3",
+      "vaults": [
+        "~/Google Drive/cache-overflow"
+      ]
+    },
+    "terminal": {
+      "installNote": "No Gruvbox Material .terminal file is in this repo yet."
+    },
+    "vscode": {
+      "colorTheme": "Gruvbox Material Dark Medium",
+      "extensions": [
+        "sainnhe.gruvbox-material"
+      ]
+    }
+  }
+}

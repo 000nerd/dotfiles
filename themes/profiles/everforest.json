@@ -1,0 +1,65 @@
+{
+  "name": "everforest",
+  "apps": {
+    "codex": {
+      "appearanceTheme": "system",
+      "lightCodeThemeId": "everforest",
+      "darkCodeThemeId": "everforest",
+      "lightChromeTheme": {
+        "accent": "#8da101",
+        "contrast": 48,
+        "fonts": {
+          "code": null,
+          "ui": null
+        },
+        "ink": "#5c6a72",
+        "opaqueWindows": false,
+        "semanticColors": {
+          "diffAdded": "#5c6a72",
+          "diffRemoved": "#f85552",
+          "skill": "#df69ba"
+        },
+        "surface": "#fdf6e3"
+      },
+      "darkChromeTheme": {
+        "accent": "#a7c080",
+        "contrast": 58,
+        "fonts": {
+          "code": null,
+          "ui": null
+        },
+        "ink": "#d3c6aa",
+        "opaqueWindows": false,
+        "semanticColors": {
+          "diffAdded": "#d3c6aa",
+          "diffRemoved": "#e67e80",
+          "skill": "#d699b6"
+        },
+        "surface": "#2d353b"
+      }
+    },
+    "intellij": {
+      "schemeName": "Everforest",
+      "installNote": "Install a JetBrains Everforest color scheme, or add a .icls file to the repo and wire it into this profile."
+    },
+    "iterm": {
+      "installNote": "No Everforest .itermcolors file is in this repo yet."
+    },
+    "obsidian": {
+      "cssTheme": "Everforest",
+      "accentColor": "#a7c080",
+      "vaults": [
+        "~/Google Drive/cache-overflow"
+      ]
+    },
+    "terminal": {
+      "installNote": "No Everforest .terminal file is in this repo yet."
+    },
+    "vscode": {
+      "colorTheme": "Everforest Dark",
+      "extensions": [
+        "sainnhe.everforest"
+      ]
+    }
+  }
+}

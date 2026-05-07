@@ -172,6 +172,9 @@ def apply_codex(config: dict[str, Any], args: argparse.Namespace) -> None:
 
 
 def apply_iterm(config: dict[str, Any], args: argparse.Namespace) -> None:
+    if config.get("installNote"):
+        warn(f"iTerm: {config['installNote']}")
+        return
     color_file = repo_path(config["colorFile"])
     if not color_file.exists():
         warn(f"iTerm color file not found: {color_file}")
@@ -182,6 +185,9 @@ def apply_iterm(config: dict[str, Any], args: argparse.Namespace) -> None:
 
 
 def apply_terminal(config: dict[str, Any], args: argparse.Namespace) -> None:
+    if config.get("installNote"):
+        warn(f"Terminal: {config['installNote']}")
+        return
     color_file = repo_path(config["colorFile"])
     if not color_file.exists():
         warn(f"Terminal color file not found: {color_file}")
@@ -213,6 +219,9 @@ def intellij_color_dirs() -> list[Path]:
 
 
 def apply_intellij(config: dict[str, Any], args: argparse.Namespace) -> None:
+    if config.get("installNote"):
+        warn(f"IntelliJ: {config['installNote']}")
+        return
     scheme_file = repo_path(config["schemeFile"])
     if not scheme_file.exists():
         warn(f"IntelliJ scheme file not found: {scheme_file}")
