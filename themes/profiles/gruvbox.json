@@ -46,7 +46,7 @@
       "colorFile": "themes/iTerm/gruvbox-dark.itermcolors"
     },
     "obsidian": {
-      "cssTheme": "Gruvbox",
+      "cssTheme": "Obsidian gruvbox",
       "accentColor": "#458588",
       "vaults": [
         "~/Google Drive/cache-overflow"
@@ -60,6 +60,9 @@
       "extensions": [
         "jdinhlife.gruvbox"
       ]
+    },
+    "zsh": {
+      "themeFile": "themes/zsh/gruvbox.zsh-theme"
     }
   }
 }

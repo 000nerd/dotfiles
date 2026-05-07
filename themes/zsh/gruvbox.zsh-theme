@@ -33,11 +33,17 @@
 # A few utility functions to make it easy and re-usable to draw segmented prompts
 
 CURRENT_BG='NONE'
+CURRENT_FG="${CURRENT_FG:-0}"
 
-case ${SOLARIZED_THEME:-dark} in
-    light) CURRENT_FG='3';;
-    *)     CURRENT_FG='0';;
-esac
+ZSH_PROMPT_CONTEXT_BG="${ZSH_PROMPT_CONTEXT_BG:-237}"
+ZSH_PROMPT_CONTEXT_FG="${ZSH_PROMPT_CONTEXT_FG:-7}"
+ZSH_PROMPT_DIR_BG="${ZSH_PROMPT_DIR_BG:-4}"
+ZSH_PROMPT_DIR_FG="${ZSH_PROMPT_DIR_FG:-$CURRENT_FG}"
+ZSH_PROMPT_GIT_CLEAN_BG="${ZSH_PROMPT_GIT_CLEAN_BG:-2}"
+ZSH_PROMPT_GIT_DIRTY_BG="${ZSH_PROMPT_GIT_DIRTY_BG:-3}"
+ZSH_PROMPT_GIT_FG="${ZSH_PROMPT_GIT_FG:-$CURRENT_FG}"
+ZSH_PROMPT_STATUS_BG="${ZSH_PROMPT_STATUS_BG:-166}"
+ZSH_PROMPT_STATUS_FG="${ZSH_PROMPT_STATUS_FG:-7}"
 
 # Special Powerline characters
 
@@ -95,7 +101,7 @@ prompt_context() {
     darwin*)  OS_LOGO="\ue29e" ;; 
     linux*)   OS_LOGO="\ue712" ;;
   esac
-  prompt_segment 237 7 $OS_LOGO
+  prompt_segment "$ZSH_PROMPT_CONTEXT_BG" "$ZSH_PROMPT_CONTEXT_FG" $OS_LOGO
 }
 
 # Git: branch/detached head, dirty status
@@ -116,9 +122,9 @@ prompt_git() {
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
     if [[ -n $dirty ]]; then
-      prompt_segment 3 0
+      prompt_segment "$ZSH_PROMPT_GIT_DIRTY_BG" "$ZSH_PROMPT_GIT_FG"
     else
-      prompt_segment 2 $CURRENT_FG
+      prompt_segment "$ZSH_PROMPT_GIT_CLEAN_BG" "$ZSH_PROMPT_GIT_FG"
     fi
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
@@ -151,15 +157,15 @@ prompt_bzr() {
         status_all=`bzr status | head -n1 | wc -m`
         revision=`bzr log | head -n2 | tail -n1 | sed 's/^revno: //'`
         if [[ $status_mod -gt 0 ]] ; then
-            prompt_segment 3 0
+            prompt_segment "$ZSH_PROMPT_GIT_DIRTY_BG" "$ZSH_PROMPT_GIT_FG"
             echo -n "bzr@"$revision "✚ "
         else
             if [[ $status_all -gt 0 ]] ; then
-                prompt_segment 3 0
+                prompt_segment "$ZSH_PROMPT_GIT_DIRTY_BG" "$ZSH_PROMPT_GIT_FG"
                 echo -n "bzr@"$revision
 
             else
-                prompt_segment 2 0
+                prompt_segment "$ZSH_PROMPT_GIT_CLEAN_BG" "$ZSH_PROMPT_GIT_FG"
                 echo -n "bzr@"$revision
             fi
         fi
@@ -173,15 +179,15 @@ prompt_hg() {
     if $(hg prompt >/dev/null 2>&1); then
       if [[ $(hg prompt "{status|unknown}") = "?" ]]; then
         # if files are not added
-        prompt_segment 1 7
+        prompt_segment "$ZSH_PROMPT_STATUS_BG" "$ZSH_PROMPT_STATUS_FG"
         st='±'
       elif [[ -n $(hg prompt "{status|modified}") ]]; then
         # if any modification
-        prompt_segment 3 0
+        prompt_segment "$ZSH_PROMPT_GIT_DIRTY_BG" "$ZSH_PROMPT_GIT_FG"
         st='±'
       else
         # if working copy is clean
-        prompt_segment 2 $CURRENT_FG
+        prompt_segment "$ZSH_PROMPT_GIT_CLEAN_BG" "$ZSH_PROMPT_GIT_FG"
       fi
       echo -n $(hg prompt "☿ {rev}@{branch}") $st
     else
@@ -189,13 +195,13 @@ prompt_hg() {
       rev=$(hg id -n 2>/dev/null | sed 's/[^-0-9]//g')
       branch=$(hg id -b 2>/dev/null)
       if `hg st | grep -q "^\?"`; then
-        prompt_segment 1 0
+        prompt_segment "$ZSH_PROMPT_STATUS_BG" "$ZSH_PROMPT_STATUS_FG"
         st='±'
       elif `hg st | grep -q "^[MA]"`; then
-        prompt_segment 3 0
+        prompt_segment "$ZSH_PROMPT_GIT_DIRTY_BG" "$ZSH_PROMPT_GIT_FG"
         st='±'
       else
-        prompt_segment 2 $CURRENT_FG
+        prompt_segment "$ZSH_PROMPT_GIT_CLEAN_BG" "$ZSH_PROMPT_GIT_FG"
       fi
       echo -n "☿ $rev@$branch" $st
     fi
@@ -204,14 +210,14 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment 4 $CURRENT_FG '%~'
+  prompt_segment "$ZSH_PROMPT_DIR_BG" "$ZSH_PROMPT_DIR_FG" '%~'
 }
 
 # Virtualenv: current working virtualenv
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment 4 0 "(`basename $virtualenv_path`)"
+    prompt_segment "$ZSH_PROMPT_DIR_BG" "$ZSH_PROMPT_DIR_FG" "(`basename $virtualenv_path`)"
   fi
 }
 
@@ -226,7 +232,7 @@ prompt_status() {
   [[ $UID -eq 0 ]] && symbols+="%{%F{3}%}\ufaf5" #⚡
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{6}%}\uf7d0" #⚙
 
-  [[ -n "$symbols" ]] && prompt_segment 166 7 "$symbols"
+  [[ -n "$symbols" ]] && prompt_segment "$ZSH_PROMPT_STATUS_BG" "$ZSH_PROMPT_STATUS_FG" "$symbols"
 }
 
 ## Main prompt

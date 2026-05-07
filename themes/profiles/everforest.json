@@ -43,7 +43,7 @@
       "installNote": "Install a JetBrains Everforest color scheme, or add a .icls file to the repo and wire it into this profile."
     },
     "iterm": {
-      "installNote": "No Everforest .itermcolors file is in this repo yet."
+      "colorFile": "themes/iTerm/everforest-dark.itermcolors"
     },
     "obsidian": {
       "cssTheme": "Everforest",
@@ -60,6 +60,9 @@
       "extensions": [
         "sainnhe.everforest"
       ]
+    },
+    "zsh": {
+      "themeFile": "themes/zsh/everforest.zsh-theme"
     }
   }
 }

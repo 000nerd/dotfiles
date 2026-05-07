@@ -43,10 +43,10 @@
       "installNote": "Install a JetBrains Gruvbox Material color scheme, or add a .icls file to the repo and wire it into this profile."
     },
     "iterm": {
-      "installNote": "No Gruvbox Material .itermcolors file is in this repo yet."
+      "colorFile": "themes/iTerm/gruvbox-material-dark.itermcolors"
     },
     "obsidian": {
-      "cssTheme": "Gruvbox Material",
+      "cssTheme": "Material Gruvbox",
       "accentColor": "#7daea3",
       "vaults": [
         "~/Google Drive/cache-overflow"
@@ -60,6 +60,9 @@
       "extensions": [
         "sainnhe.gruvbox-material"
       ]
+    },
+    "zsh": {
+      "themeFile": "themes/zsh/gruvbox-material.zsh-theme"
     }
   }
 }

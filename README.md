@@ -93,6 +93,7 @@ Available profiles:
     dotfiles theme apply everforest --dry-run
     dotfiles theme apply gruvbox
     dotfiles theme apply gruvbox --apps codex,vscode,obsidian
+    dotfiles theme apply everforest --apps iterm,zsh
 
 Supported targets:
 
@@ -101,6 +102,7 @@ Supported targets:
 - IntelliJ / JetBrains IDEs: copies the selected `.icls` scheme into discovered JetBrains `colors` directories.
 - Obsidian: updates configured vault `.obsidian/appearance.json` and warns when the CSS theme is not installed.
 - iTerm and Terminal: imports the configured color files.
+- zsh: points `zsh/zsh/current-theme.zsh` at the selected prompt theme.
 
 Use `--install-missing` if you want supported editor extensions installed automatically. Without it, the command only reports what is missing.
 

@@ -10,10 +10,16 @@
 #  \________| \______/ \__|  \__|\__|  \__| \______/
 
 # Load the shell dotfiles, and then some:
-for file in ~/.dotfiles/zsh/zsh/{aliases,completion,exports,functions,prompt}; do
+for file in ~/.dotfiles/zsh/zsh/{aliases,completion,exports,functions}; do
     [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
+
+if [ -r ~/.dotfiles/zsh/zsh/current-theme.zsh ]; then
+    source ~/.dotfiles/zsh/zsh/current-theme.zsh
+else
+    source ~/.dotfiles/zsh/zsh/prompt
+fi
 
 # Load local overrides or secrets (this file should be gitignored)
 [ -f ~/.local.zsh ] && source ~/.local.zsh

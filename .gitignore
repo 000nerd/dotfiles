@@ -2,3 +2,4 @@
 .local.zsh
 __pycache__/
 dotfiles-backup/
+zsh/zsh/current-theme.zsh

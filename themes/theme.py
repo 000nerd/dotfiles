@@ -197,6 +197,27 @@ def apply_terminal(config: dict[str, Any], args: argparse.Namespace) -> None:
     warn("Terminal imports the profile; make it default in Terminal settings if needed.")
 
 
+def apply_zsh(config: dict[str, Any], args: argparse.Namespace) -> None:
+    theme_file = repo_path(config["themeFile"])
+    target = expand_path(
+        os.environ.get(
+            "DOTFILES_ZSH_THEME_TARGET",
+            config.get("target", str(ROOT / "zsh/zsh/current-theme.zsh")),
+        )
+    )
+    if not theme_file.exists():
+        warn(f"zsh theme file not found: {theme_file}")
+        return
+    info(f"zsh: point {target} to {theme_file}")
+    if args.dry_run:
+        info(f"[dry-run] Would symlink {target} -> {theme_file}")
+        return
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if target.exists() or target.is_symlink():
+        target.unlink()
+    target.symlink_to(theme_file)
+
+
 def intellij_color_dirs() -> list[Path]:
     override = os.environ.get("DOTFILES_INTELLIJ_COLORS_DIRS")
     if override:
@@ -280,6 +301,7 @@ APPLIERS = {
     "obsidian": apply_obsidian,
     "terminal": apply_terminal,
     "vscode": apply_vscode,
+    "zsh": apply_zsh,
 }
 
 
