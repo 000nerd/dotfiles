@@ -47,6 +47,10 @@ Contains:
 
         ./test_macos_logic.sh
 
+    Safe local test for the theme switcher:
+
+        ./test_theme_logic.sh
+
 ## The `dotfiles` command
 
     $ dotfiles
@@ -58,6 +62,7 @@ Contains:
         clean            Clean up caches (brew, npm, yarn)
         doctor           Check dotfiles health
         install          Run installer; passes through installer options
+        theme            List, inspect, and apply theme profiles
         symlinks         Run symlinks script
         brew             Run brew script
         macos            Run MacOS defaults script
@@ -70,6 +75,26 @@ Contains:
 `install/profiles/personal.env` is the default place for machine bootstrap preferences that should be reusable but still personal. For example, set `DOTFILES_COMPUTER_NAME` there to avoid the macOS computer-name prompt on a fresh machine.
 
 Keep secrets and machine-only overrides in `~/.local.zsh`; it is sourced by `.zshrc` and should not be committed.
+
+## Theme profiles
+
+Theme profiles live in `themes/profiles`. The first supported profile is `gruvbox`.
+
+    dotfiles theme list
+    dotfiles theme current
+    dotfiles theme apply gruvbox --dry-run
+    dotfiles theme apply gruvbox
+    dotfiles theme apply gruvbox --apps codex,vscode,obsidian
+
+Supported targets:
+
+- Codex: updates only appearance keys in `~/.codex/.codex-global-state.json`.
+- VS Code: updates `workbench.colorTheme` in the user settings file and warns about missing extensions.
+- IntelliJ / JetBrains IDEs: copies the selected `.icls` scheme into discovered JetBrains `colors` directories.
+- Obsidian: updates configured vault `.obsidian/appearance.json` and warns when the CSS theme is not installed.
+- iTerm and Terminal: imports the configured color files.
+
+Use `--install-missing` if you want supported editor extensions installed automatically. Without it, the command only reports what is missing.
 
 ## The `ssh-manager` command
 

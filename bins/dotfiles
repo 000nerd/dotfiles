@@ -23,6 +23,7 @@ sub_help () {
     echo "   clean            Clean up caches"
     echo "   doctor           Check dotfiles health"
     echo "   install          Run installer; passes through installer options"
+    echo "   theme            List, inspect, and apply theme profiles"
     echo "   backup           Run backup script"
     echo "   symlinks         Run symlinks script"
     echo "   brew             Run brew script"
@@ -146,6 +147,10 @@ sub_doctor () {
     done
 
     [ "$ok" = true ]
+}
+
+sub_theme () {
+    python3 "$DOTFILES_DIR/themes/theme.py" "$@"
 }
 
 case $COMMAND_NAME in

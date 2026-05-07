@@ -89,3 +89,13 @@ To test the macOS path without a clean macOS instance and without mutating your 
 ```
 
 This runs the installer against a temporary `HOME`, forces the installer down the macOS branch, and captures intended macOS commands to `/private/tmp/dotfiles-macos-logic-test/macos-commands.log` instead of executing them.
+
+## 6. Safe Theme Logic Test
+
+To test theme switching without touching real app settings:
+
+```bash
+./test_theme_logic.sh
+```
+
+This creates fake Codex, VS Code, IntelliJ, and Obsidian config locations under `/private/tmp/dotfiles-theme-logic-test`, captures iTerm/Terminal imports to a log, and verifies the Gruvbox profile updates each target as expected.

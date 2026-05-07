@@ -27,6 +27,9 @@ jobs:
       - name: Verify macOS Logic Harness
         run: |
           ./test_macos_logic.sh
+      - name: Verify Theme Logic Harness
+        run: |
+          ./test_theme_logic.sh
 
   test-macos:
     runs-on: macos-latest
@@ -48,3 +51,6 @@ jobs:
       - name: Verify macOS Logic Harness
         run: |
           ./test_macos_logic.sh
+      - name: Verify Theme Logic Harness
+        run: |
+          ./test_theme_logic.sh
