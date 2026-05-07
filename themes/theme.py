@@ -240,13 +240,12 @@ def intellij_color_dirs() -> list[Path]:
 
 
 def apply_intellij(config: dict[str, Any], args: argparse.Namespace) -> None:
-    if config.get("installNote"):
-        warn(f"IntelliJ: {config['installNote']}")
-        return
     scheme_file = repo_path(config["schemeFile"])
     if not scheme_file.exists():
         warn(f"IntelliJ scheme file not found: {scheme_file}")
         return
+    if config.get("installNote"):
+        warn(f"IntelliJ: {config['installNote']}")
     dirs = intellij_color_dirs()
     if not dirs:
         warn("No JetBrains colors directories found. Open IntelliJ once, then rerun theme apply.")

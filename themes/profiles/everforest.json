@@ -39,8 +39,9 @@
       }
     },
     "intellij": {
+      "schemeFile": "themes/intellij/Everforest.icls",
       "schemeName": "Everforest",
-      "installNote": "Install a JetBrains Everforest color scheme, or add a .icls file to the repo and wire it into this profile."
+      "installNote": "Generated from the local Gruvbox JetBrains scheme with Everforest palette mappings."
     },
     "iterm": {
       "colorFile": "themes/iTerm/everforest-dark.itermcolors"
@@ -53,7 +54,7 @@
       ]
     },
     "terminal": {
-      "installNote": "No Everforest .terminal file is in this repo yet."
+      "colorFile": "themes/terminal/everforest-dark.terminal"
     },
     "vscode": {
       "colorTheme": "Everforest Dark",

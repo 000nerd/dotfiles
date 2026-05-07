@@ -52,4 +52,26 @@ grep -q 'open .*/themes/iTerm/gruvbox-dark.itermcolors' "$COMMAND_LOG"
 grep -q 'open .*/themes/terminal/gruvbox-dark.terminal' "$COMMAND_LOG"
 grep -q '^gruvbox$' "$THEME_STATE"
 
+HOME="$TEST_HOME" \
+DOTFILES_INTELLIJ_COLORS_DIRS="$INTELLIJ_COLORS" \
+DOTFILES_THEME_COMMAND_LOG="$COMMAND_LOG" \
+DOTFILES_THEME_STATE_FILE="$THEME_STATE" \
+DOTFILES_ZSH_THEME_TARGET="$ZSH_THEME_TARGET" \
+"$ROOT_DIR/bins/dotfiles" theme apply gruvbox-material --apps terminal,intellij,zsh
+
+test -f "$INTELLIJ_COLORS/GruvboxMaterial.icls"
+test "$(readlink "$ZSH_THEME_TARGET")" = "$ROOT_DIR/themes/zsh/gruvbox-material.zsh-theme"
+grep -q 'open .*/themes/terminal/gruvbox-material-dark.terminal' "$COMMAND_LOG"
+
+HOME="$TEST_HOME" \
+DOTFILES_INTELLIJ_COLORS_DIRS="$INTELLIJ_COLORS" \
+DOTFILES_THEME_COMMAND_LOG="$COMMAND_LOG" \
+DOTFILES_THEME_STATE_FILE="$THEME_STATE" \
+DOTFILES_ZSH_THEME_TARGET="$ZSH_THEME_TARGET" \
+"$ROOT_DIR/bins/dotfiles" theme apply everforest --apps terminal,intellij,zsh
+
+test -f "$INTELLIJ_COLORS/Everforest.icls"
+test "$(readlink "$ZSH_THEME_TARGET")" = "$ROOT_DIR/themes/zsh/everforest.zsh-theme"
+grep -q 'open .*/themes/terminal/everforest-dark.terminal' "$COMMAND_LOG"
+
 echo "Theme logic test passed."

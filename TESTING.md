@@ -98,4 +98,4 @@ To test theme switching without touching real app settings:
 ./test_theme_logic.sh
 ```
 
-This creates fake Codex, VS Code, IntelliJ, and Obsidian config locations under `/private/tmp/dotfiles-theme-logic-test`, captures iTerm/Terminal imports to a log, and verifies the Gruvbox profile updates each target as expected.
+This creates fake Codex, VS Code, IntelliJ, and Obsidian config locations under `/private/tmp/dotfiles-theme-logic-test`, captures iTerm/Terminal imports to a log, and verifies the supported theme profiles update their targets as expected.

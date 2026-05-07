@@ -39,8 +39,9 @@
       }
     },
     "intellij": {
+      "schemeFile": "themes/intellij/GruvboxMaterial.icls",
       "schemeName": "Gruvbox Material",
-      "installNote": "Install a JetBrains Gruvbox Material color scheme, or add a .icls file to the repo and wire it into this profile."
+      "installNote": "Generated from the local Gruvbox JetBrains scheme with Gruvbox Material palette mappings."
     },
     "iterm": {
       "colorFile": "themes/iTerm/gruvbox-material-dark.itermcolors"
@@ -53,7 +54,7 @@
       ]
     },
     "terminal": {
-      "installNote": "No Gruvbox Material .terminal file is in this repo yet."
+      "colorFile": "themes/terminal/gruvbox-material-dark.terminal"
     },
     "vscode": {
       "colorTheme": "Gruvbox Material Dark Medium",
