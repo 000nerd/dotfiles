@@ -16,7 +16,14 @@ DRY_RUN=false
 ONLY_STEPS=""
 SKIP_STEPS=""
 PROFILE=""
+DOTFILES_APPSTORE_PENDING=false
 DOTFILES_OS=${DOTFILES_OS:-$(uname)}
+
+if [ -n "${DOTFILES_SUDO_PASSWORD:-}" ]; then
+    sudo() {
+        printf '%s\n' "$DOTFILES_SUDO_PASSWORD" | command sudo -S "$@"
+    }
+fi
 
 usage() {
     cat <<'EOF'
@@ -34,30 +41,43 @@ Steps:
 EOF
 }
 
+require_value() {
+    if [ -z "${2:-}" ] || [[ "$2" = -* ]]; then
+        echo "Missing value for $1." >&2
+        exit 2
+    fi
+}
+
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --dry-run)
             DRY_RUN=true
             ;;
         --only)
+            require_value "$1" "${2:-}"
             ONLY_STEPS="${2:-}"
             shift
             ;;
         --only=*)
+            require_value --only "${1#*=}"
             ONLY_STEPS="${1#*=}"
             ;;
         --skip)
+            require_value "$1" "${2:-}"
             SKIP_STEPS="${2:-}"
             shift
             ;;
         --skip=*)
+            require_value --skip "${1#*=}"
             SKIP_STEPS="${1#*=}"
             ;;
         --profile)
+            require_value "$1" "${2:-}"
             PROFILE="${2:-}"
             shift
             ;;
         --profile=*)
+            require_value --profile "${1#*=}"
             PROFILE="${1#*=}"
             ;;
         -h|--help)
@@ -74,6 +94,9 @@ while [ "$#" -gt 0 ]; do
 done
 
 if [ -n "$PROFILE" ]; then
+    case "$PROFILE" in
+        *[!a-zA-Z0-9_-]*) echo "Invalid profile name: $PROFILE" >&2; exit 2 ;;
+    esac
     profile_file="$DOTFILES_DIR/install/profiles/$PROFILE.env"
     if [ ! -r "$profile_file" ]; then
         echo "Profile not found: $profile_file" >&2
@@ -84,6 +107,24 @@ if [ -n "$PROFILE" ]; then
     ONLY_STEPS="${ONLY_STEPS:-${DOTFILES_ONLY_STEPS:-}}"
     SKIP_STEPS="${SKIP_STEPS:-${DOTFILES_SKIP_STEPS:-}}"
 fi
+
+validate_steps() {
+    local list="$1" step
+    [ -n "$list" ] || return 0
+    case "$list" in
+        ,* | *, | *,,*) echo "Invalid step list: $list" >&2; exit 2 ;;
+    esac
+    local steps
+    IFS=, read -r -a steps <<< "$list"
+    for step in "${steps[@]}"; do
+        case "$step" in
+            symlinks | brew | macos | javascript | java | python) ;;
+            *) echo "Unknown install step: $step" >&2; exit 2 ;;
+        esac
+    done
+}
+validate_steps "$ONLY_STEPS"
+validate_steps "$SKIP_STEPS"
 
 list_contains() {
     local list="$1"
@@ -128,7 +169,7 @@ needs_sudo() {
 
 if needs_sudo && [ -z "${DOTFILES_COMMAND_LOG:-}" ]; then
     sudo -v
-    while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+    while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done >/dev/null 2>&1 &
 fi
 
 echo "Installing dotfiles."
@@ -137,8 +178,8 @@ run_step symlinks "$DOTFILES_DIR/install/symlinks.sh"
 
 case "$DOTFILES_OS" in
     Darwin)
-        run_step brew "$DOTFILES_DIR/install/mac/brew.sh"
-        run_step macos "$DOTFILES_DIR/install/mac/macos.sh"
+        run_step brew "$DOTFILES_DIR/install/macos/brew.sh"
+        run_step macos "$DOTFILES_DIR/install/macos/defaults.sh"
         ;;
     Linux)
         run_step brew "$DOTFILES_DIR/install/linux/brew.sh"
@@ -148,10 +189,14 @@ case "$DOTFILES_OS" in
         ;;
 esac
 
-run_step javascript "$DOTFILES_DIR/install/lang/javascript.sh"
-run_step java "$DOTFILES_DIR/install/lang/java.sh"
-run_step python "$DOTFILES_DIR/install/lang/python.sh"
+run_step javascript "$DOTFILES_DIR/install/languages/javascript.sh"
+run_step java "$DOTFILES_DIR/install/languages/java.sh"
+run_step python "$DOTFILES_DIR/install/languages/python.sh"
 
+if [ "$DOTFILES_APPSTORE_PENDING" = true ]; then
+    echo "Core setup finished; App Store apps still require user action."
+    exit 2
+fi
 echo "Done. Reload your terminal."
 # For adding SSH to keychain. May need later
 # ssh-add -A 2>/dev/null;

@@ -1,0 +1,127 @@
+#!/usr/bin/env zsh
+
+#   $$$$$$\  $$\       $$$$$$\  $$$$$$\   $$$$$$\  $$$$$$$$\  $$$$$$\
+#  $$  __$$\ $$ |      \_$$  _|$$  __$$\ $$  __$$\ $$  _____|$$  __$$\
+#  $$ /  $$ |$$ |        $$ |  $$ /  $$ |$$ /  \__|$$ |      $$ /  \__|
+#  $$$$$$$$ |$$ |        $$ |  $$$$$$$$ |\$$$$$$\  $$$$$\    \$$$$$$\
+#  $$  __$$ |$$ |        $$ |  $$  __$$ | \____$$\ $$  __|    \____$$\
+#  $$ |  $$ |$$ |        $$ |  $$ |  $$ |$$\   $$ |$$ |      $$\   $$ |
+#  $$ |  $$ |$$$$$$$$\ $$$$$$\ $$ |  $$ |\$$$$$$  |$$$$$$$$\ \$$$$$$  |
+#  \__|  \__|\________|\______|\__|  \__| \______/ \________| \______/
+
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+    colorflag="--color"
+else # MacOS `ls`
+    colorflag="-G"
+fi
+
+# Filesystem aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+
+# Modern replacements
+if command -v eza >/dev/null 2>&1; then
+    alias ls='eza --icons --group-directories-first'
+    alias l='eza -lh --icons --group-directories-first'
+    alias la='eza -la --icons --group-directories-first'
+    alias ll='eza -l --icons --group-directories-first'
+    alias lt='eza --tree --icons'
+else
+    alias l="ls -lah ${colorflag}"
+    alias la="ls -AF ${colorflag}"
+    alias ll="ls -lFh ${colorflag}"
+    alias ls="ls ${colorflag}"
+fi
+
+if command -v fd >/dev/null 2>&1; then
+    alias find='fd'
+fi
+
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat'
+fi
+
+alias lld="ls -l | grep ^d"
+alias rmf="rm -rf"
+
+# Helpers
+alias grep='grep --color=auto'
+alias mv='mv -i'
+alias cp='cp -i'
+alias df='df -h' # disk free, in Gigabytes, not bytes
+alias du='du -h -c' # calculate disk usage for a folder
+
+# history aliases
+alias history='history 1'
+alias h='history'
+alias hs='history | grep'
+alias hsi='history | grep -i'
+
+# tmux aliases
+alias ta='tmux attach'
+alias tls='tmux ls'
+alias tat='tmux attach -t'
+alias tns='tmux new-session -s'
+
+# Maven aliases
+alias mci='mvn -T1.5C clean install'
+alias mcint='mvn -T1.5C clean install -DskipTests=true'
+alias mcomp='mvn -T1.5C compile -Dcheckstyle.skip=true'
+alias mcpd='mvn -T1.5C pmd:cpd-check'
+alias mpmd='mvn -T1.5C pmd:check'
+alias mspotbugs='mvn -T1.5C org.commonjava.maven.plugins:directory-maven-plugin:0.3.1:highest-basedir@directories spotbugs:check'
+
+# More usable PS processes
+if [[ $OSTYPE == darwin* ]]; then
+    alias ps='ps -j'
+else
+    alias ps='ps uf -U `whoami`'
+fi;
+
+# Flush Directory Service cache
+alias flush="dscacheutil -flushcache"
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+
+# File size
+alias fs="stat -f \"%z bytes\""
+
+# PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
+alias plistbuddy="/usr/libexec/PlistBuddy"
+
+# Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
+# (useful when executing time-consuming commands)
+alias badge="tput bel"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec $SHELL -l"
+
+# Show/hide hidden files in Finder
+alias show="dotfiles macos toggle hidden-files on"
+alias hide="dotfiles macos toggle hidden-files off"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="dotfiles macos toggle desktop-icons off"
+alias showdesktop="dotfiles macos toggle desktop-icons on"
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+    alias "$method"="lwp-request -m '$method'"
+done
+
+# Calculate current working directory size
+alias cwdsize="du -sh ."
+
+alias battery="acpi -V"
+
+# Clean up LaunchServices to remove duplicates in the “Open With” menu
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+alias lslist="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -dump"
+
+alias lol="git log --graph --pretty=format:'%C(yellow)%h%Creset -%C(auto)%d%Creset %s %C(green)%cd(%cr) %C(bold blue)<%an>%Creset' --date=short --all"

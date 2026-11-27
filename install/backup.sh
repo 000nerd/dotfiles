@@ -12,28 +12,24 @@ set -euxo pipefail
 
 # Backup files that are provided by the dotfiles into a ~/dotfiles-backup directory
 
-DOTFILES=${DOTFILES_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}
+DOTFILES_DIR=${DOTFILES_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}
 BACKUP_DIR=${DOTFILES_BACKUP_DIR:-$HOME/dotfiles-backup}
-
-echo "Creating backup directory at $BACKUP_DIR"
+source "$DOTFILES_DIR/install/links.sh"
 mkdir -p "$BACKUP_DIR"
 
-linkables=$( find -H "$DOTFILES" -maxdepth 3 -name '*.symlink' )
-
-for file in $linkables; do
-    if [[ "$(basename "$(dirname "$file")")" == "ssh" ]]; then
-        filename=".ssh/$( basename "$file" '.symlink' )"
-    else
-        filename=".$( basename "$file" '.symlink' )"
+backup_link() {
+    local target="$2" relative="$3" backup_target collision=0
+    if [ ! -e "$target" ] || [ -L "$target" ]; then
+        echo "$relative is missing or already a symlink... skipping."
+        return 0
     fi
-    target="$HOME/$filename"
-    if [ ! -e "$target" ]; then
-        echo "$filename does not exist... skipping."
-    elif [ ! -L "$target" ]; then
-        echo "backing up $filename"
-        mkdir -p "$BACKUP_DIR/$(dirname "$filename")"
-        cp -R "$target" "$BACKUP_DIR/$filename"
-    else
-        echo -e "$filename is already a symlink... skipping."
-    fi
-done
+    backup_target="$BACKUP_DIR/$relative"
+    mkdir -p "$(dirname "$backup_target")"
+    while [ -e "$backup_target" ] || [ -L "$backup_target" ]; do
+        collision=$((collision + 1))
+        backup_target="$BACKUP_DIR/$relative.$(date +%Y%m%d%H%M%S).$collision"
+    done
+    echo "Backing up $relative to $backup_target"
+    cp -RPp "$target" "$backup_target"
+}
+dotfiles_each_link backup_link

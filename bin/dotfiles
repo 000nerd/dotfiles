@@ -1,0 +1,441 @@
+#!/usr/bin/env bash
+
+BIN_NAME=$(basename "$0")
+COMMAND_NAME=${1:-}
+
+ARROW="￫"
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+# Get dotfiles dir (so run this script from anywhere)
+export DOTFILES_DIR EXTRA_DIR
+DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+
+sub_help () {
+    echo -e "$ARROW Usage: ${YELLOW}$BIN_NAME <command>${NC}"
+    echo
+    echo "Commands:"
+    echo "   help             This help message"
+    echo "   update           Update packages and pkg managers"
+    echo "   clean            Clean up caches"
+    echo "   doctor           Check dotfiles health"
+    echo "   install          Run installer; passes through installer options"
+    echo "   theme            List, inspect, and apply theme profiles"
+    echo "   editors          Apply or check shared VS Code and Zed settings"
+    echo "   backup           Run backup script"
+    echo "   symlinks         Run symlinks script"
+    echo "   brew             Run brew script"
+    echo "   appstore         Install selected free App Store apps"
+    echo "   macos            List, audit, apply, or toggle macOS defaults"
+    echo "   java             Run java script"
+    echo "   javascript       Run javascript script"
+    echo "   python           Run python script"
+    echo
+    echo "Run '${BIN_NAME} <command> --help' for command-specific help."
+}
+
+sub_run_help () {
+    local command="$1"
+    local description="$2"
+    echo -e "$ARROW Usage: ${YELLOW}$BIN_NAME $command run${NC}"
+    echo
+    echo "$description"
+    echo
+    echo "Commands:"
+    echo "   run              Execute this command"
+    echo "   help             Show this help message"
+}
+
+unknown_arg () {
+    local command="$1"
+    local arg="$2"
+    echo -e "${RED}$ARROW Error: '$arg' is not valid for '$BIN_NAME $command'.${NC}" >&2
+    sub_${command}_help >&2
+    return 1
+}
+
+require_run () {
+    local command="$1"
+    local arg="${2:-}"
+    RUN_REQUESTED=false
+    case "$arg" in
+        "" | "-h" | "--help" | "help")
+            sub_${command}_help
+            return 0
+            ;;
+        "run")
+            shift 2
+            if [ "$#" -gt 0 ]; then
+                echo -e "${RED}$ARROW Error: '$BIN_NAME $command run' does not accept arguments.${NC}" >&2
+                sub_${command}_help >&2
+                return 1
+            fi
+            RUN_REQUESTED=true
+            return 0
+            ;;
+        *)
+            unknown_arg "$command" "$arg"
+            return 1
+            ;;
+    esac
+}
+
+sub_update_help () {
+    sub_run_help "update" "Update macOS software, Homebrew packages, Node/npm, and related package managers."
+}
+
+sub_update () {
+    require_run update "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    # nvm is a shell function, so load it in this Bash process explicitly.
+    local nvm_script brew_prefix
+    brew_prefix=$(brew --prefix) || return $?
+    nvm_script="$brew_prefix/opt/nvm/nvm.sh"
+    if [ ! -r "$nvm_script" ]; then
+        echo "Cannot update Node: nvm loader not found: $nvm_script" >&2
+        return 1
+    fi
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+    # shellcheck source=/dev/null
+    source "$nvm_script" || return $?
+    command -v nvm >/dev/null 2>&1 || return 1
+    if [ "$(uname)" = Darwin ]; then
+        sudo softwareupdate -i -a || return $?
+    fi
+    # Update Homebrew (Cask) & packages
+    brew upgrade --greedy || return $?
+    # Update node & npm & packages
+    nvm install --lts || return $?
+    nvm alias default 'lts/*' || return $?
+    nvm use --lts || return $?
+    npm install npm -g || return $?
+    echo -e "${GREEN}$ARROW Success! Update command finished.${NC}"
+}
+
+sub_clean_help () {
+    sub_run_help "clean" "Clean Homebrew and npm caches."
+}
+
+sub_clean () {
+    require_run clean "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    brew cleanup
+    npm cache clean --force
+    echo -e "${GREEN}$ARROW Success! Clean command finished.${NC}"
+}
+
+sub_backup_help () {
+    sub_run_help "backup" "Back up existing non-symlink files that would be managed by these dotfiles."
+}
+
+sub_backup () {
+    require_run backup "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    source "$DOTFILES_DIR/install/backup.sh"
+    echo -e "${GREEN}$ARROW Success! Backup command finished.${NC}"
+}
+
+sub_symlinks_help () {
+    sub_run_help "symlinks" "Create dotfile and ~/.config symlinks managed by this repository."
+}
+
+sub_symlinks () {
+    require_run symlinks "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    source "$DOTFILES_DIR/install/symlinks.sh" || return $?
+    echo -e "${GREEN}$ARROW Success! Symlinks command finished.${NC}"
+}
+
+sub_brew_help () {
+    sub_run_help "brew" "Install Homebrew packages for the current operating system."
+}
+
+sub_brew () {
+    require_run brew "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    case "$(uname)" in
+        Darwin) source "$DOTFILES_DIR/install/macos/brew.sh" ;;
+        Linux) source "$DOTFILES_DIR/install/linux/brew.sh" ;;
+        *) echo -e "${RED}$ARROW Brew install is not configured for $(uname).${NC}" >&2; return 1 ;;
+    esac
+    if [ "${DOTFILES_APPSTORE_PENDING:-false}" = true ]; then
+        echo "Homebrew setup finished; App Store installation still requires user action." >&2
+        return 2
+    fi
+    echo -e "${GREEN}$ARROW Success! Brew command finished.${NC}"
+}
+
+sub_appstore_help () {
+    sub_run_help "appstore" "Install the selected free App Store apps after signing in to the App Store."
+}
+
+sub_appstore () {
+    require_run appstore "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    python3 "$DOTFILES_DIR/scripts/appstore.py" install
+}
+
+sub_macos_help () {
+    echo -e "$ARROW Usage: ${YELLOW}$BIN_NAME macos <command> [options]${NC}"
+    cat <<EOF
+
+Manage the repository's canonical macOS defaults registry.
+
+Commands:
+   list             List the selected defaults without changing the system
+   audit            Compare the selected defaults with the current Mac
+   run              Apply the selected defaults and macOS system setup
+   toggle           Apply a named reversible preference toggle
+   help             Show this help message
+
+Options for list, audit, and run:
+   --profile name   Select common, personal, or work (default: personal)
+
+Toggle usage:
+   $BIN_NAME macos toggle <hidden-files|desktop-icons> <on|off>
+
+Examples:
+   $BIN_NAME macos list --profile personal
+   $BIN_NAME macos audit --profile personal
+   $BIN_NAME macos run --profile personal
+EOF
+}
+
+parse_macos_profile () {
+    MACOS_PROFILE=personal
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            --profile)
+                [ -n "${2:-}" ] || { echo "Missing value for --profile." >&2; return 2; }
+                MACOS_PROFILE="$2"
+                shift
+                ;;
+            --profile=*)
+                MACOS_PROFILE=${1#*=}
+                ;;
+            *)
+                echo "Unknown macOS defaults option: $1" >&2
+                return 2
+                ;;
+        esac
+        shift
+    done
+
+    case "$MACOS_PROFILE" in
+        common | personal | work) ;;
+        *)
+            echo "Unknown macOS defaults profile: $MACOS_PROFILE" >&2
+            return 2
+            ;;
+    esac
+}
+
+sub_macos () {
+    local action="${1:-}"
+
+    case "$action" in
+        "" | "-h" | "--help" | "help")
+            sub_macos_help
+            ;;
+        list | audit)
+            shift
+            parse_macos_profile "$@" || return $?
+            if [ "$action" = audit ] && ! command -v defaults >/dev/null 2>&1; then
+                echo -e "${RED}$ARROW macOS defaults audit requires macOS.${NC}" >&2
+                return 1
+            fi
+            export DOTFILES_DEFAULTS_MODE="$action"
+            export DOTFILES_DEFAULTS_PROFILE="$MACOS_PROFILE"
+            # shellcheck source=/dev/null
+            source "$DOTFILES_DIR/install/macos/defaults/registry.sh"
+            dotfiles_defaults_run_registry
+            ;;
+        run)
+            shift
+            parse_macos_profile "$@" || return $?
+            if [ "$(uname)" != Darwin ]; then
+                echo -e "${RED}$ARROW macOS defaults can only be applied on macOS.${NC}" >&2
+                return 1
+            fi
+            export DOTFILES_DEFAULTS_PROFILE="$MACOS_PROFILE"
+            # shellcheck source=/dev/null
+            source "$DOTFILES_DIR/install/macos/defaults.sh"
+            echo -e "${GREEN}$ARROW Success! macOS defaults command finished.${NC}"
+            ;;
+        toggle)
+            shift
+            if [ "$#" -ne 2 ]; then
+                # shellcheck source=/dev/null
+                source "$DOTFILES_DIR/install/macos/defaults/toggles.sh"
+                dotfiles_macos_toggle_help >&2
+                return 2
+            fi
+            if [ "$(uname)" != Darwin ]; then
+                echo -e "${RED}$ARROW macOS defaults toggles require macOS.${NC}" >&2
+                return 1
+            fi
+            # shellcheck source=/dev/null
+            source "$DOTFILES_DIR/install/macos/defaults/toggles.sh"
+            dotfiles_macos_toggle "$@"
+            ;;
+        *)
+            unknown_arg macos "$action"
+            ;;
+    esac
+}
+
+sub_defaults () {
+    sub_macos "$@"
+}
+
+sub_defaults_help () {
+    sub_macos_help
+}
+
+sub_dock () {
+    echo -e "${YELLOW}$ARROW Dock setup script does not exist yet.${NC}" >&2
+    return 1
+}
+
+sub_java_help () {
+    sub_run_help "java" "Install the Java and Android development environment."
+}
+
+sub_java () {
+    require_run java "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    source "$DOTFILES_DIR/install/languages/java.sh"
+    echo -e "${GREEN}$ARROW Success! Java command finished.${NC}"
+}
+
+sub_javascript_help () {
+    sub_run_help "javascript" "Install the JavaScript and Node development environment."
+}
+
+sub_javascript () {
+    require_run javascript "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    source "$DOTFILES_DIR/install/languages/javascript.sh"
+    echo -e "${GREEN}$ARROW Success! Javascript command finished.${NC}"
+}
+
+sub_python_help () {
+    sub_run_help "python" "Install the Python development environment and Python CLI tools."
+}
+
+sub_python () {
+    require_run python "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    source "$DOTFILES_DIR/install/languages/python.sh"
+    echo -e "${GREEN}$ARROW Success! Python command finished.${NC}"
+}
+
+sub_install_help () {
+    "$DOTFILES_DIR/install.sh" --help
+}
+
+sub_install () {
+    case "${1:-}" in
+        "" | "-h" | "--help" | "help")
+            sub_install_help
+            return 0
+            ;;
+    esac
+    "$DOTFILES_DIR/install.sh" "$@"
+}
+
+sub_doctor_help () {
+    sub_run_help "doctor" "Check dotfiles health, expected directories, tools, and installed symlinks."
+}
+
+sub_doctor () {
+    require_run doctor "$@" || return $?
+    [ "$RUN_REQUESTED" = true ] || return 0
+    local ok=true
+
+    echo -e "$ARROW Checking dotfiles setup"
+
+    for dir in "$DOTFILES_DIR" "$DOTFILES_DIR/install" "$DOTFILES_DIR/config/zsh" "$DOTFILES_DIR/bin"; do
+        if [ -d "$dir" ]; then
+            echo -e "${GREEN}ok${NC} $dir"
+        else
+            echo -e "${RED}missing${NC} $dir"
+            ok=false
+        fi
+    done
+
+    for cmd in git zsh; do
+        if command -v "$cmd" >/dev/null 2>&1; then
+            echo -e "${GREEN}ok${NC} $cmd"
+        else
+            echo -e "${RED}missing${NC} $cmd"
+            ok=false
+        fi
+    done
+
+    if command -v brew >/dev/null 2>&1; then
+        echo -e "${GREEN}ok${NC} brew $(brew --version | head -n 1)"
+    else
+        echo -e "${YELLOW}warn${NC} brew not found"
+    fi
+
+    source "$DOTFILES_DIR/install/links.sh"
+    doctor_link() {
+        local source="$1" link="$2"
+        if [ -L "$link" ] && [ -e "$link" ] && [ "$(readlink "$link")" = "$source" ]; then
+            echo -e "${GREEN}ok${NC} $link -> $source"
+        else
+            echo -e "${RED}invalid${NC} $link (expected link to $source)"
+            ok=false
+        fi
+    }
+    dotfiles_each_link doctor_link || return $?
+
+    [ "$ok" = true ]
+}
+
+sub_editors_help () {
+    python3 "$DOTFILES_DIR/scripts/editors.py" --help
+}
+
+sub_editors () {
+    case "${1:-}" in
+        "" | "-h" | "--help" | "help") sub_editors_help ;;
+        *) python3 "$DOTFILES_DIR/scripts/editors.py" "$@" ;;
+    esac
+}
+
+sub_theme () {
+    case "${1:-}" in
+        "" | "-h" | "--help" | "help")
+            python3 "$DOTFILES_DIR/scripts/theme.py" --help
+            return 0
+            ;;
+    esac
+    python3 "$DOTFILES_DIR/scripts/theme.py" "$@"
+}
+
+case $COMMAND_NAME in
+    "" | "-h" | "--help")
+        sub_help
+        ;;
+    "help")
+        if [ -n "${2:-}" ] && declare -F "sub_${2}_help" >/dev/null 2>&1; then
+            "sub_${2}_help"
+        else
+            sub_help
+        fi
+        ;;
+    *)
+        shift
+        if declare -F "sub_${COMMAND_NAME}" >/dev/null 2>&1; then
+            "sub_${COMMAND_NAME}" "$@"
+        else
+            echo -e "${RED}$ARROW Error: '$COMMAND_NAME' is not a known command or has errors.${NC}" >&2
+            sub_help
+            exit 1
+        fi
+        ;;
+esac

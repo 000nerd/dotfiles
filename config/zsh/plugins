@@ -1,0 +1,41 @@
+# Keep writable plugin state outside the Homebrew installation. Homebrew owns
+# the loader; ZPLUG_HOME owns clones, caches, logs, and completion state.
+if [ -n "${BREW_PREFIX:-}" ] && [ -r "$BREW_PREFIX/opt/zplug/init.zsh" ]; then
+    export ZPLUG_HOME="${ZPLUG_HOME:-$HOME/.zplug}"
+    if [[ "${DOTFILES_INSTALL_ZSH_PLUGINS:-false}" == true && ( -z "${TERM:-}" || "${TERM:-}" == dumb ) ]]; then
+        # zplug's installer restores the cursor with tput, even without a TTY.
+        export TERM=xterm-256color
+    fi
+    source "$BREW_PREFIX/opt/zplug/init.zsh" </dev/null
+
+    # zplug treats pipe stdin as its deprecated registration syntax. SSH and
+    # subprocesses have pipe stdin even when no input is being supplied.
+    {
+        zplug "plugins/aws", from:oh-my-zsh
+        zplug "plugins/jira", from:oh-my-zsh
+        zplug "plugins/macos", from:oh-my-zsh
+        zplug "plugins/web-search", from:oh-my-zsh
+        zplug "zsh-users/zsh-syntax-highlighting", defer:2
+        zplug "zsh-users/zsh-completions", defer:2
+        zplug "zsh-users/zsh-autosuggestions", defer:2
+        zplug "zsh-users/zsh-history-substring-search", defer:2
+    } </dev/null
+
+    if ! zplug check; then
+        if [[ "${DOTFILES_INSTALL_ZSH_PLUGINS:-false}" == true ]]; then
+            zplug install </dev/null || return $?
+        elif [[ -o interactive && -t 0 && "${DOTFILES_HEADLESS:-false}" != true ]]; then
+            printf "Install missing shell plugins? [y/N]: "
+            if read -q; then
+                echo
+                zplug install </dev/null || return $?
+            fi
+        else
+            print -u2 "Some zplug plugins are missing; run zplug install in an interactive terminal."
+        fi
+    fi
+    # Never attempt to load an incomplete cache when plugins aren't installed.
+    if zplug check; then
+        zplug load </dev/null || return $?
+    fi
+fi

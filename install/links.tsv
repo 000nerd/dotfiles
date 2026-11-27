@@ -1,0 +1,6 @@
+# source (relative to checkout)	destination (relative to HOME)
+config/zsh/zshrc	.zshrc
+config/zsh/zprofile	.zprofile
+config/git/gitconfig	.gitconfig
+config/git/ignore	.gitignore_global
+config/ssh/config	.ssh/config

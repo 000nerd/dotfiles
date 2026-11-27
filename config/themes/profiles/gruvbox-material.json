@@ -1,0 +1,62 @@
+{
+  "name": "gruvbox-material",
+  "apps": {
+    "codex": {
+      "appearanceTheme": "system",
+      "lightCodeThemeId": "gruvbox-material",
+      "darkCodeThemeId": "gruvbox-material",
+      "lightChromeTheme": {
+        "accent": "#7daea3",
+        "contrast": 48,
+        "fonts": {
+          "ui": null
+        },
+        "ink": "#654735",
+        "opaqueWindows": false,
+        "semanticColors": {
+          "diffAdded": "#654735",
+          "diffRemoved": "#c14a4a",
+          "skill": "#945e80"
+        },
+        "surface": "#fbf1c7"
+      },
+      "darkChromeTheme": {
+        "accent": "#7daea3",
+        "contrast": 58,
+        "fonts": {
+          "ui": null
+        },
+        "ink": "#ddc7a1",
+        "opaqueWindows": false,
+        "semanticColors": {
+          "diffAdded": "#ddc7a1",
+          "diffRemoved": "#ea6962",
+          "skill": "#d3869b"
+        },
+        "surface": "#282828"
+      }
+    },
+    "iterm": {
+      "colorFile": "config/themes/iterm/gruvbox-material-dark.itermcolors"
+    },
+    "obsidian": {
+      "cssTheme": "Material Gruvbox",
+      "accentColor": "#7daea3",
+      "vaults": [
+        "~/Google Drive/cache-overflow"
+      ]
+    },
+    "terminal": {
+      "colorFile": "config/themes/terminal/gruvbox-material-dark.terminal"
+    },
+    "vscode": {
+      "colorTheme": "Gruvbox Material Dark Medium",
+      "extensions": [
+        "sainnhe.gruvbox-material"
+      ]
+    },
+    "zsh": {
+      "themeFile": "config/themes/zsh/gruvbox-material.zsh-theme"
+    }
+  }
+}
