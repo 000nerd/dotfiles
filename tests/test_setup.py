@@ -436,6 +436,42 @@ rendered=$(print -P -- "$PROMPT")
         self.assertIn("percent%x41file", result.stdout)
         self.assertIn(r"\[literal\]\*file", result.stdout)
 
+    def test_git_recent_escapes_metadata_and_selects_raw_branches_by_id(self):
+        repo = self.base / "recent-repo"
+        self.assertEqual(self.command("git", "init", "-b", "main", str(repo)).returncode, 0)
+        control = "\x1b]52;c;RklYVFVSRS1PTkxZ\x07"
+        commit = self.command("git", "-C", str(repo), "-c", "user.name=Author " + control,
+                              "-c", "user.email=test@example.invalid", "-c", "core.hooksPath=/dev/null",
+                              "commit", "--allow-empty", "-m", "subject " + control)
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        self.assertEqual(self.command("git", "-C", str(repo), "branch", "feature/more").returncode, 0)
+        self.file("fake-bin/fzf", '''#!/bin/sh
+cat > "$FZF_CAPTURE"
+case "$FZF_MODE" in
+    cancel) exit 130 ;;
+    invalid) printf 'not-an-index\\n' ;;
+    *) grep 'feature/more' "$FZF_CAPTURE" ;;
+esac
+''', True)
+        capture = self.base / "fzf-input"
+        env = {**self.env, "PATH": str(self.base / "fake-bin") + ":" + self.env["PATH"],
+               "FZF_CAPTURE": str(capture), "FZF_MODE": "select"}
+        result = subprocess.run([str(ROOT / "bin/git-recent")], cwd=repo, env=env,
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        display = capture.read_text()
+        self.assertNotIn("\x1b", display)
+        self.assertNotIn("\x07", display)
+        self.assertIn("subject", display)
+        self.assertIn("Author", display)
+        self.assertEqual(self.command("git", "-C", str(repo), "branch", "--show-current").stdout.strip(), "feature/more")
+        self.assertEqual(self.command("git", "-C", str(repo), "switch", "main").returncode, 0)
+        for mode in ("cancel", "invalid"):
+            result = subprocess.run([str(ROOT / "bin/git-recent")], cwd=repo, env={**env, "FZF_MODE": mode},
+                                    capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode == 0, mode == "cancel", result.stderr)
+            self.assertEqual(self.command("git", "-C", str(repo), "branch", "--show-current").stdout.strip(), "main")
+
     def update_env(self):
         self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
         self.file("fake-bin/brew", '''#!/bin/sh

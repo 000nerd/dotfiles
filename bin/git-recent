@@ -1,9 +1,28 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# git-recent - checkout recent branches with a fuzzy finder (FZF) list
-# credit to https://gist.github.com/srsholmes/5607e26c187922878943c50edfb245ef
+# Display repository metadata as escaped text; select by a trusted numeric ID.
+refs=$(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/)
+[ -n "$refs" ] || exit 0
+choices=$(mktemp "${TMPDIR:-/tmp}/dotfiles-git-recent.XXXXXX")
+trap 'rm -f "$choices"' EXIT
+branches=()
+while IFS= read -r ref; do
+    branch=${ref#refs/heads/}
+    branches+=("$branch")
+    metadata=$(git log -1 --format='%s (%cr) [%an]' "$ref" --)
+    LC_ALL=C printf -v display_branch '%q' "$branch"
+    LC_ALL=C printf -v display_metadata '%q' "$metadata"
+    printf '%s\t%s - %s\n' "${#branches[@]}" "$display_branch" "$display_metadata" >> "$choices"
+done <<< "$refs"
 
-branches=$(git branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]')
-branch=$(echo "$branches" | fzf --ansi)
-branch=$(echo "$branch" | awk '{print $1}' | tr -d '*')
-git checkout "$branch"
+selection=$(fzf --delimiter=$'\t' --with-nth=2.. < "$choices") || {
+    result=$?
+    case "$result" in 1 | 130) exit 0 ;; *) exit "$result" ;; esac
+}
+index=${selection%%$'\t'*}
+if [[ ! "$index" =~ ^[1-9][0-9]{0,8}$ ]] || [ "$index" -gt "${#branches[@]}" ]; then
+    echo "Invalid branch selection." >&2
+    exit 2
+fi
+git switch -- "${branches[$((index - 1))]}"
