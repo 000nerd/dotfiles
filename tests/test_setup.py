@@ -227,6 +227,44 @@ client 444 user 3u IPv4 0 0t0 TCP localhost:80->localhost:12345 (ESTABLISHED)
             self.assertNotEqual(result.returncode, 0)
             self.assertFalse((self.base / "kills").exists())
 
+    def test_iterm_importer_rejects_command_filenames_without_running_them(self):
+        self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
+        attack = self.base / "x'$(touch PWNED)'y.itermcolors"
+        attack.write_bytes(plistlib.dumps({"Background Color": {"Red Component": 0.2}}))
+        env = {**self.env, "PATH": str(self.base / "fake-bin") + ":" + self.env["PATH"]}
+        result = subprocess.run(["bash", str(ROOT / "scripts/import-iterm-scheme.sh"), str(attack)],
+                                env=env, cwd=self.base, capture_output=True, text=True, timeout=30)
+        self.assertNotEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Unsupported preset name", result.stderr)
+        self.assertFalse((self.base / "PWNED").exists())
+        self.assertFalse((self.home / "Library/Preferences/com.googlecode.iterm2.plist").exists())
+
+    def test_iterm_importer_preserves_preferences_and_treats_paths_as_data(self):
+        self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
+        source = self.base / "external'$(touch PWNED)'folder/Ocean Blue.itermcolors"
+        source.parent.mkdir()
+        colors = {"Background Color": {"Red Component": 0.2}}
+        source.write_bytes(plistlib.dumps(colors))
+        preferences = self.home / "Library/Preferences/com.googlecode.iterm2.plist"
+        preferences.parent.mkdir(parents=True)
+        original = plistlib.dumps({"Unrelated": "keep", "Custom Color Presets": {"Existing": {}}},
+                                  fmt=plistlib.FMT_BINARY)
+        preferences.write_bytes(original)
+        env = {**self.env, "PATH": str(self.base / "fake-bin") + ":" + self.env["PATH"]}
+        command = ["bash", str(ROOT / "scripts/import-iterm-scheme.sh"), str(source)]
+        result = subprocess.run(command, env=env, cwd=self.base, capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse((self.base / "PWNED").exists())
+        self.assertTrue(preferences.read_bytes().startswith(b"bplist00"))
+        actual = plistlib.loads(preferences.read_bytes())
+        self.assertEqual(actual["Unrelated"], "keep")
+        self.assertEqual(actual["Custom Color Presets"], {"Existing": {}, "Ocean Blue": colors})
+        self.assertEqual(next(preferences.parent.glob("*.bak.*")).read_bytes(), original)
+        timestamp = preferences.stat().st_mtime_ns
+        repeat = subprocess.run(command, env=env, cwd=self.base, capture_output=True, text=True, timeout=30)
+        self.assertEqual(repeat.returncode, 0, repeat.stderr)
+        self.assertEqual(preferences.stat().st_mtime_ns, timestamp)
+
     def test_selected_zsh_themes_expand_prompt_without_plugins(self):
         zsh = shutil.which("zsh")
         if not zsh:

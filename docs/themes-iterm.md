@@ -19,5 +19,9 @@ bash scripts/import-iterm-scheme.sh gruvbox-dark
 bash scripts/import-iterm-scheme.sh config/themes/iterm/gruvbox-light.itermcolors
 ```
 
-The standalone importer edits iTerm's preferences plist directly; quit iTerm
-before using it and reopen afterward. Prefer the theme command for normal use.
+The standalone importer requires Python 3 and edits iTerm's preferences plist
+directly; quit iTerm before using it and reopen afterward. It reads plist data
+without executing filenames, validates preset names, preserves unrelated settings
+and the existing plist format, and creates a backup before changes. Missing
+preferences start with an empty preset collection; no default file is downloaded.
+Prefer the theme command for normal use.
