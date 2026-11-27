@@ -1,6 +1,10 @@
 #!/usr/bin/env zsh
+set -euo pipefail
 
-[[ -z $1 ]] && BRANCH=$( git rev-parse --apprev-ref HEAD ) || BRANCH=$1
-LAST_COMMIT_SHA=$( git rev-parse $BRANCH | tail -n 1 )
-echo "$LAST_COMMIT_SHA" | tr -d '\n' | pbcopy
+if (( $# > 1 )); then
+    print -u2 'Usage: git-clc [revision]'
+    exit 2
+fi
+LAST_COMMIT_SHA=$(git rev-parse --verify --end-of-options "${1:-HEAD}^{commit}")
+printf '%s' "$LAST_COMMIT_SHA" | pbcopy
 echo "Copied ${LAST_COMMIT_SHA}."

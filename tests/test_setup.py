@@ -336,6 +336,29 @@ rendered=$(print -P -- "$PROMPT")
         branch = self.command("git", "-C", str(workspace / "feature"), "branch", "--show-current")
         self.assertEqual(branch.stdout.strip(), "fixture/feature")
 
+    def test_git_clc_copies_head_and_rejects_invalid_revisions(self):
+        if not shutil.which("zsh"):
+            self.skipTest("zsh required")
+        repo = self.base / "clipboard-repo"
+        self.assertEqual(self.command("git", "init", "-b", "main", str(repo)).returncode, 0)
+        commit = self.command("git", "-C", str(repo), "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+                              "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty", "-m", "fixture")
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        self.file("fake-bin/pbcopy", '#!/bin/sh\ncat > "$COPY_LOG"\n', True)
+        clipboard = self.base / "clipboard"
+        env = {**self.env, "PATH": str(self.base / "fake-bin") + ":/usr/bin:/bin", "COPY_LOG": str(clipboard)}
+        head = self.command("git", "-C", str(repo), "rev-parse", "HEAD").stdout.strip()
+        for args in ((), ("main",)):
+            result = subprocess.run([str(ROOT / "bin/git-clc"), *args], cwd=repo, env=env,
+                                    capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(clipboard.read_text(), head)
+        clipboard.write_text("preserve")
+        bad = subprocess.run([str(ROOT / "bin/git-clc"), "missing-branch"], cwd=repo, env=env,
+                             capture_output=True, text=True, timeout=30)
+        self.assertNotEqual(bad.returncode, 0)
+        self.assertEqual(clipboard.read_text(), "preserve")
+
     def update_env(self):
         self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
         self.file("fake-bin/brew", '''#!/bin/sh
