@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "purpose": "User-reviewed Finder sidebar selections and order",
+  "automation_status": "pending-implementation-and-fresh-vm-validation",
+  "management_rule": "Apply only reviewed selections or ordering that differ from the reference. Leave matching defaults untouched.",
+  "sections": [
+    {
+      "name": "Favorites",
+      "ordered_items": ["AirDrop", "Applications", "Desktop", "Documents", "Downloads"]
+    },
+    {
+      "name": "iCloud",
+      "ordered_items": ["iCloud Drive", "Shared"]
+    },
+    {
+      "name": "Locations",
+      "ordered_items": ["Hard disks", "External disks", "CDs, DVDs, and iOS devices", "Cloud Storage", "Connected servers"]
+    }
+  ],
+  "excluded_builtin_items": ["Recents", "Movies", "Music", "Pictures", "Home", "Bonjour computers"],
+  "custom_items": {
+    "existing_items": "Do not remove existing custom favorites before their placement has been reviewed",
+    "earlier_mentioned_item": "Workspaces",
+    "placement": "Not specified in the latest ordered built-in list"
+  },
+  "reference_ui_observed": {
+    "Favorites": {
+      "Recents": true,
+      "AirDrop": false,
+      "Applications": true,
+      "Desktop": true,
+      "Documents": true,
+      "Downloads": true,
+      "Movies": false,
+      "Music": false,
+      "Pictures": false,
+      "Home": false
+    },
+    "iCloud Drive": true
+  }
+}

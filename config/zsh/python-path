@@ -1,0 +1,12 @@
+# Homebrew keeps unversioned Python 3 commands here. Use the executable on PATH
+# so scripts as well as interactive commands can run `python`.
+if [[ -z "${VIRTUAL_ENV:-}" ]]; then
+    dotfiles_python_bin="${HOMEBREW_PREFIX:-${BREW_PREFIX:-}}/opt/python/libexec/bin"
+    if [[ -x "$dotfiles_python_bin/python" ]]; then
+        case ":$PATH:" in
+            *":$dotfiles_python_bin:"*) ;;
+            *) export PATH="$dotfiles_python_bin:$PATH" ;;
+        esac
+    fi
+    unset dotfiles_python_bin
+fi

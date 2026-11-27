@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Print only processes listening on the complete numeric port, not a prefix.
+if [ "$#" -ne 1 ] || [[ ! "$1" =~ ^[0-9]{1,5}$ ]]; then
+    echo "Usage: wtfport <port 1-65535>" >&2
+    exit 2
+fi
+port=$((10#$1))
+if [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
+    echo "Port must be between 1 and 65535." >&2
+    exit 2
+fi
+
+# lsof returns 1 when no sockets are found. Other failures remain errors.
+listeners=$(lsof -i -P -n) || {
+    result=$?
+    [ "$result" -eq 1 ] || exit "$result"
+}
+
+printf '%s\n' "$listeners" | awk -v port="$port" '
+    $NF == "(LISTEN)" && $(NF - 1) ~ (":" port "$") && !seen[$2]++ {
+        print $1 > "/dev/stderr"
+        print $2
+    }
+'

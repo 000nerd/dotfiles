@@ -1,0 +1,150 @@
+{
+  "vscode": [
+    {
+      "id": "charliermarsh.ruff",
+      "observed_version": "2026.94.0"
+    },
+    {
+      "id": "davidanson.vscode-markdownlint",
+      "observed_version": "0.62.1"
+    },
+    {
+      "id": "dbaeumer.vscode-eslint",
+      "observed_version": "3.0.34"
+    },
+    {
+      "id": "eamodio.gitlens",
+      "observed_version": "19.5.0"
+    },
+    {
+      "id": "esbenp.prettier-vscode",
+      "observed_version": "12.4.0"
+    },
+    {
+      "id": "github.vscode-github-actions",
+      "observed_version": "0.32.3"
+    },
+    {
+      "id": "golang.go",
+      "observed_version": "0.58.0"
+    },
+    {
+      "id": "jdinhlife.gruvbox",
+      "observed_version": "1.29.2"
+    },
+    {
+      "id": "jeusto.warm-up-typing-test",
+      "observed_version": "3.0.0"
+    },
+    {
+      "id": "llvm-vs-code-extensions.lldb-dap",
+      "observed_version": "0.4.1"
+    },
+    {
+      "id": "ms-azuretools.vscode-containers",
+      "observed_version": "2.5.3"
+    },
+    {
+      "id": "ms-python.debugpy",
+      "observed_version": "2026.6.0"
+    },
+    {
+      "id": "ms-python.python",
+      "observed_version": "2026.10.0"
+    },
+    {
+      "id": "ms-python.vscode-pylance",
+      "observed_version": "2026.4.1"
+    },
+    {
+      "id": "openai.chatgpt",
+      "observed_version": "26.1021.22027"
+    },
+    {
+      "id": "openai.codex-audio",
+      "observed_version": "26.1021.22027"
+    },
+    {
+      "id": "oracle.oracle-java",
+      "observed_version": "27.0.0"
+    },
+    {
+      "id": "redhat.vscode-xml",
+      "observed_version": "0.29.3"
+    },
+    {
+      "id": "redhat.vscode-yaml",
+      "observed_version": "2.0.0"
+    },
+    {
+      "id": "sainnhe.everforest",
+      "observed_version": "0.3.0"
+    },
+    {
+      "id": "sainnhe.gruvbox-material",
+      "observed_version": "6.5.2"
+    },
+    {
+      "id": "streetsidesoftware.code-spell-checker",
+      "observed_version": "4.10.0"
+    },
+    {
+      "id": "swiftlang.swift-vscode",
+      "observed_version": "2.18.0"
+    },
+    {
+      "id": "usernamehw.errorlens",
+      "observed_version": "3.30.0"
+    },
+    {
+      "id": "vintharas.learn-vim",
+      "observed_version": "0.0.28"
+    },
+    {
+      "id": "vscodevim.vim",
+      "observed_version": "1.32.4"
+    }
+  ],
+  "zed": [
+    {
+      "id": "cspell",
+      "observed_version": "0.0.8"
+    },
+    {
+      "id": "dockerfile",
+      "observed_version": "0.3.0"
+    },
+    {
+      "id": "everforest",
+      "observed_version": "0.2.0"
+    },
+    {
+      "id": "gruvbox-material",
+      "observed_version": "1.1.0"
+    },
+    {
+      "id": "html",
+      "observed_version": "0.3.2"
+    },
+    {
+      "id": "java",
+      "observed_version": "6.8.30"
+    },
+    {
+      "id": "markdownlint",
+      "observed_version": "0.4.0"
+    },
+    {
+      "id": "package-swift-lsp",
+      "observed_version": "1.1.0"
+    },
+    {
+      "id": "swift",
+      "observed_version": "0.4.11"
+    },
+    {
+      "id": "xml",
+      "observed_version": "0.2.0"
+    }
+  ]
+}

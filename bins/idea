@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if brew list "intellij-idea" > /dev/null 2>&1; then
-    open -na "IntelliJ IDEA.app" --args "$@"
-else
-    open -na "IntelliJ IDEA CE.app" --args "$@"
-fi

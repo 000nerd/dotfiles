@@ -1,0 +1,87 @@
+#   $$$$$$\   $$$$$$\  $$$$$$$$\
+#  $$  __$$\  \_$$  _| \__$$  __|
+#  $$ /  \__|   $$ |      $$ |
+#  $$ | $$$$\   $$ |      $$ |
+#  $$ | \_$$|   $$ |      $$ |
+#  $$ |  $$ |   $$ |      $$ |
+#  \$$$$$$  | $$$$$$\     $$ |
+#   \______/  \______|    \__|
+
+# gitconfig
+[user]
+    name = Obsa Aba-waji
+    email = oabawaji@gmail.com
+[github]
+    user = 21stBam
+[includeIf "gitdir:~/Workspaces/work/**"]
+    path = ~/.config/git/work.gitconfig
+[alias]
+    # Aliases Go Here
+    hist = log --graph --branches --remotes --tags --oneline
+[apply]
+    # do not warn about missing whitespace at EOF
+    whitespace = nowarn
+[branch]
+    # set up 'git pull' to rebase instead of merge
+    # autosetuprebase = always
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = auto
+[color "branch"]
+    current = green bold
+    local = green
+    remote = red bold
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = green bold
+    changed = yellow bold
+    untracked = red
+[color "sh"]
+    branch = yellow
+[core]
+    excludesfile = ~/.gitignore_global
+    pager = delta
+    editor = code --wait
+    whitespace = cr-at-eol
+[credential]
+	helper = osxkeychain
+[delta]
+    navigate = true    # use n and p to move between diff sections
+    light = false      # set to true if you're using a light terminal theme
+    line-numbers = true
+    side-by-side = false
+[diff]
+    colorMoved = default
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[grep]
+    extendRegexp = true
+    lineNumber = true
+[interactive]
+    diffFilter = delta --color-only
+[merge]
+    conflictstyle = diff3
+    tool = vscode
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+[push]
+	autoSetupRemote = true
+[rebase]
+	instructionFormat = "[%an - %ar] %s"
+	autoStash = true
+[rerere]
+    enabled = true
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential

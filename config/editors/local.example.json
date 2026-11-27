@@ -1,0 +1,6 @@
+{
+  "vscode": {
+    "jdk.jdkhome": "/path/to/your/jdk/Contents/Home"
+  },
+  "zed": {}
+}

@@ -1,0 +1,102 @@
+#!/usr/bin/env zsh
+
+#  $$$$$$$$\  $$$$$$\  $$\   $$\ $$$$$$$\   $$$$$$\
+#  \____$$  |$$  __$$\ $$ |  $$ |$$  __$$\ $$  __$$\
+#      $$  / $$ /  \__|$$ |  $$ |$$ |  $$ |$$ /  \__|
+#     $$  /  \$$$$$$\  $$$$$$$$ |$$$$$$$  |$$ |
+#    $$  /    \____$$\ $$  __$$ |$$  __$$< $$ |
+#   $$  /    $$\   $$ |$$ |  $$ |$$ |  $$ |$$ |  $$\
+#  $$$$$$$$\ \$$$$$$  |$$ |  $$ |$$ |  $$ |\$$$$$$  |
+#  \________| \______/ \__|  \__|\__|  \__| \______/
+
+# Load the shell dotfiles, and then some:
+for file in ~/.dotfiles/config/zsh/{aliases,completion,exports,functions}; do
+    [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+# Selected themes use command substitution in PROMPT, just like the fallback.
+setopt promptsubst
+if [ -r "${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/current-theme.zsh" ]; then
+    source "${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/current-theme.zsh"
+else
+    source ~/.dotfiles/config/zsh/prompt
+fi
+
+# Load local overrides or secrets (this file should be gitignored)
+[ -f ~/.local.zsh ] && source ~/.local.zsh
+
+###############################################################################
+#                                 SETTINGS                                    #
+###############################################################################
+# show completion menu on successive tab press
+setopt AUTO_MENU
+# cursor moved to end of word if completion started
+setopt COMPLETE_IN_WORD
+# cursor moved to end of word after completion
+setopt ALWAYS_TO_END
+# correct spelling of all arguments
+setopt CORRECT_ALL
+# case insensitive globbing
+setopt NO_CASE_GLOB
+# if directory given with no command, then cd into it
+setopt AUTO_CD
+# share command history data
+setopt SHARE_HISTORY
+#save only one command if 2 common are same and consistent
+setopt HIST_IGNORE_DUPS
+# ignore commands that start with space
+setopt HIST_IGNORE_SPACE
+#add timestamp for each entry
+setopt EXTENDED_HISTORY
+# delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt HIST_EXPIRE_DUPS_FIRST
+# show command with history expansion to user before running it
+setopt HIST_VERIFY
+###############################################################################
+#                                 PATHS                                       #
+###############################################################################
+
+# JENV Path
+export PATH="$HOME/.jenv/bin:$PATH"
+# Gradle, Maven, Wildfly Path
+if [ -n "${GRADLE_HOME:-}" ]; then
+    export PATH="$GRADLE_HOME/bin:$PATH"
+fi
+# Android
+if [ -n "${ANDROID_HOME:-}" ]; then
+    export PATH="$ANDROID_HOME/platform-tools:$PATH"
+    export PATH="$ANDROID_HOME/emulator:$PATH"
+fi
+# Dotfiles Path
+export PATH="$HOME/.dotfiles/bin:$PATH"
+# .local
+export PATH="$HOME/.local/bin:$PATH"
+
+###############################################################################
+#                         Language Version Managers                           #
+###############################################################################
+
+#JENV Eval
+if command -v jenv >/dev/null 2>&1; then
+    eval "$(jenv init -)"
+fi
+
+# Source NVM
+export NVM_DIR="$HOME/.nvm"
+if command -v brew >/dev/null 2>&1; then
+    nvm_script="$(brew --prefix)/opt/nvm/nvm.sh"
+    [ -s "$nvm_script" ] && . "$nvm_script"
+    unset nvm_script
+fi
+
+
+
+###############################################################################
+#                                 ZPLUG                                       #
+###############################################################################
+source ~/.dotfiles/config/zsh/plugins
+
+if [[ "$TERM_PROGRAM" == "kiro" ]] && command -v kiro >/dev/null 2>&1; then
+    . "$(kiro --locate-shell-integration-path zsh)"
+fi

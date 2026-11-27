@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Kill the process that is currently listening on the provided port
+
+pids=$(wtfport "$@")
+[ -n "$pids" ] || exit 0
+printf '%s\n' "$pids" | xargs kill -9

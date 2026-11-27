@@ -2,3 +2,7 @@
 .local.zsh
 __pycache__/
 dotfiles-backup/
+
+# Canonical command directory overrides global bin/ ignores.
+!/bin/
+!/bin/**

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    echo "Usage: emptytrash [--help | --dry-run | --run]"
+    echo "Ask Finder to empty the current user's Trash. This permanently deletes its contents."
+}
+
+if [ "$#" -gt 1 ]; then usage >&2; exit 2; fi
+case "${1:---help}" in
+    -h | --help) usage ;;
+    --dry-run) echo "Would ask Finder to empty the current user's Trash." ;;
+    --run)
+        [ "$(uname)" = Darwin ] || { echo "emptytrash requires macOS." >&2; exit 1; }
+        osascript -e 'tell application "Finder" to empty the trash'
+        ;;
+    *) usage >&2; exit 2 ;;
+esac

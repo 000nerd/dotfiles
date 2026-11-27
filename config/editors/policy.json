@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "shared": {
+    "font_family": "BlexMono Nerd Font Mono",
+    "font_fallbacks": [
+      "Menlo",
+      "Monaco",
+      "Courier New",
+      "monospace"
+    ],
+    "font_size": 15,
+    "terminal_font_size": 12,
+    "theme": "gruvbox",
+    "vim": true,
+    "telemetry": false,
+    "format_on_save": true,
+    "trim_trailing_whitespace": true,
+    "final_newline": true,
+    "preserve_markdown_trailing_spaces": true,
+    "colorize_brackets": true,
+    "linked_edits": true,
+    "diff_style": "unified"
+  },
+  "themes": {
+    "gruvbox": {
+      "vscode": {
+        "light": "Gruvbox Light Medium",
+        "dark": "Gruvbox Dark Medium"
+      },
+      "zed": {
+        "light": "Gruvbox Light",
+        "dark": "Gruvbox Dark"
+      }
+    },
+    "gruvbox-material": {
+      "vscode": {
+        "light": "Gruvbox Material Light",
+        "dark": "Gruvbox Material Dark"
+      },
+      "zed": {
+        "light": "Gruvbox Light",
+        "dark": "Gruvbox Material"
+      }
+    },
+    "everforest": {
+      "vscode": {
+        "light": "Everforest Light",
+        "dark": "Everforest Dark"
+      },
+      "zed": {
+        "light": "Everforest Light Medium (regular)",
+        "dark": "Everforest Dark Medium (regular)"
+      }
+    }
+  },
+  "formatters": [
+    {
+      "engine": "prettier",
+      "vscode_languages": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "json",
+        "jsonc",
+        "css",
+        "scss",
+        "less",
+        "html",
+        "markdown",
+        "yaml",
+        "graphql",
+        "vue",
+        "handlebars"
+      ],
+      "zed_languages": [
+        "JavaScript",
+        "TypeScript",
+        "TSX",
+        "JSON",
+        "JSONC",
+        "CSS",
+        "SCSS",
+        "HTML",
+        "Markdown",
+        "YAML"
+      ],
+      "vscode_extension": "esbenp.prettier-vscode"
+    },
+    {
+      "engine": "language_server",
+      "vscode_languages": [
+        "python"
+      ],
+      "zed_languages": [
+        "Python"
+      ],
+      "vscode_extension": "charliermarsh.ruff",
+      "zed_server": "ruff"
+    },
+    {
+      "engine": "language_server",
+      "vscode_languages": [
+        "go"
+      ],
+      "zed_languages": [
+        "Go"
+      ],
+      "vscode_extension": "golang.go",
+      "zed_server": "gopls"
+    },
+    {
+      "engine": "language_server",
+      "vscode_languages": [
+        "java"
+      ],
+      "zed_languages": [
+        "Java"
+      ],
+      "vscode_extension": "oracle.oracle-java",
+      "zed_server": "jdtls"
+    },
+    {
+      "engine": "language_server",
+      "vscode_languages": [
+        "swift"
+      ],
+      "zed_languages": [
+        "Swift"
+      ],
+      "vscode_extension": "swiftlang.swift-vscode",
+      "zed_server": "sourcekit-lsp"
+    },
+    {
+      "engine": "language_server",
+      "vscode_languages": [
+        "xml",
+        "xsl",
+        "svg"
+      ],
+      "zed_languages": [
+        "XML"
+      ],
+      "vscode_extension": "redhat.vscode-xml",
+      "zed_server": "lemminx"
+    }
+  ]
+}

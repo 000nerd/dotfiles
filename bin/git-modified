@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Repository-controlled filenames are literal data, never Git options or format.
+git ls-files -z | while IFS= read -r -d '' path; do
+    modified=$(git --literal-pathspecs log -1 --format=%ai -- "$path")
+    printf '%s %q\n' "$modified" "$path"
+done

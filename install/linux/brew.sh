@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
+
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/packages.sh"
 
 #  $$$$$$$\  $$$$$$$\  $$$$$$$$\ $$\      $$\
 #  $$  __$$\ $$  __$$\ $$  _____|$$ | $\  $$ |
@@ -19,56 +21,14 @@ if test ! "$(command -v brew)"; then
     if [ -d "/home/linuxbrew/.linuxbrew" ]; then
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     elif [ -d "$HOME/.linuxbrew" ]; then
-        eval "$($HOME/.linuxbrew/bin/brew shellenv)"
+        eval "$("$HOME"/.linuxbrew/bin/brew shellenv)"
     fi
 fi
 
 echo -e "\n\nInstalling homebrew packages..."
 echo "=============================="
 
-formulas=(
-    # flags should pass through the the `brew list check`
-    awscli
-    bat # cat replacement
-    cocoapods
-    curl
-    eza # ls replacement
-    fd # find replacement
-    ffmpeg
-    fzf
-    gh
-    git
-    git-delta # git diff replacement
-    hub
-    jq # or use fx
-    markdown
-    mycli
-    mysql
-    ncdu
-    ios-deploy
-    p7zip
-    pacvim
-    pgcli
-    postgresql
-    rclone
-    redis
-    ripgrep
-    rmlint
-    rsync
-    shellcheck
-    source-highlight
-    streamlink
-    tmux
-    trash
-    tree
-    unar
-    wget
-    youtube-dl
-    yt-dlp
-    z # cd replacement
-    zplug
-    zsh-completions
-)
+formulas=("${DOTFILES_LINUX_FORMULAS[@]}")
 
 for formula in "${formulas[@]}"; do
     if brew list "$formula" > /dev/null 2>&1; then
@@ -78,9 +38,6 @@ for formula in "${formulas[@]}"; do
     fi
 done
 
-brew tap homebrew/cask-fonts
 
 # Remove outdated versions from the cellar.
-brew cleanup
-
 brew cleanup

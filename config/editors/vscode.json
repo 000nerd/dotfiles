@@ -1,0 +1,36 @@
+{
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "notebook.cellToolbarLocation": {
+    "default": "right",
+    "jupyter-notebook": "left"
+  },
+  "editor.guides.bracketPairs": "active",
+  "js/ts.implicitProjectConfig.experimentalDecorators": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "window.commandCenter": true,
+  "files.associations": {
+    "*.symlink": "shellscript"
+  },
+  "workbench.preferredHighContrastColorTheme": "Gruvbox Dark Hard",
+  "workbench.preferredHighContrastLightColorTheme": "Gruvbox Light Hard",
+  "workbench.activityBar.location": "top",
+  "diffEditor.codeLens": true,
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "chat.disableAIFeatures": true,
+  "warmUp.programmingLanguage": "java",
+  "warmUp.mode": "code",
+  "warmUp.count": 15,
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "[go]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "go.formatTool": "default"
+}

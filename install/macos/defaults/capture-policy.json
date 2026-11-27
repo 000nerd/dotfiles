@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "rule": "Capture only named portable UI preferences as evidence. Apply only verified non-default differences or separately reviewed intentional changes. Matching defaults and unknown values remain unmanaged. Missing keys and OS-version differences are not proof of factory defaults.",
+  "excluded": [
+    "account data",
+    "histories and recent items",
+    "device identifiers",
+    "window geometry",
+    "Dock application lists",
+    "opaque data",
+    "unknown preference keys"
+  ],
+  "domains": [
+    {
+      "target": "user",
+      "domain": "NSGlobalDomain",
+      "restart": "none",
+      "keys": [
+        "AppleInterfaceStyle",
+        "AppleInterfaceStyleSwitchesAutomatically",
+        "AppleKeyboardUIMode",
+        "ApplePressAndHoldEnabled",
+        "AppleShowAllExtensions",
+        "AppleShowScrollBars",
+        "AppleFontSmoothing",
+        "InitialKeyRepeat",
+        "KeyRepeat",
+        "NSAutomaticCapitalizationEnabled",
+        "NSAutomaticDashSubstitutionEnabled",
+        "NSAutomaticPeriodSubstitutionEnabled",
+        "NSAutomaticQuoteSubstitutionEnabled",
+        "NSAutomaticSpellingCorrectionEnabled",
+        "NSNavPanelExpandedStateForSaveMode",
+        "NSNavPanelExpandedStateForSaveMode2",
+        "NSTableViewDefaultSizeMode",
+        "NSDocumentSaveNewDocumentsToCloud",
+        "WebKitDeveloperExtras",
+        "com.apple.keyboard.fnState",
+        "com.apple.mouse.scaling",
+        "com.apple.scrollwheel.scaling",
+        "com.apple.swipescrolldirection",
+        "com.apple.trackpad.scaling",
+        "AppleAccentColor",
+        "AppleHighlightColor",
+        "AppleAquaColorVariant",
+        "AppleReduceDesktopTinting",
+        "NSAutomaticInlinePredictionEnabled",
+        "NSAutomaticTextCompletionEnabled"
+      ]
+    },
+    {
+      "target": "current-host",
+      "domain": "NSGlobalDomain",
+      "restart": "none",
+      "keys": [
+        "com.apple.trackpad.trackpadCornerClickBehavior",
+        "com.apple.trackpad.enableSecondaryClick",
+        "com.apple.trackpad.tapBehavior"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.finder",
+      "restart": "Finder",
+      "keys": [
+        "AppleShowAllFiles",
+        "CreateDesktop",
+        "FXDefaultSearchScope",
+        "FXEnableExtensionChangeWarning",
+        "FXInfoPanesExpanded",
+        "FXPreferredViewStyle",
+        "NewWindowTarget",
+        "NewWindowTargetPath",
+        "QuitMenuItem",
+        "ShowExternalHardDrivesOnDesktop",
+        "ShowHardDrivesOnDesktop",
+        "ShowMountedServersOnDesktop",
+        "ShowRemovableMediaOnDesktop",
+        "ShowPathbar",
+        "ShowStatusBar",
+        "_FXSortFoldersFirst"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.dock",
+      "restart": "Dock",
+      "keys": [
+        "tilesize",
+        "magnification",
+        "largesize",
+        "mineffect",
+        "show-recents",
+        "mru-spaces",
+        "orientation",
+        "show-process-indicators",
+        "minimize-to-application",
+        "scroll-to-open",
+        "autohide-delay",
+        "autohide-time-modifier"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.AppleMultitouchTrackpad",
+      "restart": "none",
+      "keys": [
+        "Clicking",
+        "TrackpadCornerSecondaryClick",
+        "TrackpadRightClick",
+        "TrackpadThreeFingerDrag",
+        "TrackpadThreeFingerHorizSwipeGesture",
+        "TrackpadThreeFingerVertSwipeGesture",
+        "TrackpadFourFingerHorizSwipeGesture",
+        "TrackpadFourFingerVertSwipeGesture",
+        "TrackpadPinch",
+        "TrackpadRotate",
+        "Dragging",
+        "DragLock",
+        "FirstClickThreshold",
+        "SecondClickThreshold"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.driver.AppleBluetoothMultitouch.trackpad",
+      "restart": "none",
+      "keys": [
+        "Clicking",
+        "TrackpadCornerSecondaryClick",
+        "TrackpadRightClick",
+        "TrackpadThreeFingerDrag",
+        "TrackpadThreeFingerHorizSwipeGesture",
+        "TrackpadThreeFingerVertSwipeGesture",
+        "TrackpadFourFingerHorizSwipeGesture",
+        "TrackpadFourFingerVertSwipeGesture",
+        "TrackpadPinch",
+        "TrackpadRotate",
+        "Dragging",
+        "DragLock",
+        "FirstClickThreshold",
+        "SecondClickThreshold"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.WindowManager",
+      "restart": "none",
+      "keys": [
+        "GloballyEnabled",
+        "EnableStandardClickToShowDesktop",
+        "EnableTilingByEdgeDrag",
+        "EnableTopTilingByEdgeDrag",
+        "HideDesktop",
+        "StandardHideDesktopIcons"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.screencapture",
+      "restart": "SystemUIServer",
+      "keys": [
+        "type",
+        "location",
+        "disable-shadow",
+        "include-date",
+        "show-thumbnail"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.desktopservices",
+      "restart": "Finder",
+      "keys": [
+        "DSDontWriteNetworkStores",
+        "DSDontWriteUSBStores"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.Terminal",
+      "restart": "Terminal",
+      "keys": [
+        "SecureKeyboardEntry",
+        "FocusFollowsMouse",
+        "ShowLineMarks"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.googlecode.iterm2",
+      "restart": "iTerm",
+      "keys": [
+        "PromptOnQuit",
+        "HideTab",
+        "HideMenuBarInFullscreen",
+        "OpenTmuxWindowsIn",
+        "HotkeyWindowAnimDuration"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.knollsoft.Rectangle",
+      "restart": "Rectangle",
+      "keys": [
+        "launchOnLogin",
+        "gapSize",
+        "windowSnapping",
+        "hideMenubarIcon",
+        "almostMaximizeWidth",
+        "almostMaximizeHeight"
+      ]
+    },
+    {
+      "target": "current-host",
+      "domain": "com.apple.controlcenter",
+      "restart": "SystemUIServer",
+      "keys": [
+        "Bluetooth",
+        "Sound",
+        "NowPlaying",
+        "AirDrop",
+        "FocusModes",
+        "UserSwitcher",
+        "Display"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.menuextra.clock",
+      "restart": "SystemUIServer",
+      "keys": [
+        "DateFormat",
+        "IsAnalog",
+        "ShowAMPM",
+        "ShowDate",
+        "ShowDayOfWeek",
+        "ShowSeconds",
+        "FlashDateSeparators",
+        "Show24Hour"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.universalaccess",
+      "restart": "none",
+      "keys": [
+        "reduceMotion",
+        "reduceTransparency",
+        "increaseContrast"
+      ]
+    },
+    {
+      "target": "user",
+      "domain": "com.apple.Safari",
+      "restart": "Safari",
+      "keys": [
+        "ShowFavoritesBar",
+        "ShowFullURLInSmartSearchField",
+        "IncludeDevelopMenu",
+        "ShowStandaloneTabBar",
+        "NeverUseBackgroundColorInToolbar"
+      ]
+    }
+  ]
+}
