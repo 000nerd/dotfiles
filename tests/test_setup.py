@@ -359,6 +359,27 @@ rendered=$(print -P -- "$PROMPT")
         self.assertNotEqual(bad.returncode, 0)
         self.assertEqual(clipboard.read_text(), "preserve")
 
+    def test_git_modified_treats_tracked_filenames_as_literal_data(self):
+        repo = self.base / "modified-repo"
+        sentinel = self.file("external-sentinel", "preserve external file")
+        self.assertEqual(self.command("git", "init", "-b", "main", str(repo)).returncode, 0)
+        names = ["--output=" + str(sentinel), "file with spaces", 'file"with\nnewline', "percent%x41file", "[literal]*file"]
+        for name in names:
+            path = repo / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("fixture")
+        self.assertEqual(self.command("git", "-C", str(repo), "add", "-A").returncode, 0)
+        commit = self.command("git", "-C", str(repo), "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+                              "-c", "core.hooksPath=/dev/null", "commit", "-m", "fixture")
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        result = subprocess.run([str(ROOT / "bin/git-modified")], cwd=repo, env=self.env,
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(sentinel.read_text(), "preserve external file")
+        date = self.command("git", "-C", str(repo), "log", "-1", "--format=%ai").stdout.strip()
+        for name in names:
+            self.assertIn(date + " " + name + "\n", result.stdout)
+
     def update_env(self):
         self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
         self.file("fake-bin/brew", '''#!/bin/sh
