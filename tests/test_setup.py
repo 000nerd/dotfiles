@@ -275,9 +275,18 @@ client 444 user 3u IPv4 0 0t0 TCP localhost:80->localhost:12345 (ESTABLISHED)
         state_dir = self.base / "state/dotfiles"
         state_dir.mkdir(parents=True)
         selected = state_dir / "current-theme.zsh"
+        repo = self.base / "prompt-repo"
+        self.assertEqual(self.command("git", "init", "-b", "main", str(repo)).returncode, 0)
+        commit = self.command("git", "-C", str(repo), "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+                              "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty", "-m", "fixture")
+        self.assertEqual(commit.returncode, 0, commit.stderr)
         command = '''unsetopt promptsubst
 source "$1" || exit $?
+cd -- "$2" || exit $?
 [[ -o promptsubst ]] || exit 10
+[[ -z "$(parse_git_dirty)" ]] || exit 13
+print -r -- dirty > dirty.txt
+[[ "$(parse_git_dirty)" == '*' ]] || exit 14
 rendered=$(print -P -- "$PROMPT")
 [[ "$rendered" != *'$(build_prompt)'* ]] || exit 11
 [[ -n "$rendered" ]] || exit 12
@@ -286,10 +295,46 @@ rendered=$(print -P -- "$PROMPT")
             with self.subTest(theme=name):
                 if selected.is_symlink():
                     selected.unlink()
+                (repo / "dirty.txt").unlink(missing_ok=True)
                 selected.symlink_to(ROOT / f"config/themes/zsh/{name}.zsh-theme")
-                result = self.command(zsh, "-f", "-c", command, "_", str(ROOT / "config/zsh/zshrc"),
+                result = self.command(zsh, "-f", "-c", command, "_", str(ROOT / "config/zsh/zshrc"), str(repo),
                                       env={**self.env, "PATH": "/usr/bin:/bin"})
                 self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertNotIn("command not found", result.stderr)
+
+    def test_github_credentials_resolve_gh_from_path(self):
+        self.file("fake-bin/gh", '#!/bin/sh\nprintf "%s\\n" "$*" >> "$CALL_LOG"\ncat >/dev/null\nprintf "username=fixture\\npassword=fixture-token\\n"\n', True)
+        env = {**self.env, "PATH": str(self.base / "fake-bin") + ":/usr/bin:/bin",
+               "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": str(ROOT / "config/git/gitconfig"),
+               "GIT_TERMINAL_PROMPT": "0", "CALL_LOG": str(self.base / "gh-calls")}
+        for host in ("github.com", "gist.github.com"):
+            result = subprocess.run(["git", "credential", "fill"], input=f"protocol=https\nhost={host}\n\n",
+                                    env=env, capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("username=fixture", result.stdout)
+        self.assertEqual((self.base / "gh-calls").read_text().splitlines(),
+                         ["auth git-credential get", "auth git-credential get"])
+
+    def test_bare_clone_supports_immediate_default_worktree_creation(self):
+        source, workspace = self.base / "source", self.base / "workspace"
+        workspace.mkdir()
+        init = self.command("git", "init", "-b", "main", str(source))
+        self.assertEqual(init.returncode, 0, init.stderr)
+        commit = self.command("git", "-C", str(source), "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+                              "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty", "-m", "fixture")
+        self.assertEqual(commit.returncode, 0, commit.stderr)
+        env = {**self.env, "TERM": "xterm"}
+        clone = subprocess.run([str(ROOT / "bin/git-bare-clone"), str(source)], cwd=workspace, env=env,
+                               capture_output=True, text=True, timeout=30)
+        self.assertEqual(clone.returncode, 0, clone.stderr)
+        ref = self.command("git", "-C", str(workspace), "rev-parse", "--verify", "origin/main")
+        self.assertEqual(ref.returncode, 0, ref.stderr)
+        self.assertEqual(self.command("git", "-C", str(workspace), "config", "github.user", "fixture").returncode, 0)
+        worktree = subprocess.run([str(ROOT / "bin/git-create-worktree"), "-N", "feature"], cwd=workspace, env=env,
+                                  capture_output=True, text=True, timeout=30)
+        self.assertEqual(worktree.returncode, 0, worktree.stderr)
+        branch = self.command("git", "-C", str(workspace / "feature"), "branch", "--show-current")
+        self.assertEqual(branch.stdout.strip(), "fixture/feature")
 
     def update_env(self):
         self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)

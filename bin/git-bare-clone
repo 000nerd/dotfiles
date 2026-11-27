@@ -76,6 +76,8 @@ git clone --bare "${args[@]}" "$location"
 pushd "$location" > /dev/null
 msg "${YELLOW}Adjusting origin fetch locations...${NOFORMAT}"
 git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+msg "${YELLOW}Fetching remote-tracking branches...${NOFORMAT}"
+git fetch origin
 popd > /dev/null
 msg "${YELLOW}Setting .git file contents...${NOFORMAT}"
 echo "gitdir: ./$location" > .git

@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+
+# Print the dirty marker as prompt data; a clean worktree produces no output.
+parse_git_dirty() {
+  local git_status
+  local -a flags
+  flags=(--porcelain)
+  [[ "$(command git config --get oh-my-zsh.hide-dirty 2>/dev/null)" != 1 ]] || return 0
+  if [[ "${DISABLE_UNTRACKED_FILES_DIRTY:-}" == true ]]; then
+    flags+=(--untracked-files=no)
+  fi
+  if [[ "${GIT_STATUS_IGNORE_SUBMODULES:-}" != git ]]; then
+    flags+=("--ignore-submodules=${GIT_STATUS_IGNORE_SUBMODULES:-dirty}")
+  fi
+  git_status=$(command git status "${flags[@]}" 2>/dev/null) || return 0
+  if [[ -n "$git_status" ]]; then
+    print -rn -- "${ZSH_THEME_GIT_PROMPT_DIRTY:-*}"
+  fi
+  return 0
+}

@@ -32,6 +32,9 @@
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
 
+setopt promptsubst
+source "${${(%):-%N}:A:h}/../../zsh/git-prompt"
+
 CURRENT_BG='NONE'
 CURRENT_FG="${CURRENT_FG:-0}"
 
