@@ -200,6 +200,59 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual((self.base / "calls").read_text().strip(), '-e tell application "Finder" to empty the trash')
 
+    def test_port_helpers_match_exact_listeners_and_skip_empty_kills(self):
+        self.file("listeners", """COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
+web 111 user 3u IPv4 0 0t0 TCP *:80 (LISTEN)
+other 222 user 3u IPv4 0 0t0 TCP *:8080 (LISTEN)
+v6 333 user 3u IPv6 0 0t0 TCP [::1]:80 (LISTEN)
+web 111 user 4u IPv6 0 0t0 TCP [::1]:80 (LISTEN)
+client 444 user 3u IPv4 0 0t0 TCP localhost:80->localhost:12345 (ESTABLISHED)
+""")
+        self.file("fake-bin/lsof", '#!/bin/sh\ncat "$FIXTURE"\n', True)
+        self.file("fake-bin/kill", '#!/bin/sh\nprintf "%s\\n" "$*" >> "$KILL_LOG"\n', True)
+        env = {**self.env, "PATH": f"{self.base / 'fake-bin'}:{ROOT / 'bin'}:/usr/bin:/bin",
+               "FIXTURE": str(self.base / "listeners"), "KILL_LOG": str(self.base / "kills")}
+        result = self.command(str(ROOT / "bin/wtfport"), "80", env=env)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.splitlines(), ["111", "333"])
+        result = self.command(str(ROOT / "bin/killport"), "80", env=env)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.base / "kills").read_text().strip(), "-9 111 333")
+        (self.base / "kills").unlink()
+        result = self.command(str(ROOT / "bin/killport"), "9999", env=env)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse((self.base / "kills").exists())
+        for args in ((), ("80.*",), ("0",), ("65536",), ("-1",), ("80", "8080")):
+            result = self.command(str(ROOT / "bin/killport"), *args, env=env)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse((self.base / "kills").exists())
+
+    def test_selected_zsh_themes_expand_prompt_without_plugins(self):
+        zsh = shutil.which("zsh")
+        if not zsh:
+            self.skipTest("zsh required")
+        fixture = self.home / ".dotfiles/config/zsh"
+        fixture.mkdir(parents=True)
+        (fixture / "plugins").write_text("")
+        state_dir = self.base / "state/dotfiles"
+        state_dir.mkdir(parents=True)
+        selected = state_dir / "current-theme.zsh"
+        command = '''unsetopt promptsubst
+source "$1" || exit $?
+[[ -o promptsubst ]] || exit 10
+rendered=$(print -P -- "$PROMPT")
+[[ "$rendered" != *'$(build_prompt)'* ]] || exit 11
+[[ -n "$rendered" ]] || exit 12
+'''
+        for name in ("gruvbox", "gruvbox-material", "everforest"):
+            with self.subTest(theme=name):
+                if selected.is_symlink():
+                    selected.unlink()
+                selected.symlink_to(ROOT / f"config/themes/zsh/{name}.zsh-theme")
+                result = self.command(zsh, "-f", "-c", command, "_", str(ROOT / "config/zsh/zshrc"),
+                                      env={**self.env, "PATH": "/usr/bin:/bin"})
+                self.assertEqual(result.returncode, 0, result.stderr)
+
     def update_env(self):
         self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
         self.file("fake-bin/brew", '''#!/bin/sh

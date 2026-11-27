@@ -39,6 +39,28 @@ class CodexThemeTests(unittest.TestCase):
         if not shutil.which(os.environ.get("DOTFILES_CODEX_CLI", "codex")):
             self.skipTest("Codex CLI required for native config writer integration")
 
+    def test_vscode_theme_preserves_urls_comment_markers_and_quoted_text(self):
+        settings = self.home / "settings.json"
+        original = r'''{
+          // an actual comment
+          "http.proxy": "http://localhost:8080",
+          "markers": "/* literal */ // literal , }",
+          "quoted": "a\"//b",
+          "nested": {"enabled": true,},
+        }'''
+        settings.write_text(original)
+        with mock.patch.dict(os.environ, {"DOTFILES_VSCODE_SETTINGS_PATH": str(settings),
+                                          "DOTFILES_THEME_SKIP_EXTENSION_CHECK": "1"}), \
+                contextlib.redirect_stdout(io.StringIO()):
+            theme.apply_vscode(theme.load_profile("gruvbox")["apps"]["vscode"], self.args)
+        actual = json.loads(settings.read_text())
+        self.assertEqual(actual["http.proxy"], "http://localhost:8080")
+        self.assertEqual(actual["markers"], "/* literal */ // literal , }")
+        self.assertEqual(actual["quoted"], 'a"//b')
+        self.assertEqual(actual["nested"], {"enabled": True})
+        self.assertEqual(actual["workbench.colorTheme"], "Gruvbox Dark Medium")
+        self.assertEqual(next(self.home.glob("settings.json.bak.*")).read_text(), original)
+
     def test_profiles_reference_existing_assets_and_supported_targets(self):
         for name in ("gruvbox", "gruvbox-material", "everforest"):
             apps = theme.load_profile(name)["apps"]

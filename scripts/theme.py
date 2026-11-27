@@ -9,7 +9,6 @@ import datetime as dt
 import json
 import os
 import queue
-import re
 import shutil
 import subprocess
 import sys
@@ -21,6 +20,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_DIR = ROOT / "config" / "themes" / "profiles"
+sys.path.insert(0, str(ROOT / "scripts"))
+from editors import jsonc as parse_jsonc
 
 
 def state_dir() -> Path:
@@ -67,19 +68,13 @@ def atomic_write_text(path: Path, text: str, dry_run: bool) -> None:
     tmp.replace(path)
 
 
-def strip_jsonc(text: str) -> str:
-    text = re.sub(r"//.*?$", "", text, flags=re.MULTILINE)
-    text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
-    return re.sub(r",(\s*[}\]])", r"\1", text)
-
-
 def read_json(path: Path, *, jsonc: bool = False) -> dict[str, Any]:
     if not path.exists():
         return {}
     text = path.read_text(encoding="utf-8")
     if not text.strip():
         return {}
-    return json.loads(strip_jsonc(text) if jsonc else text)
+    return parse_jsonc(text) if jsonc else json.loads(text)
 
 
 def write_json(path: Path, data: dict[str, Any], dry_run: bool) -> None:
