@@ -71,6 +71,33 @@ class CodexThemeTests(unittest.TestCase):
                     if key in settings:
                         self.assertTrue(theme.repo_path(settings[key]).is_file(), settings[key])
 
+    def test_theme_writes_preserve_private_modes_and_symlinks(self):
+        previous_umask = os.umask(0o022)
+        try:
+            for mode in (0o600, 0o640):
+                for linked in (False, True):
+                    with self.subTest(mode=mode, symlink=linked):
+                        target = self.home / f"target-{mode}-{linked}.json"
+                        target.write_text('{"http.proxyAuthorization": "fixture-only"}')
+                        target.chmod(mode)
+                        settings = self.home / f"settings-{mode}-{linked}.json" if linked else target
+                        if linked:
+                            settings.symlink_to(target)
+                        with mock.patch.dict(os.environ, {"DOTFILES_VSCODE_SETTINGS_PATH": str(settings),
+                                                          "DOTFILES_THEME_SKIP_EXTENSION_CHECK": "1"}), \
+                                contextlib.redirect_stdout(io.StringIO()):
+                            theme.apply_vscode(theme.load_profile("gruvbox")["apps"]["vscode"], self.args)
+                        self.assertEqual(target.stat().st_mode & 0o777, mode)
+                        self.assertEqual(settings.is_symlink(), linked)
+                        self.assertEqual(json.loads(target.read_text())["http.proxyAuthorization"], "fixture-only")
+                        backup = next(self.home.glob(settings.name + ".bak.*"))
+                        self.assertEqual(backup.stat().st_mode & 0o777, mode)
+            new = self.home / "new.json"
+            theme.atomic_write_text(new, "{}", False)
+            self.assertEqual(new.stat().st_mode & 0o777, 0o600)
+        finally:
+            os.umask(previous_umask)
+
     def test_zsh_theme_and_selection_use_external_state_directory(self):
         env = {key: value for key, value in os.environ.items()
                if not key.startswith(("DOTFILES_", "XDG_"))}

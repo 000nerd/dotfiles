@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_DIR = ROOT / "config" / "themes" / "profiles"
 sys.path.insert(0, str(ROOT / "scripts"))
-from editors import jsonc as parse_jsonc
+from editors import atomic_write as write_atomic, jsonc as parse_jsonc
 
 
 def state_dir() -> Path:
@@ -62,10 +62,7 @@ def atomic_write_text(path: Path, text: str, dry_run: bool) -> None:
     if dry_run:
         info(f"[dry-run] Would write {path}")
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(text, encoding="utf-8")
-    tmp.replace(path)
+    write_atomic(path, text)
 
 
 def read_json(path: Path, *, jsonc: bool = False) -> dict[str, Any]:

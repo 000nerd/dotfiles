@@ -71,6 +71,10 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
+if [ -e .git ] || [ -L .git ]; then
+  die "Refusing to replace an existing .git entry."
+fi
+
 msg "${YELLOW}Cloning bare repository to $location...${NOFORMAT}"
 git clone --bare "${args[@]}" "$location"
 pushd "$location" > /dev/null
@@ -80,5 +84,8 @@ msg "${YELLOW}Fetching remote-tracking branches...${NOFORMAT}"
 git fetch origin
 popd > /dev/null
 msg "${YELLOW}Setting .git file contents...${NOFORMAT}"
-echo "gitdir: ./$location" > .git
+case "$location" in
+  /*) printf 'gitdir: %s\n' "$location" > .git ;;
+  *)  printf 'gitdir: ./%s\n' "$location" > .git ;;
+esac
 msg "${GREEN}Success.${NOFORMAT}"

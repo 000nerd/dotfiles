@@ -316,25 +316,40 @@ rendered=$(print -P -- "$PROMPT")
                          ["auth git-credential get", "auth git-credential get"])
 
     def test_bare_clone_supports_immediate_default_worktree_creation(self):
-        source, workspace = self.base / "source", self.base / "workspace"
-        workspace.mkdir()
+        source = self.base / "source"
         init = self.command("git", "init", "-b", "main", str(source))
         self.assertEqual(init.returncode, 0, init.stderr)
         commit = self.command("git", "-C", str(source), "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
                               "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty", "-m", "fixture")
         self.assertEqual(commit.returncode, 0, commit.stderr)
         env = {**self.env, "TERM": "xterm"}
-        clone = subprocess.run([str(ROOT / "bin/git-bare-clone"), str(source)], cwd=workspace, env=env,
-                               capture_output=True, text=True, timeout=30)
-        self.assertEqual(clone.returncode, 0, clone.stderr)
-        ref = self.command("git", "-C", str(workspace), "rev-parse", "--verify", "origin/main")
-        self.assertEqual(ref.returncode, 0, ref.stderr)
-        self.assertEqual(self.command("git", "-C", str(workspace), "config", "github.user", "fixture").returncode, 0)
-        worktree = subprocess.run([str(ROOT / "bin/git-create-worktree"), "-N", "feature"], cwd=workspace, env=env,
-                                  capture_output=True, text=True, timeout=30)
-        self.assertEqual(worktree.returncode, 0, worktree.stderr)
-        branch = self.command("git", "-C", str(workspace / "feature"), "branch", "--show-current")
-        self.assertEqual(branch.stdout.strip(), "fixture/feature")
+        locations = (None, "storage with spaces/project.git", str(self.base / "external storage/project.git"))
+        for index, location in enumerate(locations):
+            with self.subTest(location=location):
+                workspace = self.base / f"workspace-{index}"
+                workspace.mkdir()
+                flags = ["--location", location] if location else []
+                if location:
+                    (workspace / location).parent.mkdir(parents=True, exist_ok=True)
+                clone = subprocess.run([str(ROOT / "bin/git-bare-clone"), *flags, str(source)], cwd=workspace, env=env,
+                                       capture_output=True, text=True, timeout=30)
+                self.assertEqual(clone.returncode, 0, clone.stderr)
+                ref = self.command("git", "-C", str(workspace), "rev-parse", "--verify", "origin/main")
+                self.assertEqual(ref.returncode, 0, ref.stderr)
+                self.assertEqual(self.command("git", "-C", str(workspace), "config", "github.user", "fixture").returncode, 0)
+                worktree = subprocess.run([str(ROOT / "bin/git-create-worktree"), "-N", "feature"], cwd=workspace, env=env,
+                                          capture_output=True, text=True, timeout=30)
+                self.assertEqual(worktree.returncode, 0, worktree.stderr)
+                branch = self.command("git", "-C", str(workspace / "feature"), "branch", "--show-current")
+                self.assertEqual(branch.stdout.strip(), "fixture/feature")
+        blocked = self.base / "existing-repo"
+        blocked.mkdir()
+        (blocked / ".git").write_text("preserve existing pointer")
+        result = subprocess.run([str(ROOT / "bin/git-bare-clone"), str(source)], cwd=blocked, env=env,
+                                capture_output=True, text=True, timeout=30)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual((blocked / ".git").read_text(), "preserve existing pointer")
+        self.assertFalse((blocked / ".bare").exists())
 
     def test_git_clc_copies_head_and_rejects_invalid_revisions(self):
         if not shutil.which("zsh"):
