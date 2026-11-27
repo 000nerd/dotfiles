@@ -40,8 +40,6 @@ EOF
 
 cleanup() {
   trap - SIGINT SIGTERM ERR EXIT
-  tput cnorm # enable cursor
-  # script cleanup here
 }
 
 setup_colors() {
@@ -73,40 +71,17 @@ die() {
   exit "$code"
 }
 
-function spinner() {
-  # make sure we use non-unicode character type locale
-  # (that way it works for any locale as long as the font supports the characters)
-  local LC_CTYPE=C
-  local pid=$1 # Process Id of the previous running command
-  local spin='⣾⣽⣻⢿⡿⣟⣯⣷'
-  local charwidth=3
-
-  local i=0
-  tput civis # cursor invisible
-  while kill -0 "$pid" 2>/dev/null; do
-    local i=$(((i + charwidth) % ${#spin}))
-    printf >&2 "%s" "${spin:$i:$charwidth}"
-
-    printf >&2 "\b"
-    sleep .1
-  done
-  tput cnorm
-  wait "$pid" # capture exit code
-  return $?
-}
-
 run_command() {
-  local message=$1
+  local message=$1 result
   shift
-  echo >&2 -ne "$message "
-  "$@" &>/dev/null &
-  spinner $!
-  # shellcheck disable=SC2181
-  if [ $? -eq 0 ]; then
-    echo >&2 -e " ${GREEN}Done.${NOFORMAT}"
+  printf '%s ' "$message" >&2
+  # Run synchronously: terminal capabilities must never strand a Git process.
+  if "$@" >/dev/null 2>&1; then
+    printf '%sDone.%s\n' "$GREEN" "$NOFORMAT" >&2
   else
-    echo >&2 -e " ${RED}FAILED.${NOFORMAT}"
-    exit 1
+    result=$?
+    printf '%sFAILED.%s\n' "$RED" "$NOFORMAT" >&2
+    return "$result"
   fi
 }
 

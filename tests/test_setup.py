@@ -322,10 +322,13 @@ rendered=$(print -P -- "$PROMPT")
         commit = self.command("git", "-C", str(source), "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
                               "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty", "-m", "fixture")
         self.assertEqual(commit.returncode, 0, commit.stderr)
-        env = {**self.env, "TERM": "xterm"}
+        env = {key: value for key, value in self.env.items() if key != "TERM"}
         locations = (None, "storage with spaces/project.git", str(self.base / "external storage/project.git"))
         for index, location in enumerate(locations):
             with self.subTest(location=location):
+                env.pop("TERM", None)
+                if index:
+                    env["TERM"] = "dumb" if index == 1 else "xterm"
                 workspace = self.base / f"workspace-{index}"
                 workspace.mkdir()
                 flags = ["--location", location] if location else []
@@ -342,6 +345,12 @@ rendered=$(print -P -- "$PROMPT")
                 self.assertEqual(worktree.returncode, 0, worktree.stderr)
                 branch = self.command("git", "-C", str(workspace / "feature"), "branch", "--show-current")
                 self.assertEqual(branch.stdout.strip(), "fixture/feature")
+                failure = subprocess.run([str(ROOT / "bin/git-create-worktree"), "-N", "-B", "missing-base", "invalid-feature"],
+                                         cwd=workspace, env=env, capture_output=True, text=True, timeout=30)
+                self.assertNotEqual(failure.returncode, 0)
+                self.assertFalse((workspace / "invalid-feature").exists())
+                listing = self.command("git", "-C", str(workspace), "worktree", "list", "--porcelain")
+                self.assertNotIn("locked", listing.stdout)
         blocked = self.base / "existing-repo"
         blocked.mkdir()
         (blocked / ".git").write_text("preserve existing pointer")
@@ -379,6 +388,7 @@ rendered=$(print -P -- "$PROMPT")
         sentinel = self.file("external-sentinel", "preserve external file")
         self.assertEqual(self.command("git", "init", "-b", "main", str(repo)).returncode, 0)
         names = ["--output=" + str(sentinel), "file with spaces", 'file"with\nnewline', "percent%x41file", "[literal]*file"]
+        names.append("osc-\x1b]52;c;RklYVFVSRS1PTkxZ\x07-file")
         for name in names:
             path = repo / name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -392,8 +402,14 @@ rendered=$(print -P -- "$PROMPT")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(sentinel.read_text(), "preserve external file")
         date = self.command("git", "-C", str(repo), "log", "-1", "--format=%ai").stdout.strip()
-        for name in names:
-            self.assertIn(date + " " + name + "\n", result.stdout)
+        self.assertNotIn("\x1b", result.stdout)
+        self.assertNotIn("\x07", result.stdout)
+        self.assertEqual(len(result.stdout.splitlines()), len(names))
+        self.assertTrue(all(line.startswith(date + " ") for line in result.stdout.splitlines()))
+        self.assertIn(names[0], result.stdout)
+        self.assertIn(r"file\ with\ spaces", result.stdout)
+        self.assertIn("percent%x41file", result.stdout)
+        self.assertIn(r"\[literal\]\*file", result.stdout)
 
     def update_env(self):
         self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
