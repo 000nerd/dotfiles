@@ -265,6 +265,31 @@ client 444 user 3u IPv4 0 0t0 TCP localhost:80->localhost:12345 (ESTABLISHED)
         self.assertEqual(repeat.returncode, 0, repeat.stderr)
         self.assertEqual(preferences.stat().st_mtime_ns, timestamp)
 
+    def test_iterm_importer_escapes_control_bytes_in_diagnostics_and_verbose_paths(self):
+        self.file("fake-bin/uname", "#!/bin/sh\necho Darwin\n", True)
+        control = "\x1b]52;c;RklYVFVSRS1PTkxZ\x07"
+        rejected = self.base / ("bad-" + control + ".itermcolors")
+        rejected.write_bytes(plistlib.dumps({"Background Color": {"Red Component": 0.2}}))
+        env = {**self.env, "PATH": str(self.base / "fake-bin") + ":" + self.env["PATH"]}
+        importer = ["bash", str(ROOT / "scripts/import-iterm-scheme.sh")]
+        for arguments in ((str(rejected),), ("--unknown-" + control, str(rejected))):
+            result = subprocess.run([*importer, *arguments], env=env, cwd=self.base,
+                                    capture_output=True, text=True, timeout=30)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertNotIn("\x1b", result.stderr)
+            self.assertNotIn("\x07", result.stderr)
+            self.assertIn(r"\x1b", result.stderr)
+            self.assertIn(r"\x07", result.stderr)
+        source = self.base / ("folder-" + control) / "Ocean.itermcolors"
+        source.parent.mkdir()
+        source.write_bytes(plistlib.dumps({"Background Color": {"Red Component": 0.2}}))
+        result = subprocess.run([*importer, "-v", str(source)], env=env, cwd=self.base,
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("\x1b", result.stdout + result.stderr)
+        self.assertNotIn("\x07", result.stdout + result.stderr)
+        self.assertIn(r"\x1b", result.stdout)
+
     def test_selected_zsh_themes_expand_prompt_without_plugins(self):
         zsh = shutil.which("zsh")
         if not zsh:

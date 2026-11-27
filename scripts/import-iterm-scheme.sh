@@ -21,7 +21,20 @@ import sys
 import tempfile
 
 schemes = Path(sys.argv[1])
-parser = argparse.ArgumentParser(prog="import-iterm-scheme.sh")
+
+
+def display(value):
+    return str(value).encode("unicode_escape").decode("ascii")
+
+
+class SafeArgumentParser(argparse.ArgumentParser):
+    def exit(self, status=0, message=None):
+        if message:
+            sys.stderr.write(display(message.rstrip("\n")) + "\n")
+        raise SystemExit(status)
+
+
+parser = SafeArgumentParser(prog="import-iterm-scheme.sh")
 parser.add_argument("-v", "--verbose", action="store_true")
 parser.add_argument("schemes", nargs="+", help="Bundled preset names or .itermcolors paths")
 args = parser.parse_args(sys.argv[2:])
@@ -46,7 +59,7 @@ try:
             raise ValueError("Color preset must contain a dictionary: " + str(source))
         imports[name] = colors
         if args.verbose:
-            print("Read preset " + name + " from " + str(source))
+            print("Read preset " + name + " from " + display(source))
 
     preferences = Path.home() / "Library/Preferences/com.googlecode.iterm2.plist"
     if preferences.is_symlink():
