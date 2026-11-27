@@ -1,22 +1,51 @@
-# macOS preference profiles
+# macOS preference policy
 
-The personal profile manages only intentional non-default preferences.
-`captured-personal.json` retains the comparison evidence for named portable
-preferences; `captured-personal.sh` contains only verified non-default
-declarations. Reference matches and unknown/provisional defaults are not
-written. `personal-overrides.sh` applies separately reviewed customizations:
-Dock auto-hide, title-bar double-click Fill, and no tiled-window margins.
-The Finder walkthrough additionally selected path bar on, icon view, and new
-windows opening at the user's Desktop. Filename extensions remain at the
-macOS default without an explicit write.
-Dock magnification, position, and minimize animation are left to macOS.
+[Setup guide](../../../docs/setup.md#macos-preferences-and-app-store-apps) ·
+[Testing guide](../../../docs/testing.md)
 
-`common.sh` and `work.sh` retain the separate legacy common/work profile.
-They are not automatically layered onto the captured personal profile.
+## Managed declarations
+
+The `personal` registry applies verified non-default differences and explicitly
+reviewed customizations. Captured reference matches and unknown/provisional
+values remain unmanaged.
+
+| File | Purpose |
+| --- | --- |
+| [registry.sh](registry.sh) | Compose the selected registry for list, audit, or apply |
+| [lib.sh](lib.sh) | Typed preference declarations, command capture, and audit behavior |
+| [capture-policy.json](capture-policy.json) | Allowlist for portable preference capture |
+| [captured-personal.json](captured-personal.json) | Comparison evidence and classification |
+| [captured-personal.sh](captured-personal.sh) | Generated verified non-default declarations |
+| [personal-overrides.sh](personal-overrides.sh) | Reviewed personal customizations |
+| [common.sh](common.sh), [work.sh](work.sh) | Separate common/work declarations |
+| [toggles.sh](toggles.sh) | Named reversible preference toggles |
+| [retired.sh](retired.sh) | Inactive legacy declarations, not sourced by the registry |
+
+The personal overrides include Dock auto-hide, title-bar double-click Fill,
+margin-free tiling, Finder path bar, icon view, and new Finder windows at Desktop.
+The `personal` profile is not layered on `common`/`work`. List the actual managed
+settings with the command below rather than treating captured values as policy.
+
+## Inspect, audit, apply
+
+```sh
+./bin/dotfiles macos list --profile personal
+./bin/dotfiles macos audit --profile personal
+./bin/dotfiles macos run --profile personal
+./bin/dotfiles macos list --profile work
+./bin/dotfiles macos toggle hidden-files on
+./bin/dotfiles macos toggle desktop-icons off
+```
+
+Run examples from the repository root. List/audit are read-only; audit returns
+nonzero for missing or drifted values. `run` also executes machine naming, power,
+security, and other setup in [../defaults.sh](../defaults.sh). Inspect that script
+before applying it to an existing Mac. Some changes require restarting an
+application or signing out.
 
 ## Capture and compare
 
-```bash
+```sh
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles"
 mkdir -p "$STATE_DIR/baselines"
@@ -27,40 +56,24 @@ python3 scripts/preferences.py build "$STATE_DIR/baselines/current-ui-preference
   --output "$STATE_DIR/proposed-personal.json" --shell-output "$STATE_DIR/proposed-personal.sh"
 ```
 
-Capture exports selected domains in memory, persists only allowlisted portable
-keys, normalizes home paths, and excludes histories, accounts, device IDs,
-window geometry, Dock application lists, opaque values, and unknown keys.
-Generated shell values are quoted as data; they are never evaluated as code.
-Review the proposed files before copying them into this directory.
+Capture allowlists portable preference keys, normalizes home paths, and excludes
+histories, accounts, device IDs, window geometry, Dock application lists, opaque
+values, and unknown keys. The reference-capture command creates/reuses a real
+Tart VM and writes output beneath the external cache directory;
+`DOTFILES_REFERENCE_OUTPUT` overrides its output path.
 
-A missing key in `defaults` does not reveal an application's effective default.
-The comparison distinguishes equal, different, and unavailable reference
-values. Different macOS versions are provisional, and Tart vanilla images
-include provisioning tweaks. An initialized reference desktop is recorded in
-the evidence. Do not describe unavailable reference values as confirmed
-non-default settings. Generation requires a same-version reference explicitly
-marked `factory_defaults_verified: true` before applying captured differences.
-The provisioned Tart reference does not meet that requirement, so its differences
-remain review candidates. Capture evidence alone never pins matching defaults.
-Reviewed intentional changes belong in the explicit overrides; existing default
-values do not. Removing a declaration does not delete preferences from an
-existing Mac; clean-install behavior must be checked in a fresh VM.
+A missing key does not establish an application's effective default. Comparison
+distinguishes equal, different, and unavailable reference values. Generation
+only applies captured differences when the reference has the same macOS version
+and explicitly declares `factory_defaults_verified: true`. The provisioned Tart
+reference does not assert that property, so its differences remain candidates
+for review.
 
-## Inspect, audit, apply
+Review proposed JSON/shell output before changing the checked-in declarations.
+Generated shell values are quoted as data. Intentional overrides belong in
+`personal-overrides.sh`; matching defaults and unverified values remain unmanaged.
+Removing a declaration does not remove a preference from an existing Mac.
 
-```bash
-bin/dotfiles macos list --profile personal
-bin/dotfiles macos audit --profile personal
-bin/dotfiles macos run --profile personal
-```
-
-List/audit are read-only. Run also executes the machine setup in
-`install/macos/defaults.sh`, including naming, power and security settings; inspect
-that script before applying it to an existing Mac. The preference registry
-itself applies only the selected typed declarations. Some GUI changes require
-restarting an application or signing out. Native Fill uses the available
-desktop area; it does not force every app into a separate full-screen Space.
-
-All intentional preference writes belong here or in `toggles.sh`. Add policy
-keys deliberately and rerun the safe test suite plus live VM and post-restart
-checks when regenerating a profile.
+After changing policy, run `bash scripts/check.sh`, then validate clean-install
+and post-reboot behavior in a fresh macOS VM. Registry audit alone does not prove
+that every application's live behavior matches its stored preferences.

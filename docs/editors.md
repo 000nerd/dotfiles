@@ -1,100 +1,119 @@
-# Editor policy
+# Shared editor configuration
 
-Run `dotfiles editors apply --dry-run`, `dotfiles editors apply`, and
-`dotfiles editors check`. Both macOS and Linux are supported. Use `--editor
-vscode` or `--editor zed` when only one editor is installed. Python 3 is the only
-runtime needed to read, render, and audit configuration; VS Code downloads also
-require its `code` CLI (the macOS application CLI is a fallback).
+[Back to README](../README.md)
 
-## Sources of truth
+The editor command applies and checks portable settings for VS Code and Zed on
+macOS and Linux. It requires Python 3; VS Code extension installation also needs
+its `code` CLI (the installed macOS app CLI is used as a fallback).
 
-- `config/editors/policy.json`: shared font, Vim, privacy, theme pairing, whitespace, and language
-  formatter assignments. Edit this to change both editors together.
-  `font_family` and `font_fallbacks` also supply Codex's code font when running
-  `dotfiles theme apply <theme> --apps codex`. `font_size` controls VS Code/Zed;
-  `terminal_font_size` controls Codex's code size (12, matching the current iTerm
-  profile). See the [main README](../README.md) for iTerm's profile settings.
-- `config/editors/vscode.json` and `config/editors/zed.json`: editor-specific portable preferences, merged before
-  the shared policy. Shared policy wins where both declare a preference.
-- `config/editors/extensions.json`: every installed non-built-in extension on the source device,
-  including its observed version. IDs are installation requirements; recorded
-  versions are an optional audit baseline, not pins. Update the manifest when you
-  intentionally add/remove required extensions. Removing an extension here stops
-  requiring it and does not uninstall it.
-- `$XDG_CONFIG_HOME/dotfiles/editors.local.json` (default `~/.config/...`): local
-  `vscode` and `zed` objects applied last. `config/editors/local.example.json` shows the shape.
-  Supply `--local-overrides PATH` to select a different file.
+## Apply and check
 
-`render` prints the effective managed settings after local overrides. Applying
-merges recursively, preserving unmanaged keys and nested values. Removing a key
-from the declarations stops managing it and retains the device's existing value.
-The obsolete global VS Code `editor.defaultFormatter` is explicitly removed so
-per-language assignments work; an explicit local override can opt back into it.
-The command never imports or modifies `.vscode`/`.zed` project settings, authentication,
-MCP configuration, or named VS Code profiles. It does not sync snippets or custom
-keybinding files. Existing settings files are backed up before semantic changes;
-when rewritten, JSONC comments are removed from the active file but preserved in
-that original backup. Semantically matching files are not rewritten. Existing
-settings symlinks are followed and retained.
+Install the editors and configured font first. The macOS cask declarations
+include VS Code, Zed, and BlexMono Nerd Font.
 
-New editor preferences should be added here intentionally rather than by copying
-entire application state directories. Machine paths such as a JDK installation are
-not portable; keep them in the local override. Existing unowned paths remain intact.
+```sh
+dotfiles editors apply --dry-run
+dotfiles editors apply
+# Open Zed to finish any pending extension downloads, then check again.
+dotfiles editors check
+```
 
-## Apply and check behavior
+Use `--editor vscode` or `--editor zed` when managing one editor:
 
-Apply installs missing VS Code extension IDs, verifies the registry afterward,
-and sets every Zed extension ID to `true` in `auto_install_extensions`. Zed manages
-its own downloads on launch. Pending extensions cause a nonzero result until Zed
-has installed them; launch it, then rerun check. `--settings-only` prevents VS Code
-installation, but Zed still honors its declared auto-install list when it launches.
-No extension is removed or silently enabled. A disabled required VS Code extension
-must be enabled in its UI and is reported by check.
+```sh
+dotfiles editors render --editor vscode
+dotfiles editors apply --editor zed --dry-run
+dotfiles editors apply --editor vscode --settings-only
+dotfiles editors check --exact-versions
+```
 
-Check compares only managed preference leaves and required extension IDs. Additional
-extensions and unmanaged preferences are retained. `--exact-versions` also fails on
-extension versions differing from the captured manifest; apply does not downgrade
-or pin them. Registry errors and malformed configuration are errors, never empty
-inventories. The font check uses normalized installed font filenames, not a live
-font-rendering test. JDK paths are checked when explicitly configured. This is a
-configuration/installation audit, not a live LSP or debugger acceptance test.
+`render` prints effective declarations without writing settings. Dry-run previews
+apply without writes, backups, or extension installation. `--settings-only`
+prevents VS Code downloads; Zed's declared auto-install list still takes effect
+when Zed launches.
 
-Exit status: `0` means the requested operation/check passed, `1` means settings,
-extensions, font, or configured machine-path drift remains, and `2` means an
-operation or configuration error. Dry-run always avoids writes, backups, and
-installation, and exits `0` when it can construct the plan. CLI installation failure
-is reported as an error; successfully applied settings are retained with backups.
+## Configuration and precedence
 
-Paths can be redirected with `DOTFILES_VSCODE_SETTINGS_PATH`,
+| Source | Purpose |
+| --- | --- |
+| [vscode.json](../config/editors/vscode.json), [zed.json](../config/editors/zed.json) | Editor-specific portable settings |
+| [policy.json](../config/editors/policy.json) | Shared fonts, themes, Vim mode, privacy, whitespace, and formatter assignments |
+| [extensions.json](../config/editors/extensions.json) | Required extension IDs and observed versions |
+| `editors.local.json` | Device overrides applied last |
+
+Settings merge in this order: editor-specific declarations, shared policy, then
+local overrides. Edit the shared policy to change both editors together.
+Removing a declaration stops managing it and retains the existing device value.
+Removing an extension from the manifest stops requiring it; it does not uninstall it.
+
+The default local override is
+`${XDG_CONFIG_HOME:-~/.config}/dotfiles/editors.local.json`. Create it from
+[local.example.json](../config/editors/local.example.json), using paths appropriate
+to the device. `--local-overrides PATH` selects another file. Keep machine-specific
+JDK paths in this local file.
+
+## Apply behavior
+
+Apply merges managed settings while preserving unrelated keys and settings-file
+symlinks/permissions. Changed files are backed up; semantically matching files
+keep their contents, comments, and timestamps. Rewritten JSONC becomes formatted
+JSON, with original bytes retained in the backup. The obsolete global VS Code
+`editor.defaultFormatter` is removed unless explicitly restored by a local override.
+
+Missing VS Code extensions are installed by ID, and the registry is checked
+again. Zed extension IDs are declared in `auto_install_extensions`; Zed handles
+the downloads on launch. Disabled required VS Code extensions are reported for
+manual enablement. Additional extensions remain installed.
+
+Apply runs check afterward. Pending extensions, a missing font, or other drift
+can therefore produce a nonzero result even after settings were saved.
+
+## Check behavior and exit codes
+
+Check reads managed preference values and local extension registries. It checks
+required extension presence, global VS Code enablement, installed font filenames,
+and explicitly configured JDK paths. It does not start an editor or download
+extensions. Registry errors and malformed configuration are reported as errors.
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Operation passed; dry-run could construct its plan |
+| `1` | Managed settings, extensions, font, or configured machine paths differ |
+| `2` | Configuration or operation error |
+
+Observed extension versions are an audit baseline, not installation pins. Normal
+checks accept version differences; `check --exact-versions` treats them as drift.
+Apply installs current compatible releases and does not downgrade to recorded versions.
+
+## Themes and formatting
+
+`shared.theme` selects `gruvbox`, `gruvbox-material`, or `everforest`. The policy
+contains each editor's light/dark pairings. `dotfiles theme apply` can change
+appearance fields separately; editor check reports those differences, and editor
+apply restores the policy. Settings Sync can also change managed values.
+
+The shared font policy also supplies Codex's code font; see [themes](themes.md#fonts).
+The policy assigns Prettier, Ruff, gopls, SourceKit, LemMinX, and the configured
+Java servers to their respective languages. VS Code uses Oracle Java and Zed uses
+JDTLS, so matching Java output is not guaranteed. Pin formatter versions and
+configuration in each project when identical output matters.
+
+## Backups, paths, and scope
+
+Backups live under
+`${XDG_STATE_HOME:-~/.local/state}/dotfiles/editors/backups/<run>/` as
+`vscode.settings.jsonc` and `zed.settings.jsonc`. To restore one, close the editor
+and copy the selected backup contents to its settings file.
+
+Redirect settings/extension locations with `DOTFILES_VSCODE_SETTINGS_PATH`,
 `DOTFILES_ZED_SETTINGS_PATH`, `DOTFILES_VSCODE_EXTENSIONS_DIR`, and
-`DOTFILES_ZED_EXTENSIONS_DIR`. XDG config/data/state directories are honored.
-Use these to manage a non-default installation deliberately. The inventory covers
-the default local VS Code profile, not remote SSH, containers, WSL, or other profiles.
-Do not use the same extension directory concurrently for unrelated installations.
+`DOTFILES_ZED_EXTENSIONS_DIR`. XDG config/data/state directories are honored by
+the editor tool.
 
-The existing `dotfiles theme` command can change managed appearance keys; check will
-report that difference. To persist a shared editor theme, change the policy theme
-pairing. The shared `theme` can be `gruvbox`, `gruvbox-material`, or `everforest`.
-The installed Zed Gruvbox Material port has one dark variant; its light pairing
-uses built-in Gruvbox Light. Applying the editor policy returns to the declared pairing. VS Code Sync
-may similarly change managed settings; choose one authority for these values.
-
-## Formatting consistency
-
-The policy preserves current per-language choices: Prettier for web/documents,
-Ruff for Python, gopls for Go, SourceKit for Swift, LemMinX for XML, and native Java
-servers. Java uses Oracle in VS Code and JDTLS in Zed, so identical Java formatting
-is not promised. The installed extensions and auto-downloaded language servers may
-use different fallback tool versions across devices. This audit records extension
-versions, not every dynamically downloaded tool. For exact formatting, pin the same
-tool versions and configuration in each project and use the same formatter in CI.
-Keep `.editorconfig`, Prettier plus its lockfile, `pyproject.toml`, and `.swift-format`
-with project sources as appropriate.
-
-Settings backups are in `${XDG_STATE_HOME:-~/.local/state}/dotfiles/editors/backups/`.
-To restore one, close the editor and copy its backed-up `*.settings.jsonc` contents
-back to that editor's settings file. Review future apply plans before replacing
-intentional local choices.
-
-References: [Zed auto-install configuration](https://zed.dev/docs/reference/all-settings),
-[VS Code Settings Sync](https://code.visualstudio.com/docs/configure/settings-sync).
+The inventory covers the default local editor profile. It does not read or sync
+project `.vscode`/`.zed` files, named VS Code profiles, remote/container extensions,
+snippets, or custom keybinding files. The bundled declarations contain no
+authentication or MCP settings; undeclared settings are preserved. Local overrides
+can add managed settings, so review the effective declarations with `render`.
+Configuration checks do not establish that a language server, debugger, or
+formatter works in a live project; verify those in a scratch project.
